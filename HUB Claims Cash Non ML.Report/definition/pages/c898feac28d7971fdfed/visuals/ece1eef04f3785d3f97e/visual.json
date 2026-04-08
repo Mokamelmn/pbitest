@@ -1,0 +1,58 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.7.0/schema.json",
+  "name": "ece1eef04f3785d3f97e",
+  "position": {
+    "x": 823.09840095626873,
+    "y": 62.355939466383994,
+    "z": 1,
+    "height": 156.92911432373305,
+    "width": 296.190712465324,
+    "tabOrder": 1
+  },
+  "visual": {
+    "visualType": "textSlicer",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Dim_InsuranceCompany"
+                    }
+                  },
+                  "Property": "Insurance Company Name"
+                }
+              },
+              "queryRef": "Dim_InsuranceCompany.Insurance Company Name",
+              "nativeQueryRef": "Insurance Company Name"
+            }
+          ]
+        }
+      }
+    },
+    "objects": {
+      "general": [
+        {
+          "properties": {}
+        }
+      ],
+      "dropdown": [
+        {
+          "properties": {
+            "filterMode": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Filter_Contains_Any'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

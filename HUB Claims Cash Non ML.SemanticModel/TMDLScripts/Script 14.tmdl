@@ -1,0 +1,8 @@
+createOrReplace
+
+	ref table _Measures
+
+		measure Jitter = 0-(RAND()-0)
+			formatString: 0
+			lineageTag: c1a6891b-9596-4799-ae6d-ba766ecbcde7
+

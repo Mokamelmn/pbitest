@@ -1,0 +1,46 @@
+table Holidays
+	lineageTag: 51c386cd-c90e-4ae2-8509-3381e9846ddb
+
+	column 'UAE Holidays'
+		formatString: Long Date
+		lineageTag: 7a9f5d8b-1392-4821-bff6-8d08d23c7883
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [UAE Holidays]
+
+		variation Variation
+			isDefault
+			relationship: db02eee0-448a-478f-9399-b788f723dd02
+			defaultHierarchy: LocalDateTable_8c8db7de-de15-4b80-9739-0cdba87aa737.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	partition Holidays = calculated
+		mode: import
+		source =
+				
+				UNION(
+				ROW("UAE Holidays",DATE(2025,3,31)),
+				ROW("UAE Holidays",DATE(2025,4,1)),
+				ROW("UAE Holidays",DATE(2025,6,5)),
+				ROW("UAE Holidays",DATE(2025,6,6)),
+				ROW("UAE Holidays",DATE(2025,6,27)),
+				ROW("UAE Holidays",DATE(2025,9,25)),
+				ROW("UAE Holidays",DATE(2025,12,1)),
+				ROW("UAE Holidays",DATE(2025,12,2)),
+				ROW("UAE Holidays",DATE(2026,1,1)),
+				ROW("UAE Holidays",DATE(2026,3,19)),
+				ROW("UAE Holidays",DATE(2026,3,20)),
+				ROW("UAE Holidays",DATE(2026,5,26)),
+				ROW("UAE Holidays",DATE(2026,5,27)),
+				ROW("UAE Holidays",DATE(2026,5,28)),
+				ROW("UAE Holidays",DATE(2026,6,15)),
+				ROW("UAE Holidays",DATE(2026,8,24)),
+				ROW("UAE Holidays",DATE(2026,12,2)),
+				ROW("UAE Holidays",DATE(2026,12,3))
+				)
+
+	annotation PBI_Id = 948b2b63ca2249d18418090bc6c4d45e
+

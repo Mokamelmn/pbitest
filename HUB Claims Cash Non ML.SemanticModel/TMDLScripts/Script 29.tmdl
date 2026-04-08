@@ -1,0 +1,8 @@
+createOrReplace
+
+	ref table _Measures
+
+		measure 'Today - 4Week Performance Label' = FORMAT(DIVIDE([Processed Today], [Processed 4-Week Same Weekday Avg]), "0%") & " of 4-week avg"
+			displayFolder: 🎨 SVG Card Style\1️⃣ Processed Today\Reference Labels
+			lineageTag: a92ae603-0609-4c9f-8dcb-96c335c63c4a
+

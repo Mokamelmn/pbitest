@@ -1,0 +1,15 @@
+EVALUATE
+// Average TAT for claims closed month-to-date
+// Uses Modification Date (when claim was closed)
+VAR _LastMonth = MONTH(TODAY())-1
+VAR _CurrentYear = YEAR(TODAY())
+
+RETURN
+{
+CALCULATE(
+    [% Within 5 Days],
+    MONTH(MedNext[Modification Date]) = _LastMonth,
+    YEAR(MedNext[Modification Date])= _CurrentYear
+
+)
+}

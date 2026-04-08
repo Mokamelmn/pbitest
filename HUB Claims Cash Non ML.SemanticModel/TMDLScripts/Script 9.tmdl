@@ -1,0 +1,15 @@
+createOrReplace
+
+	ref table _Measures
+
+		/// Week over Week variance in claims received
+		measure 'Claims Received WoW' =
+				
+				VAR CurrentWeek = CALCULATE([Claims Received], DATESINPERIOD('Calendar'[Date], MAX('Calendar'[Date]), -7, DAY))
+				VAR PreviousWeek = CALCULATE([Claims Received], DATESINPERIOD('Calendar'[Date], MAX('Calendar'[Date]) - 7, -7, DAY))
+				RETURN
+				    CurrentWeek - PreviousWeek
+			formatString: +#,##0;-#,##0;0
+			displayFolder: 📉 Trends & Comparisons\WoW
+			lineageTag: 873f97d0-352a-4718-9040-67f7bb5656c1
+

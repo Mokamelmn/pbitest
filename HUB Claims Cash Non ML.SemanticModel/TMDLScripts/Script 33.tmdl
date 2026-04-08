@@ -1,0 +1,10 @@
+createOrReplace
+
+	ref table _Measures
+
+		/// Net change in claims yesterday
+		measure 'Net Change Yesterday' = [Claims Received Yesterday] - [Claims Closed Yesterday]
+			formatString: +#,##0;-#,##0;0
+			displayFolder: 📊 Volume Metrics\Daily
+			lineageTag: f56fd99a-ce18-4ef8-b96c-d5c418acf749
+

@@ -1,0 +1,10 @@
+EVALUATE
+
+var _currmomnth = MONTH(TODAY())
+var _curryear= SWITCH(TRUE(),_currmomnth=1,YEAR(TODAY())-1,YEAR(TODAY()))
+var _lastmonth = SWITCH(TRUE(),_currmomnth=1,12,_currmomnth-1)
+var _tab = FILTER(
+		'Calendar',
+		'Calendar'[Year]=_curryear&&'Calendar'[Month Number]=_lastmonth)
+RETURN
+AVERAGEX(MedNext,MedNext[TAT_WorkingDays])

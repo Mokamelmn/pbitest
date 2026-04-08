@@ -1,0 +1,256 @@
+createOrReplace
+
+	function 'PowerofBI.IBCS.BarChart.RelativeVariance' = ```
+			
+			(
+			    // Actual value (relative variance %)
+			    valueMain: SCALAR VAL,
+			
+			    // Data label displayed next to the pin (use FORMAT() before passing)
+			    dataLabel: STRING VAL,  
+			
+			    // Indicates whether this is a total row (use: NOT( ISINSCOPE() ))
+			    isTotalRow: BOOLEAN VAL,
+			
+			    // Width of the generated SVG image (in px)
+			    imageWidth: INT64 VAL            
+			) 
+			=> 
+			    //=================================================================================================
+			    // Project: UDF for generating IBCS-styled charts (as SVG images)
+			    //
+			    // The visualization design follows IBCS guidelines:
+			    //   https://www.ibcs.com/ibcs-standards-1-2/
+			    //
+			    // IMPORTANT:
+			    //   This visual is NOT produced, certified, authorized, endorsed, or approved by IBCS®.
+			    //   https://www.ibcs.com/
+			    //
+			    // Supported visuals:
+			    //   • Table
+			    //   • Matrix
+			    //   • New Card visual
+			    //=================================================================================================
+			    // Author: Andrzej Leszkiewicz — IBCS® Certified Analyst
+			    // More information: https://powerofbi.org/
+			    // LinkedIn:        https://www.linkedin.com/in/avatorl/
+			    // Email:           andrzej@powerofbi.org
+			    //=================================================================================================
+			    // License: MIT License (free and permissive)
+			    //   https://en.wikipedia.org/wiki/MIT_License
+			    //=================================================================================================
+			    // Description:
+			    //   This UDF generates an SVG image displaying a “pin chart” representing a relative variance.
+			    //
+			    //   Example:
+			    //     ΔPY% = ((AC + FC) – PY) / PY   expressed in %
+			    //
+			    //   Visual behavior:
+			    //     • Green pin → positive variance
+			    //     • Red pin   → negative variance
+			    //     • Grey vertical line represents the baseline (PY)
+			    //
+			    //=================================================================================================
+			    // CONFIG: core visual formatting and constants
+			    //=================================================================================================
+			
+			    VAR _DEBUG = 0  
+			        // When = 1, shows the entire SVG viewbox for debugging
+			
+			    VAR _minDelta = 0  
+			        // Minimum variance considered in the scale (fixed at 0 for pin chart)
+			
+			    VAR _Rank =
+			        1000000000000 +
+			        ROUND( valueMain + 100, 0 )
+			        // Rank embedded inside SVG to allow proper column sorting in Power BI
+			
+			    VAR _ValueFix =
+			        MIN( 100, valueMain )
+			        // Caps extremely large variances at 100% for visual consistency
+			
+			    VAR _ColorGrey  = "#C6C6C6"
+			    VAR _ColorRed   = "#E24B20"
+			    VAR _ColorGreen = "#08787D"
+			
+			    VAR _OutlinerTriangle =
+			        UNICHAR(9656)
+			        // Outlier triangle mark (Black Right-Pointing Small Triangle)
+			
+			    VAR _Em = 14 * 4 / 3  
+			        // Font size converted from pt to px
+			
+			    VAR _FontWeight =
+			        IF( isTotalRow, "bold", "normal" )
+			        // Total rows are displayed in bold
+			
+			    VAR _maxValue = 70  
+			        // Maximum variance scale for pin length normalization
+			
+			    VAR _SVG_Width =
+			        IF( imageWidth > 0, imageWidth, 350 )
+			        // SVG width (default: 350px)
+			
+			    VAR _SVG_LeftPadding  = 125
+			        // Left padding before the baseline
+			
+			    VAR _SVG_RightPadding = 150
+			        // Right padding for labels or additional icons
+			
+			    VAR _SVG_ColumnWidth =
+			        _SVG_Width - _SVG_LeftPadding - _SVG_RightPadding
+			        // Horizontal space available for rendering the pin
+			
+			    VAR _AxisYPosition =
+			        _SVG_LeftPadding +
+			            IF(
+			                _minDelta >= 0,
+			                0,   // All values ≥ 0 → baseline stays left
+			                ROUND(
+			                    DIVIDE( ABS(_minDelta), _maxValue ) * _SVG_ColumnWidth,
+			                    0
+			                )
+			            )
+			        // X-position of the baseline (PY) in px
+			
+			    VAR _WidthValue =
+			        ROUND(
+			            DIVIDE( ABS(_ValueFix), _maxValue ) * _SVG_ColumnWidth,
+			            0
+			        )
+			        // Pin length representing variance magnitude
+			
+			    VAR _barColor =
+			        IF( valueMain > 0, _ColorGreen, _ColorRed )
+			        // Pin color based on sign of variance
+			
+			    VAR _X =
+			        SWITCH(
+			            TRUE(),
+			            valueMain >= 0, _AxisYPosition,
+			            valueMain < 0,  _AxisYPosition - _WidthValue
+			        )
+			        // Starting X-coordinate for the pin bar
+			
+			    VAR _XPinhead =
+			        SWITCH(
+			            TRUE(),
+			            valueMain >= 0,
+			                _AxisYPosition + _WidthValue - _Em * 0.4,
+			            valueMain < 0,
+			                _AxisYPosition - _WidthValue - _Em * 0.3
+			        )
+			        // X-position of the rectangular pin head
+			
+			    VAR _Anchor =
+			        IF(
+			            isTotalRow,
+			            "middle",
+			            IF( valueMain >= 0, "start", "end" )
+			        )
+			        // Alignment of label text
+			
+			    VAR _DX =
+			        SWITCH(
+			            TRUE(),
+			            valueMain >= 0,
+			                IF( valueMain > _ValueFix, _Em * 0.3, _Em * 0.7 ) + 5,
+			            valueMain < 0,
+			                -5
+			        )
+			        // Label offset in px
+			    //=================================================================================================    
+			    // SVG GENERATION: compose all parts of the pin chart
+			    //=================================================================================================
+			
+			    VAR _SVG_Header = "data:image/svg+xml;utf8,"
+			
+			    VAR _SVG_Open =
+			        "<svg xmlns='http://www.w3.org/2000/svg' width='" &
+			        _SVG_Width & "' >"
+			
+			    VAR _SVG_Style =
+			        "<style>
+			          text{
+			            font-family: Segoe UI, wf_segoe-ui_normal, sans-serif;
+			            font-size: " & _Em & "px;
+			            font-weight: " & _FontWeight & ";
+			            dominant-baseline: central;
+			            text-anchor: " & _Anchor & ";
+			          }
+			          #markoutlier{
+			            dominant-baseline: middle;
+			          }
+			      </style>"
+			
+			    VAR _SVG_Close = "</svg>"
+			
+			    VAR _SVG_SortBy = "/*SortBy:" & _Rank & "*/"
+			        // Hidden sort key
+			
+			    VAR _SVG_DebugBox =
+			        IF(
+			            _DEBUG,
+			            "<rect id='rect-debug-box' x='0%' y='0%' width='100%' height='100%' 
+			                   fill='#FFFFAA' stroke-width='1' stroke='#FF0000' />",
+			            ""
+			        )
+			
+			    VAR _SVG_AxisY =
+			        "<line id='line-axisy' x1='" & _AxisYPosition &
+			        "' x2='" & _AxisYPosition &
+			        "' y1='0%' y2='100%' stroke='" & _ColorGrey &
+			        "' stroke-width='" & _Em * 0.3 & "'></line>"
+			
+			    VAR _SVG_BarDeltaPY =
+			        "<rect id='rect-variancepin' x='" & _X &
+			        "' width='" & _WidthValue & "' y='" & ( _Em * 0.6 + 2 ) &
+			        "' height='" & _Em * 0.3 & "' fill='" & _barColor &
+			        "' stroke='white' stroke-width='0.5'></rect>"
+			
+			    VAR _SVG_PinHead =
+			        "<rect id='rect-pinhead' x='" & _XPinhead &
+			        "' width='" & _Em * 0.7 & "' y='" & ( _Em * 0.3 + 2 ) &
+			        "' height='" & _Em * 0.9 & "' fill='#404040'></rect>"
+			
+			    VAR _SVG_TextDeltaPYLabel =
+			        "<text id='text-label' text-anchor='" & _Anchor &
+			        "' x='" & _XPinhead & "' dx='" & _DX &
+			        "' y='50%'>" & dataLabel & "</text>"
+			
+			    VAR _SVG_Outliner =
+			        "<text id='markoutlier' x='" &
+			            ( _XPinhead + _Em * 0.55 * LEN(dataLabel) ) &
+			            "' dx='" & _DX & "' fill='" & _barColor &
+			            "' y='" & ( _Em * 0.85 + 2 ) & "'>" &
+			            _OutlinerTriangle & "</text>"
+			
+			    VAR _SVG_PinHeadX =
+			        IF(
+			            ISBLANK(valueMain),
+			            "",
+			            IF( valueMain > _ValueFix, _SVG_Outliner, _SVG_PinHead )
+			        )
+			
+			    VAR _SVG_TextDeltaPYLabelTotal =
+			        "<text id='text-labeltotal' x='" & _AxisYPosition &
+			        "' y='50%'>" & dataLabel & "</text>"
+			
+			    VAR _SVG_Total =
+			        _SVG_Header & _SVG_Open & _SVG_DebugBox &
+			        _SVG_TextDeltaPYLabelTotal & _SVG_Style & _SVG_Close
+			
+			    VAR _SVG_Row =
+			        _SVG_Header & _SVG_Open & _SVG_DebugBox &
+			        _SVG_SortBy & _SVG_AxisY & _SVG_PinHeadX &
+			        _SVG_BarDeltaPY & _SVG_TextDeltaPYLabel &
+			        _SVG_Style & _SVG_Close
+			
+			    VAR _Result =
+			        IF( isTotalRow, _SVG_Total, _SVG_Row )
+			
+			    RETURN _Result
+			
+			```
+		lineageTag: fa1d950c-3d8e-4318-8351-b3476c174933
+

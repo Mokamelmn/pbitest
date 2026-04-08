@@ -1,0 +1,14 @@
+createOrReplace
+
+	ref table _Measures
+
+		/// Percentage of claims successfully closed (excluding open)
+		measure 'Closure Rate' =
+				DIVIDE(
+				    [Closed Claims],
+				    [Closed Claims] + [Cancelled Claims]
+				)
+			formatString: 0.0%
+			displayFolder: 📊 Volume Metrics\Percentages
+			lineageTag: 16ae1e97-58c1-4f27-bd88-50a8540745ae
+

@@ -1,0 +1,15 @@
+createOrReplace
+
+	ref table _Measures
+
+		/// Detects when daily volume exceeds 150% of 7-day average
+		measure 'Volume Spike Detected' =
+				
+				VAR _Today = [Claims Received Today]
+				VAR Avg7Day = [7-Day Moving Avg - Claims Received]
+				VAR Threshold = Avg7Day * 1.5
+				RETURN
+				    IF(_Today > Threshold, "⚠️ Volume Spike", "Normal")
+			displayFolder: 🚨 Alerts & Monitoring
+			lineageTag: 8ab13801-bcaf-40bc-846f-fe902878d541
+

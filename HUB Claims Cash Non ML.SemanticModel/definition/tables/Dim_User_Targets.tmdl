@@ -1,0 +1,167 @@
+table Dim_User_Targets
+	lineageTag: b1249b53-a2d8-4450-94a9-21f4ffc82a4a
+
+	column 'User Name'
+		dataType: string
+		lineageTag: eb75fe5d-eaa1-4fa3-beb7-f5aee7f8aa61
+		summarizeBy: none
+		sourceColumn: User Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'User Key'
+		dataType: int64
+		formatString: 0
+		lineageTag: 035d0011-10ab-49d2-a969-c52c73e5bf84
+		summarizeBy: none
+		sourceColumn: User Key
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Excel_Dim_User.Act Name'
+		dataType: string
+		lineageTag: 39e592fd-70a3-42ba-9800-eac9bb981816
+		summarizeBy: none
+		sourceColumn: Excel_Dim_User.Act Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Excel_Dim_User.Comment'
+		dataType: string
+		lineageTag: aa8725bc-c106-4dd8-b1ff-d27c33107129
+		summarizeBy: none
+		sourceColumn: Excel_Dim_User.Comment
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Excel_Dim_User.User Total Working Days'
+		dataType: int64
+		formatString: 0
+		lineageTag: c9a6ceb4-25c2-4ac3-a17d-1512be7c1f81
+		summarizeBy: sum
+		sourceColumn: Excel_Dim_User.User Total Working Days
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Excel_Dim_User.Expected Target (32 OP /6 IP) Excluding Holidays /Annuals '
+		dataType: int64
+		formatString: 0
+		lineageTag: 4e27eee0-e0a5-4252-87d1-c3c9acaee3ad
+		summarizeBy: sum
+		sourceColumn: "Excel_Dim_User.Expected Target (32 OP /6 IP) Excluding Holidays /Annuals "
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Excel_Dim_User.Holidays /Day'
+		dataType: int64
+		formatString: 0
+		lineageTag: 6abbd0ac-675b-45ed-926a-bcb6672c2dd0
+		summarizeBy: sum
+		sourceColumn: Excel_Dim_User.Holidays /Day
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Excel_Dim_User.Leaves/Day'
+		dataType: int64
+		formatString: 0
+		lineageTag: 646c42bb-8ba3-4d56-bddc-9e4e1ff832af
+		summarizeBy: sum
+		sourceColumn: Excel_Dim_User.Leaves/Day
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Excel_Dim_User.Month'
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: b4e44bab-2350-4327-a692-dcfe853b01fb
+		summarizeBy: none
+		sourceColumn: Excel_Dim_User.Month
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Excel_Dim_User.Coaching /Traning Sessions /Hr'
+		dataType: double
+		lineageTag: b132066b-c6b9-487a-9371-e59584ccbc6d
+		summarizeBy: sum
+		sourceColumn: Excel_Dim_User.Coaching /Traning Sessions /Hr
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Excel_Dim_User.Overtime Hrs'
+		dataType: double
+		lineageTag: ee278c3f-33c3-4eb7-830f-2985707c38bc
+		summarizeBy: sum
+		sourceColumn: Excel_Dim_User.Overtime Hrs
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Excel_Dim_User.Overtime Days'
+		dataType: double
+		formatString: 0
+		lineageTag: 124ec17f-3f2d-4521-ae09-1669def2e8b1
+		summarizeBy: sum
+		sourceColumn: Excel_Dim_User.Overtime Days
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	column 'Excel_Dim_User.% Of overtime Vs working days'
+		dataType: double
+		lineageTag: ee1e1760-4bc0-49d4-b7a2-1ab8393b43ba
+		summarizeBy: average
+		sourceColumn: Excel_Dim_User.% Of overtime Vs working days
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Excel_Dim_User.Work Load :🟢 ≤15% 🟠 16–30% 🔴 ≥30%'
+		dataType: string
+		lineageTag: b6eb804c-56cb-4712-8f69-dbbe50ecd087
+		summarizeBy: none
+		sourceColumn: Excel_Dim_User.Work Load :🟢 ≤15% 🟠 16–30% 🔴 ≥30%
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Excel_Dim_User.Title'
+		dataType: string
+		lineageTag: 6f84ed60-403e-4ac6-bad1-fb65b708852f
+		summarizeBy: none
+		sourceColumn: Excel_Dim_User.Title
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Dim_User_Targets = m
+		mode: import
+		source =
+				let
+				    Source = Dim_User,
+				    #"Removed Other Columns" = Table.SelectColumns(Source,{"User Name", "User Key"}),
+				    #"Merged Queries" = Table.NestedJoin(#"Removed Other Columns", {"User Name"}, Dim_User_Manual, {"User Name"}, "Excel_Dim_User", JoinKind.FullOuter),
+				    #"Expanded Excel_Dim_User" = Table.ExpandTableColumn(#"Merged Queries", "Excel_Dim_User", {"Act Name", "Title", "Comment", "User Total Working Days", "Expected Target (32 OP /6 IP) Excluding Holidays /Annuals ", "Holidays /Day", "Leaves/Day", "Month", "Coaching /Traning Sessions /Hr", "Overtime Hrs", "Overtime Days", "% Of overtime Vs working days", "Work Load :🟢 ≤15% 🟠 16–30% 🔴 ≥30%"}, {"Excel_Dim_User.Act Name", "Excel_Dim_User.Title", "Excel_Dim_User.Comment", "Excel_Dim_User.User Total Working Days", "Excel_Dim_User.Expected Target (32 OP /6 IP) Excluding Holidays /Annuals ", "Excel_Dim_User.Holidays /Day", "Excel_Dim_User.Leaves/Day", "Excel_Dim_User.Month", "Excel_Dim_User.Coaching /Traning Sessions /Hr", "Excel_Dim_User.Overtime Hrs", "Excel_Dim_User.Overtime Days", "Excel_Dim_User.% Of overtime Vs working days", "Excel_Dim_User.Work Load :🟢 ≤15% 🟠 16–30% 🔴 ≥30%"}),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Expanded Excel_Dim_User",{{"Excel_Dim_User.Month", type date}, {"Excel_Dim_User.Leaves/Day", Int64.Type}, {"Excel_Dim_User.Holidays /Day", Int64.Type}, {"Excel_Dim_User.Expected Target (32 OP /6 IP) Excluding Holidays /Annuals ", Int64.Type}, {"Excel_Dim_User.User Total Working Days", Int64.Type}}),
+				    Custom1 = Table.ReplaceValue(
+				    #"Changed Type",
+				    each [User Name],
+				    each if [User Name] = null then
+				        (if [Excel_Dim_User.Act Name] = "Marina Salib" then "Marina Farahat"
+				         else if [Excel_Dim_User.Act Name] = "Mina Gad" then "Mina Samy"
+				         else [User Name])
+				    else [User Name],
+				    Replacer.ReplaceValue,
+				    {"User Name"}
+				)
+				in
+				    Custom1
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,36 @@
+table Dim_InsuranceCompany
+	lineageTag: 376f2ae6-6b4d-40e0-b607-8d0b05af1f98
+
+	column 'Insurance Company Name'
+		dataType: string
+		lineageTag: 192ca87d-328c-4355-bfb5-d38f26079159
+		summarizeBy: none
+		sourceColumn: Insurance Company Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Insurance Company Number'
+		dataType: int64
+		formatString: 0
+		lineageTag: 367dbc62-5b11-4bc5-a792-c0800c80d57c
+		summarizeBy: none
+		sourceColumn: Insurance Company Number
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Dim_InsuranceCompany = m
+		mode: import
+		source =
+				let
+				    Source = Table.Combine({#"MedNext Reported", #"MedNext Cancelled"}),
+				    #"Removed Other Columns" = Table.SelectColumns(Source,{"Insurance Company Name", "Insurance Company Number"}),
+				    #"Removed Duplicates" = Table.Distinct(#"Removed Other Columns", {"Insurance Company Name"}),
+				    #"Removed Duplicates1" = Table.Distinct(#"Removed Duplicates", {"Insurance Company Number"}),
+				    #"Filtered Rows" = Table.SelectRows(#"Removed Duplicates1", each ([Insurance Company Number] <> null))
+				in
+				    #"Filtered Rows"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Exception
+

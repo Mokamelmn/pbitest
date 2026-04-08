@@ -1,0 +1,9 @@
+EVALUATE
+SUMMARIZE(
+FILTER(
+	MedNext,
+	MONTH(MedNext[Modification Date])=MONTH(TODAY())-1
+),
+MedNext[Received Date],
+"Claims Received",[Claims Received]
+)

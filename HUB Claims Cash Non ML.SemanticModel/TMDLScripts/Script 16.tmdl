@@ -1,0 +1,8 @@
+createOrReplace
+
+	ref table _Measures
+
+		measure WorkingDaysLabel = "Working Days Only"
+			displayFolder: Label
+			lineageTag: 0c75e31d-fe72-43ba-9970-d2b84fc860da
+

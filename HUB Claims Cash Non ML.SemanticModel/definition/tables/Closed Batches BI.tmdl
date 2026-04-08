@@ -1,0 +1,135 @@
+table 'Closed Batches BI'
+	lineageTag: 06beee0e-54f8-47a6-8ce9-34da4c5a17f6
+
+	column 'Source.Name'
+		dataType: string
+		lineageTag: 5cf723d2-f8aa-459f-84fd-c6b12250d545
+		summarizeBy: none
+		sourceColumn: Source.Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Batch Nbr'
+		dataType: int64
+		formatString: 0
+		lineageTag: 70bbda3d-4a21-43c0-b64b-2a1f8c0f9a71
+		summarizeBy: sum
+		sourceColumn: Batch Nbr
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Batch Status'
+		dataType: string
+		lineageTag: 1095bc0c-4931-42ff-b17f-8892cbc2b9f1
+		summarizeBy: none
+		sourceColumn: Batch Status
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Batch Received Date'
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 9d570824-dcaa-445a-8b05-f9ec06a724b2
+		summarizeBy: none
+		sourceColumn: Batch Received Date
+
+		variation Variation
+			isDefault
+			relationship: f7098716-ac2c-4a22-87fc-e67c8081af46
+			defaultHierarchy: LocalDateTable_76db34d7-7c46-4111-9f81-0d3ead1d5642.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Batch Creation Date'
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 0226dcf5-258b-4a21-b7c4-9c08ab468eae
+		summarizeBy: none
+		sourceColumn: Batch Creation Date
+
+		variation Variation
+			isDefault
+			relationship: 24c837a6-00ba-4dc2-8df4-aa63e37138b6
+			defaultHierarchy: LocalDateTable_c076e952-dbcf-43aa-a2cf-42508aa6179f.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Invoice Nbr'
+		dataType: int64
+		formatString: 0
+		lineageTag: 31205e17-2849-4bf9-b337-bce7b4bb0ccb
+		summarizeBy: sum
+		sourceColumn: Invoice Nbr
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Invoice Received Date'
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 6659d31d-f7a1-4943-a76e-f9c9186be2ac
+		summarizeBy: none
+		sourceColumn: Invoice Received Date
+
+		variation Variation
+			isDefault
+			relationship: 13bf81d8-9bd6-4077-91bf-10523993cc9e
+			defaultHierarchy: LocalDateTable_2e27183c-e058-48e6-bc6c-fd7b1e5da7d8.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Computation User'
+		dataType: string
+		lineageTag: fc3b8a2b-212d-4942-b673-41fda3586ab1
+		summarizeBy: none
+		sourceColumn: Computation User
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Invoice Report Date'
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: e75f3f21-9bc5-4dfe-8da9-eec4500662ed
+		summarizeBy: none
+		sourceColumn: Invoice Report Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Insurance Company'
+		dataType: string
+		lineageTag: 132bfa58-81fe-461c-9f25-ec8c570c80f5
+		summarizeBy: none
+		sourceColumn: Insurance Company
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Closed Batches BI' = m
+		mode: import
+		source =
+				let
+				    Source = SharePoint.Contents("https://mednetuaefz.sharepoint.com/sites/PBIDashboardsData/", [ApiVersion = 15]),
+				    #"Shared Documents" = Source{[Name="Shared Documents"]}[Content],
+				    #"Cash Hub Non ML" = #"Shared Documents"{[Name="Cash Hub Non ML"]}[Content],
+				    BI = #"Cash Hub Non ML"{[Name="BI"]}[Content],
+				    #"Filtered Hidden Files1" = Table.SelectRows(BI, each [Attributes]?[Hidden]? <> true),
+				    #"Invoke Custom Function1" = Table.AddColumn(#"Filtered Hidden Files1", "Transform File (7)", each #"Transform File (7)"([Content])),
+				    #"Renamed Columns1" = Table.RenameColumns(#"Invoke Custom Function1", {"Name", "Source.Name"}),
+				    #"Removed Other Columns1" = Table.SelectColumns(#"Renamed Columns1", {"Source.Name", "Transform File (7)"}),
+				    #"Expanded Table Column1" = Table.ExpandTableColumn(#"Removed Other Columns1", "Transform File (7)", Table.ColumnNames(#"Transform File (7)"(#"Sample File (7)"))),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Expanded Table Column1",{{"Source.Name", type text}, {"Batch Nbr", Int64.Type}, {"Batch Status", type text}, {"Batch Received Date", type date}, {"Batch Creation Date", type date}, {"Invoice Nbr", Int64.Type}, {"Invoice Received Date", type date}, {"Computation User", type text}, {"Invoice Report Date", type date}, {"Insurance Company", type text}, {"Billing Provider", type text}}),
+				    #"Removed Other Columns" = Table.SelectColumns(#"Changed Type",{"Source.Name", "Batch Nbr", "Batch Status", "Batch Received Date", "Batch Creation Date", "Invoice Nbr", "Invoice Received Date", "Computation User", "Invoice Report Date", "Insurance Company"}),
+				    #"Merged Queries" = Table.NestedJoin(#"Removed Other Columns", {"Computation User"}, Dim_User, {"User Name"}, "Dim_User", JoinKind.Inner)
+				in
+				    #"Merged Queries"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Exception
+

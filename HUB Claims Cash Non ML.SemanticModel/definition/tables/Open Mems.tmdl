@@ -1,0 +1,275 @@
+table 'Open Mems'
+	lineageTag: 7c0f25b8-0475-49ba-b8d4-5d92268ac33e
+
+	column 'Batch Number'
+		dataType: int64
+		formatString: 0
+		lineageTag: 179b3f24-9de4-4afa-9250-2331a6b6a21f
+		summarizeBy: sum
+		sourceColumn: Batch Number
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Source.Name'
+		dataType: string
+		lineageTag: ba975983-8574-4558-8f29-c35e393c67fb
+		summarizeBy: none
+		sourceColumn: Source.Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Received Date'
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: d8d585b9-22a4-40c6-b5d6-d46ec8010203
+		summarizeBy: none
+		sourceColumn: Received Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Created By'
+		dataType: string
+		lineageTag: 161f1daf-9b63-4ad5-8df6-a3cb46ecc16e
+		summarizeBy: none
+		sourceColumn: Created By
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Created Date'
+		dataType: string
+		lineageTag: 853b1d45-e16a-490d-b6d3-3ec12ab9723c
+		summarizeBy: none
+		sourceColumn: Created Date
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Prdefined Text Type'
+		dataType: string
+		lineageTag: 743800de-f215-4976-8545-91531d010f0a
+		summarizeBy: none
+		sourceColumn: Prdefined Text Type
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Batches External Reference'
+		dataType: string
+		lineageTag: 4ef659e1-8302-4066-8429-1213c7de9316
+		summarizeBy: none
+		sourceColumn: Batches External Reference
+
+		annotation SummarizationSetBy = Automatic
+
+	column Notes
+		dataType: string
+		lineageTag: 3eba4025-8e4c-489d-91c3-f1105abc7f4e
+		summarizeBy: none
+		sourceColumn: Notes
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Batch Status'
+		dataType: string
+		lineageTag: 4ea5c20d-b7ee-48b7-84f3-0ebf34489618
+		summarizeBy: none
+		sourceColumn: Batch Status
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Esraa Batchlist.Batch Status'
+		dataType: string
+		lineageTag: 1245d848-660c-4d67-b3af-7504c142ce00
+		summarizeBy: none
+		sourceColumn: Esraa Batchlist.Batch Status
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'PIC Code'
+		dataType: string
+		lineageTag: 9d1fa0fd-cf0c-4009-9733-974db3868c0b
+		summarizeBy: none
+		sourceColumn: PIC Code
+
+		annotation SummarizationSetBy = Automatic
+
+	column Aging =
+			
+			NETWORKDAYS('Open Mems'[Received Date],TODAY(),1,
+			Holidays)
+		formatString: 0
+		lineageTag: bf96975b-71ec-46de-b884-d7443155053a
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Aging Label' =
+			
+			'Open Mems'[Aging]&" days"
+		lineageTag: fe9c67b0-88f0-4c50-ab36-d0ec3282ca71
+		summarizeBy: none
+		sortByColumn: Aging
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Aging Distribution' = ```
+			
+			SWITCH(
+			    TRUE(),
+			    'Open Mems'[Aging] <= 5," Within 5 Days",
+			    'Open Mems'[Aging] > 7,"Over 7 Days",
+			    'Open Mems'[Aging] > 5,"Over 5 Days"
+			    
+			)
+			```
+		lineageTag: 74f0f785-e871-43e1-badc-9dd21dbe6256
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Esraa Batchlist Label' =
+			
+			SWITCH(
+			    TRUE(),
+			    'Open Mems'[Esraa Batchlist.Batch Status] = "New","New",
+			    ISBLANK('Open Mems'[Esraa Batchlist.Batch Status]) ,"New",
+			    'Open Mems'[Esraa Batchlist.Batch Status] = "Reported/Closed","Done",
+			    'Open Mems'[Esraa Batchlist.Batch Status] = "Cancelled","Done",
+			    "Pending"
+			)
+		lineageTag: d7aad832-6daf-4dac-9306-00da55ec0825
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Archieved.Batch Number'
+		dataType: int64
+		formatString: 0
+		lineageTag: 3d75aadc-79a3-470d-850a-7f39fc7ac9b0
+		summarizeBy: sum
+		sourceColumn: Archieved.Batch Number
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Open Mems' = m
+		mode: import
+		source = ```
+				let
+				    // Step 1: Connect to SharePoint and get all files
+				    Source = SharePoint.Contents("https://mednetuaefz-my.sharepoint.com/personal/mokamel_mednet_com1/", [ApiVersion = 15]),
+				    // Step 1: Connect to SharePoint and get all files
+				    Documents = Source{[Name="Documents"]}[Content],
+				    // Step 1: Connect to SharePoint and get all files
+				    #"HUB Cash Claims Non ML" = Documents{[Name="HUB Cash Claims Non ML"]}[Content],
+				    // Step 1: Connect to SharePoint and get all files
+				    Mems1 = #"HUB Cash Claims Non ML"{[Name="Mems"]}[Content],
+				    #"Filtered Hidden Files1" = Table.SelectRows(Mems1, each [Attributes]?[Hidden]? <> true),
+				    #"Invoke Custom Function1" = Table.AddColumn(#"Filtered Hidden Files1", "Transform File (6)", each #"Transform File (6)"([Content])),
+				    #"Renamed Columns1" = Table.RenameColumns(#"Invoke Custom Function1", {"Name", "Source.Name"}),
+				    #"Removed Other Columns1" = Table.SelectColumns(#"Renamed Columns1", {"Source.Name", "Transform File (6)"}),
+				    #"Expanded Table Column1" = Table.ExpandTableColumn(#"Removed Other Columns1", "Transform File (6)", Table.ColumnNames(#"Transform File (6)"(#"Sample File (6)"))),
+				    // Step 8: Set correct data types for all columns
+				    #"Changed Type" = Table.TransformColumnTypes(#"Expanded Table Column1",{
+				        {"Source.Name", type text}, 
+				        {"Batch Number", Int64.Type}, 
+				        {"Provider Id", type any}, 
+				        {"Provider Name", type any}, 
+				        {"PIC Code", Int64.Type}, 
+				        {"PIC Name", type text}, 
+				        {"Received Date", type date}, 
+				        {"Invoice Count", Int64.Type}, 
+				        {"Created By", type text}, 
+				        {"Created Date", type date}, 
+				        {"Submission Method  ", type text}, 
+				        {"Submitted By", type text}, 
+				        {"Provider Category", type text}, 
+				        {"Prdefined Text Type", type text}, 
+				        {"Batches External Reference", type text}, 
+				        {"Notes", type text}, 
+				        {"Net Claimed", type number}, 
+				        {"Batch Status", type text}, 
+				        {"Batch Categorie", type text}
+				    }),
+				    
+				    // Step 9: Left join with Esraa Batchlist table to get additional batch status
+				    #"Merged Queries" = Table.NestedJoin(#"Changed Type", {"Batch Number"}, #"Esraa Batchlist", {"Batch NO."}, "Esraa Batchlist", JoinKind.LeftOuter),
+				    
+				    // Step 10: Expand the Batch Status column from Esraa Batchlist
+				    #"Expanded Esraa Batchlist" = Table.ExpandTableColumn(#"Merged Queries", "Esraa Batchlist", {"Batch Status"}, {"Esraa Batchlist.Batch Status"}),
+				    
+				    // Step 11: Group by Batch Number to handle duplicates across multiple files
+				    // Each batch may appear in multiple files with different statuses
+				    #"Grouped Rows" = Table.Group(#"Expanded Esraa Batchlist", {"Batch Number"}, {{"AllRows", each _, type table}}),
+				    
+				    // Step 12: FIX - Get the LATEST record for each batch by sorting by Source.Name (file name) in descending order
+				    // Since file names follow format: Mems_createdbatches_YYYYMMDD-YYYYMMDD
+				    // The most recent file will have the highest date and will sort last alphabetically
+				    #"Added Custom" = Table.AddColumn(#"Grouped Rows", "LatestRow", each Table.First(Table.Sort([AllRows], {{"Source.Name", Order.Descending}}))),
+				    
+				    // Step 13: Remove the AllRows column as we only need the LatestRow
+				    #"Removed Columns" = Table.RemoveColumns(#"Added Custom",{"AllRows"}),
+				    
+				    // Step 14: Expand all columns from the LatestRow record back into the table
+				    #"Expanded LatestRow" = Table.ExpandRecordColumn(#"Removed Columns", "LatestRow", {
+				        "Source.Name", "Provider Id", "Provider Name", "PIC Code", "PIC Name", "Received Date", 
+				        "Invoice Count", "Created By", "Created Date", "Submission Method  ", "Submitted By", 
+				        "Provider Category", "Prdefined Text Type", "Batches External Reference", "Notes", 
+				        "Net Claimed", "Batch Status", "Batch Categorie", "Esraa Batchlist.Batch Status"
+				    }, {
+				        "Source.Name", "Provider Id", "Provider Name", "PIC Code", "PIC Name", "Received Date", 
+				        "Invoice Count", "Created By", "Created Date", "Submission Method  ", "Submitted By", 
+				        "Provider Category", "Prdefined Text Type", "Batches External Reference", "Notes", 
+				        "Net Claimed", "Batch Status", "Batch Categorie", "Esraa Batchlist.Batch Status"
+				    }),
+				    
+				    // Step 15: Keep only the columns we need for further analysis
+				    #"Removed Other Columns" = Table.SelectColumns(#"Expanded LatestRow",{
+				        "Batch Number", "Source.Name", "PIC Code", "Received Date", "Created By", "Created Date", 
+				        "Prdefined Text Type", "Batches External Reference", "Notes", "Batch Status", "Esraa Batchlist.Batch Status"
+				    }),
+				    
+				    // Step 16: Filter to show only batches with "Open" status (from the most recent file)
+				    #"Filtered Rows2" = Table.SelectRows(#"Removed Other Columns", each ([Batch Status] = "Open")),
+				    
+				    // Step 19: Exclude specific PIC Codes that should not be included in the analysis
+				    // These are likely specific providers or facilities that are handled separately
+				    Custom1 = Table.SelectRows(#"Filtered Rows2", each (
+				        [PIC Code] <> 214 and
+				        [PIC Code] <> 539 and
+				        [PIC Code] <> 259 and
+				        [PIC Code] <> 278 and
+				        [PIC Code] <> 444 and 
+				        [PIC Code] <> 462 and 
+				        [PIC Code] <> 209 and 
+				        [PIC Code] <> 487 and 
+				        [PIC Code] <> 433 and
+				        [PIC Code] <> 449 and
+				        [PIC Code] <> 137 and
+				        [PIC Code] <> 435 and
+				        [PIC Code] <> 301 and
+				        [PIC Code] <> 368 and
+				        [PIC Code] <> 501
+				    )),
+				    
+				    // Step 20: Ensure Received Date is in the correct date format
+				    #"Changed Type1" = Table.TransformColumnTypes(Custom1,{{"Received Date", type date}}),
+				    
+				    // Step 21: Left join with Archived table to check if batch has been archived
+				    #"Merged Queries2" = Table.NestedJoin(#"Changed Type1", {"Batch Number"}, Archieved, {"Batch Number"}, "Archieved", JoinKind.LeftOuter),
+				    
+				    // Step 22: Expand the Batch Number from Archived table
+				    #"Expanded Archieved" = Table.ExpandTableColumn(#"Merged Queries2", "Archieved", {"Batch Number"}, {"Archieved.Batch Number"}),
+				    
+				    // Step 23: Final filter - Keep only batches that are NOT in the Archived table (null = not archived)
+				    // This ensures we only show active, open batches that haven't been archived
+				    #"Filtered Rows1" = Table.SelectRows(#"Expanded Archieved", each ([Archieved.Batch Number] = null) )
+				in
+				    #"Filtered Rows1"
+				```
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

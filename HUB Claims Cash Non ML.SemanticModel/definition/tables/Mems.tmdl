@@ -1,0 +1,242 @@
+table Mems
+	lineageTag: ecc85a20-d9c9-44a8-bec1-532ccc048169
+
+	column 'Source.Name'
+		dataType: string
+		lineageTag: 19955401-085d-484a-960b-472f99748a60
+		summarizeBy: none
+		sourceColumn: Source.Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Batch Number'
+		dataType: int64
+		formatString: 0
+		lineageTag: a5ff075d-8ddd-4791-acb1-426648c93280
+		summarizeBy: sum
+		sourceColumn: Batch Number
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Provider Id'
+		dataType: string
+		lineageTag: ef1e62cd-dbf9-4247-8c26-e14a677f2790
+		summarizeBy: none
+		sourceColumn: Provider Id
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Provider Name'
+		dataType: string
+		lineageTag: 3354d9c6-4535-46f3-933b-9b8e8241c133
+		summarizeBy: none
+		sourceColumn: Provider Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'PIC Code'
+		dataType: int64
+		formatString: 0
+		lineageTag: f937ded9-7402-49d0-89c1-23f5bf0d52dc
+		summarizeBy: none
+		sourceColumn: PIC Code
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'PIC Name'
+		dataType: string
+		lineageTag: 8d5c998a-81ce-4066-b400-7f63734b90de
+		summarizeBy: none
+		sourceColumn: PIC Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Received Date'
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: a4cdfcec-60ad-4574-ac24-961fdf755857
+		summarizeBy: none
+		sourceColumn: Received Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Invoice Count'
+		dataType: int64
+		formatString: 0
+		lineageTag: cf11fda3-4132-4939-b3fd-6a8c5126bc82
+		summarizeBy: sum
+		sourceColumn: Invoice Count
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Created By'
+		dataType: string
+		lineageTag: aa9668f3-b140-46a6-b8a5-d18e2765cafd
+		summarizeBy: none
+		sourceColumn: Created By
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Created Date'
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 19b4dc09-1959-404b-9bd1-8b28613076b7
+		summarizeBy: none
+		sourceColumn: Created Date
+
+		variation Variation
+			isDefault
+			relationship: 2829cb8e-ea0a-42e9-b864-68d5cb943e8d
+			defaultHierarchy: LocalDateTable_f8c913df-e271-4e27-bff7-55816fd0622b.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Submission Method  '
+		dataType: string
+		lineageTag: 53107edb-be77-4c7a-a0f6-ac1990158b9b
+		summarizeBy: none
+		sourceColumn: "Submission Method  "
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Submitted By'
+		dataType: string
+		lineageTag: be0282c5-804a-4726-ae6a-6c739626d079
+		summarizeBy: none
+		sourceColumn: Submitted By
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Provider Category'
+		dataType: string
+		lineageTag: a42388e6-428b-49e5-a903-1f02a682f53a
+		summarizeBy: none
+		sourceColumn: Provider Category
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Prdefined Text Type'
+		dataType: string
+		lineageTag: ec1979b3-204b-4c59-98f2-590010580199
+		summarizeBy: none
+		sourceColumn: Prdefined Text Type
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Batches External Reference'
+		dataType: string
+		lineageTag: 9ef5bcc3-f423-4600-ad31-54f976444880
+		summarizeBy: none
+		sourceColumn: Batches External Reference
+
+		annotation SummarizationSetBy = Automatic
+
+	column Notes
+		dataType: string
+		lineageTag: 01ea5f4b-84df-4c76-92e5-13cdf11958ca
+		summarizeBy: none
+		sourceColumn: Notes
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Net Claimed'
+		dataType: double
+		lineageTag: 3b8281fc-44d2-4803-9c4b-d8fa2c56d9f3
+		summarizeBy: sum
+		sourceColumn: Net Claimed
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Batch Status'
+		dataType: string
+		lineageTag: 9a7a9c17-48e1-4a87-966c-ffaaa09ad947
+		summarizeBy: none
+		sourceColumn: Batch Status
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Batch Categorie'
+		dataType: string
+		lineageTag: cf564fcb-f342-4515-8232-c634e77368bb
+		summarizeBy: none
+		sourceColumn: Batch Categorie
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Esraa Batchlist.Batch Status'
+		dataType: string
+		lineageTag: 72195333-4fbc-4511-81c2-c033c1c10c64
+		summarizeBy: none
+		sourceColumn: Esraa Batchlist.Batch Status
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Mems = m
+		mode: import
+		source = ```
+				let
+				    Source = SharePoint.Contents("https://mednetuaefz-my.sharepoint.com/personal/mokamel_mednet_com1/", [ApiVersion = 15]),
+				    Documents = Source{[Name="Documents"]}[Content],
+				    #"HUB Cash Claims Non ML" = Documents{[Name="HUB Cash Claims Non ML"]}[Content],
+				    Mems1 = #"HUB Cash Claims Non ML"{[Name="Mems"]}[Content],
+				    #"Filtered Hidden Files1" = Table.SelectRows(Mems1, each [Attributes]?[Hidden]? <> true),
+				    #"Invoke Custom Function1" = Table.AddColumn(#"Filtered Hidden Files1", "Transform File (5)", each #"Transform File (5)"([Content])),
+				    #"Renamed Columns1" = Table.RenameColumns(#"Invoke Custom Function1", {"Name", "Source.Name"}),
+				    #"Removed Other Columns1" = Table.SelectColumns(#"Renamed Columns1", {"Source.Name", "Transform File (5)"}),
+				    #"Expanded Table Column1" = Table.ExpandTableColumn(#"Removed Other Columns1", "Transform File (5)", Table.ColumnNames(#"Transform File (5)"(#"Sample File (5)"))),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Expanded Table Column1",{{"Source.Name", type text}, {"Batch Number", Int64.Type}, {"Provider Id", type any}, {"Provider Name", type any}, {"PIC Code", Int64.Type}, {"PIC Name", type text}, {"Received Date", type date}, {"Invoice Count", Int64.Type}, {"Created By", type text}, {"Created Date", type date}, {"Submission Method  ", type text}, {"Submitted By", type text}, {"Provider Category", type text}, {"Prdefined Text Type", type text}, {"Batches External Reference", type text}, {"Notes", type text}, {"Net Claimed", type number}, {"Batch Status", type text}, {"Batch Categorie", type text}}),
+				    #"Merged Queries" = Table.NestedJoin(#"Changed Type", {"Batch Number"}, #"Esraa Batchlist", {"Batch NO."}, "Esraa Batchlist", JoinKind.LeftOuter),
+				    #"Expanded Esraa Batchlist" = Table.ExpandTableColumn(#"Merged Queries", "Esraa Batchlist", {"Batch Status"}, {"Esraa Batchlist.Batch Status"}),
+				    #"Filtered Rows1" = Table.SelectRows(#"Expanded Esraa Batchlist", each (
+				    [PIC Code] <> 214 and
+				    [PIC Code] <> 539 and
+				    [PIC Code] <> 259 and
+				    [PIC Code] <> 278 and
+				    [PIC Code] <> 444 and 
+				    [PIC Code] <> 462 and 
+				    [PIC Code] <> 209 and 
+				    [PIC Code] <> 487 and 
+				    [PIC Code] <> 433 and
+				    [PIC Code] <> 449 and
+				    [PIC Code] <> 137 and
+				    [PIC Code] <> 435 and
+				    [PIC Code] <> 301 and
+				    [PIC Code] <> 368 and
+				    [PIC Code] <> 501 and
+				    [PIC Code] <> 701 and
+				    [PIC Code] <> 305 and
+				    [PIC Code] <> 102 and
+				    [PIC Code] <> 459 and
+				    [PIC Code] <> 384 and
+				    [PIC Code] <> 258 and
+				    [PIC Code] <> 358 and
+				    [PIC Code] <> 478 and
+				    [PIC Code] <> 69 and
+				    [PIC Code] <> 85 and
+				    [PIC Code] <> 95 and
+				    [PIC Code] <> 508 and
+				    [PIC Code] <> 308 and
+				    [PIC Code] <> 507 and
+				    [PIC Code] <> 511 and
+				    [PIC Code] <> 285 and
+				    [PIC Code] <> 412 and
+				    [PIC Code] <> 122 and
+				    [PIC Code] <> 510 and
+				    [PIC Code] <> 381 and
+				    [PIC Code] <> 380 and
+				    [PIC Code] <> 321
+				))
+				in
+				    #"Filtered Rows1"
+				```
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

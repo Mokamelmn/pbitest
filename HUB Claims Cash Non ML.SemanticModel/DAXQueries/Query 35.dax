@@ -1,0 +1,12 @@
+EVALUATE
+
+    SUMMARIZE(
+        FILTER(
+            'Calendar',
+            'Calendar'[Date] >= TODAY() - 2
+            && 'Calendar'[Date] <= TODAY() 
+            && 'Calendar'[Is Working Day] = TRUE()
+        ),
+        'Calendar'[Date],
+        "Open Volume", [New Open Claims]
+    )

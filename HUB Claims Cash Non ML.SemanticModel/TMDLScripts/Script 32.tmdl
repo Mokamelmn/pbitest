@@ -1,0 +1,8 @@
+createOrReplace
+
+	ref table _Measures
+
+		measure 'Officers - Today/MTD Label' = [Active Officers Today] & " / " & [Active Officers MTD] & " officers"
+			displayFolder: 🎨 SVG Card Style\5️⃣ Active Officers\Reference Labels
+			lineageTag: 104ea4aa-e34e-4f48-aae6-c5394c280b27
+

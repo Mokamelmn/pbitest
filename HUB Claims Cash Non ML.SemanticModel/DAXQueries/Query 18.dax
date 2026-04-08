@@ -1,0 +1,4 @@
+EVALUATE
+{
+	CALCULATE(COUNTROWS(VALUES(MedNext[Modification Date])),'Calendar'[Is Weekend]=FALSE(),'Calendar'[Is UAE Holiday] = FALSE())
+}

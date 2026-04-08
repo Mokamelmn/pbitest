@@ -1,0 +1,538 @@
+expression 'MedNext Reported' =
+		let
+		    Source = SharePoint.Files("https://mednetuaefz.sharepoint.com/sites/PBIDashboardsData/", [ApiVersion = 15]),
+		    #"Filtered Rows1" = Table.SelectRows(Source, each ([Folder Path] = "https://mednetuaefz.sharepoint.com/sites/PBIDashboardsData/Shared Documents/Cash Hub Non ML/MedNext Reported/")),
+		    #"Filtered Hidden Files1" = Table.SelectRows(#"Filtered Rows1", each [Attributes]?[Hidden]? <> true),
+		    #"Invoke Custom Function1" = Table.AddColumn(#"Filtered Hidden Files1", "Transform File (10)", each #"Transform File (10)"([Content])),
+		    #"Renamed Columns1" = Table.RenameColumns(#"Invoke Custom Function1", {"Name", "Source.Name"}),
+		    #"Removed Other Columns1" = Table.SelectColumns(#"Renamed Columns1", {"Source.Name", "Transform File (10)"}),
+		    #"Expanded Table Column1" = Table.ExpandTableColumn(#"Removed Other Columns1", "Transform File (10)", Table.ColumnNames(#"Transform File (10)"(#"Sample File (10)"))),
+		    #"Changed Type" = Table.TransformColumnTypes(#"Expanded Table Column1",{{"Source.Name", type text}, {"Batch Number", Int64.Type}, {"Batch Status", type text}, {"CAST (Received Date AS DATE )", type date}, {"Report User Name", type text}, {"CAST (Report Date AS DATE )", type date}, {"CAST (Modification Date AS DATE )", type date}, {"Insurance Company Name", type text}, {"Insurance Company Number", Int64.Type}, {"Modification User Name", type text}, {"Submitted By", type text}})
+		in
+		    #"Changed Type"
+	lineageTag: 3533290b-5fe1-45ab-bdd9-f396cbf30d6d
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression 'MedNext Cancelled' =
+		let
+		    Source = SharePoint.Files("https://mednetuaefz.sharepoint.com/sites/PBIDashboardsData/", [ApiVersion = 15]),
+		    #"Filtered Rows" = Table.SelectRows(Source, each ([Folder Path] = "https://mednetuaefz.sharepoint.com/sites/PBIDashboardsData/Shared Documents/Cash Hub Non ML/MedNext Cancelled/")),
+		    #"Filtered Hidden Files1" = Table.SelectRows(#"Filtered Rows", each [Attributes]?[Hidden]? <> true),
+		    #"Invoke Custom Function1" = Table.AddColumn(#"Filtered Hidden Files1", "Transform File", each #"Transform File"([Content])),
+		    #"Renamed Columns1" = Table.RenameColumns(#"Invoke Custom Function1", {"Name", "Source.Name"}),
+		    #"Removed Other Columns1" = Table.SelectColumns(#"Renamed Columns1", {"Source.Name", "Transform File"}),
+		    #"Expanded Table Column1" = Table.ExpandTableColumn(#"Removed Other Columns1", "Transform File", Table.ColumnNames(#"Transform File"(#"Sample File"))),
+		    #"Changed Type" = Table.TransformColumnTypes(#"Expanded Table Column1",{{"Source.Name", type text}, {"Batch Number", Int64.Type}, {"Batch Status", type text}, {"Insurance Company Name", type text}, {"Insurance Company Number", Int64.Type}, {"Modification User Name", type text}, {"CAST (Received Date AS DATE )", type date}, {"CAST (Modification Date AS DATE )", type date}})
+		in
+		    #"Changed Type"
+	lineageTag: 373c5b84-650f-4cb1-b62f-92af837c9298
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression Dim_User_Manual =
+		let
+		    Source = Excel.Workbook(Web.Contents("https://mednetuaefz-my.sharepoint.com/personal/mokamel_mednet_com1/Documents/HUB%20Cash%20Claims%20Non%20ML/Users.xlsx"), null, true),
+		    Users_Sheet = Source{[Item="Users",Kind="Sheet"]}[Data],
+		    #"Promoted Headers" = Table.PromoteHeaders(Users_Sheet, [PromoteAllScalars=true]),
+		    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"User Name", type text}, {"Coaching /Traning Sessions /Hr", type number}, {"Overtime Hrs", type number}, {"Month", type date}, {"Leaves/Day", Int64.Type}, {"Holidays /Day", Int64.Type}, {"Expected Target (32 OP /6 IP) Excluding Holidays /Annuals ", Int64.Type}, {"User Total Working Days", Int64.Type}}),
+		    #"Removed Other Columns" = Table.SelectColumns(#"Changed Type",{"User Name", "Act Name", "Title", "Comment", "User Total Working Days", "Expected Target (32 OP /6 IP) Excluding Holidays /Annuals ", "Holidays /Day", "Leaves/Day", "Month", "Coaching /Traning Sessions /Hr", "Overtime Hrs", "Overtime Days", "% Of overtime Vs working days", "Work Load :🟢 ≤15% 🟠 16–30% 🔴 ≥30%"}),
+		    #"Changed Type1" = Table.TransformColumnTypes(#"Removed Other Columns",{{"Overtime Days", type number}, {"% Of overtime Vs working days", Percentage.Type}})
+		in
+		    #"Changed Type1"
+	lineageTag: 469033e4-3738-486b-9332-af729804a7d0
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression Parameter5 = #"Sample File (5)" meta [IsParameterQuery=true, BinaryIdentifier=#"Sample File (5)", Type="Binary", IsParameterQueryRequired=true]
+	lineageTag: 3a255c19-5de3-42a2-a974-705b2412d6c9
+	queryGroup: 'Transform File from Mems (2)\Helper Queries'
+
+	annotation PBI_ResultType = Binary
+
+expression Parameter6 = #"Sample File (6)" meta [IsParameterQuery=true, BinaryIdentifier=#"Sample File (6)", Type="Binary", IsParameterQueryRequired=true]
+	lineageTag: 72807ac6-5607-43bc-85c8-3f3830b9c232
+	queryGroup: 'Transform File from Open Mems\Helper Queries'
+
+	annotation PBI_ResultType = Binary
+
+expression 'Transform Sample File (5)' =
+		let
+		    Source = Excel.Workbook(Parameter5, null, true),
+		    #"Created Batches_Sheet" = Source{[Item="Created Batches",Kind="Sheet"]}[Data],
+		    #"Promoted Headers" = Table.PromoteHeaders(#"Created Batches_Sheet", [PromoteAllScalars=true])
+		in
+		    #"Promoted Headers"
+	lineageTag: 90b8e24d-81ee-423f-890b-143fbf955b46
+	queryGroup: 'Transform File from Mems (2)'
+
+	annotation PBI_ResultType = Table
+
+expression 'Sample File (5)' =
+		let
+		    Source = SharePoint.Contents("https://mednetuaefz-my.sharepoint.com/personal/mokamel_mednet_com1/", [ApiVersion = 15]),
+		    Documents = Source{[Name="Documents"]}[Content],
+		    #"HUB Cash Claims Non ML" = Documents{[Name="HUB Cash Claims Non ML"]}[Content],
+		    Mems1 = #"HUB Cash Claims Non ML"{[Name="Mems"]}[Content],
+		    Navigation1 = Mems1{0}[Content]
+		in
+		    Navigation1
+	lineageTag: 21d78e74-a23e-4e5b-bbe9-5e7b8d35e9b4
+	queryGroup: 'Transform File from Mems (2)\Helper Queries'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Binary
+
+expression 'Transform File (5)' =
+		let
+		    Source = (Parameter5 as binary) => let
+		    Source = Excel.Workbook(Parameter5, null, true),
+		    #"Created Batches_Sheet" = Source{[Item="Created Batches",Kind="Sheet"]}[Data],
+		    #"Promoted Headers" = Table.PromoteHeaders(#"Created Batches_Sheet", [PromoteAllScalars=true])
+		in
+		    #"Promoted Headers"
+		in
+		    Source
+	mAttributes: [ FunctionQueryBinding = "{""exemplarFormulaName"":""Transform Sample File (5)""}" ]
+	lineageTag: 19d8b942-bb0d-4d9a-ad73-8be49f6af216
+	queryGroup: 'Transform File from Mems (2)\Helper Queries'
+
+	annotation PBI_ResultType = Function
+
+expression 'Transform Sample File (6)' =
+		let
+		    Source = Excel.Workbook(Parameter6, null, true),
+		    #"Created Batches_Sheet" = Source{[Item="Created Batches",Kind="Sheet"]}[Data],
+		    #"Promoted Headers" = Table.PromoteHeaders(#"Created Batches_Sheet", [PromoteAllScalars=true])
+		in
+		    #"Promoted Headers"
+	lineageTag: a017cbf9-32af-4f73-be08-8b386cde225c
+	queryGroup: 'Transform File from Open Mems'
+
+	annotation PBI_ResultType = Table
+
+expression 'Sample File (6)' =
+		let
+		    // Step 1: Connect to SharePoint and get all files
+		    Source = SharePoint.Contents("https://mednetuaefz-my.sharepoint.com/personal/mokamel_mednet_com1/", [ApiVersion = 15]),
+		    // Step 1: Connect to SharePoint and get all files
+		    Documents = Source{[Name="Documents"]}[Content],
+		    // Step 1: Connect to SharePoint and get all files
+		    #"HUB Cash Claims Non ML" = Documents{[Name="HUB Cash Claims Non ML"]}[Content],
+		    // Step 1: Connect to SharePoint and get all files
+		    Mems1 = #"HUB Cash Claims Non ML"{[Name="Mems"]}[Content],
+		    Navigation1 = Mems1{0}[Content]
+		in
+		    Navigation1
+	lineageTag: a3fa5a87-7d97-4902-ac17-cedf3657b26a
+	queryGroup: 'Transform File from Open Mems\Helper Queries'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Binary
+
+expression 'Transform File (6)' =
+		let
+		    Source = (Parameter6 as binary) => let
+		    Source = Excel.Workbook(Parameter6, null, true),
+		    #"Created Batches_Sheet" = Source{[Item="Created Batches",Kind="Sheet"]}[Data],
+		    #"Promoted Headers" = Table.PromoteHeaders(#"Created Batches_Sheet", [PromoteAllScalars=true])
+		in
+		    #"Promoted Headers"
+		in
+		    Source
+	mAttributes: [ FunctionQueryBinding = "{""exemplarFormulaName"":""Transform Sample File (6)""}" ]
+	lineageTag: 0cd92b31-7c5c-46ed-93d6-9b6ae04317f6
+	queryGroup: 'Transform File from Open Mems\Helper Queries'
+
+	annotation PBI_ResultType = Function
+
+expression Parameter7 = #"Sample File (7)" meta [IsParameterQuery=true, BinaryIdentifier=#"Sample File (7)", Type="Binary", IsParameterQueryRequired=true]
+	lineageTag: e44fef8e-286a-4c6f-b417-f529eadb3402
+	queryGroup: 'Transform File from Closed Batches BI\Helper Queries'
+
+	annotation PBI_ResultType = Binary
+
+expression Parameter1 = #"Sample File" meta [IsParameterQuery=true, BinaryIdentifier=#"Sample File", Type="Binary", IsParameterQueryRequired=true]
+	lineageTag: db386fe4-7c10-449b-931b-99961080b6e5
+	queryGroup: 'Transform File from MedNext Cancelled\Helper Queries'
+
+	annotation PBI_ResultType = Binary
+
+expression Parameter9 = #"Sample File (9)" meta [IsParameterQuery=true, BinaryIdentifier=#"Sample File (9)", Type="Binary", IsParameterQueryRequired=true]
+	lineageTag: bf9ca16a-00a5-4b32-afee-21ebcae13bef
+	queryGroup: 'Transform File from Archieved (2)\Helper Queries'
+
+	annotation PBI_ResultType = Binary
+
+expression 'Sample File (7)' =
+		let
+		    Source = SharePoint.Contents("https://mednetuaefz.sharepoint.com/sites/PBIDashboardsData/", [ApiVersion = 15]),
+		    #"Shared Documents" = Source{[Name="Shared Documents"]}[Content],
+		    #"Cash Hub Non ML" = #"Shared Documents"{[Name="Cash Hub Non ML"]}[Content],
+		    BI = #"Cash Hub Non ML"{[Name="BI"]}[Content],
+		    Navigation1 = BI{0}[Content]
+		in
+		    Navigation1
+	lineageTag: 63606e4f-a7b8-46df-89f4-2b0b5a631ef7
+	queryGroup: 'Transform File from Closed Batches BI\Helper Queries'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Binary
+
+expression 'Transform Sample File (7)' =
+		let
+		    Source = Csv.Document(Parameter7,[Delimiter=",", Columns=10, Encoding=65001, QuoteStyle=QuoteStyle.None]),
+		    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true])
+		in
+		    #"Promoted Headers"
+	lineageTag: 48ca1051-a067-41a8-aa99-1591063cbf62
+	queryGroup: 'Transform File from Closed Batches BI'
+
+	annotation PBI_ResultType = Table
+
+expression 'Transform File (7)' =
+		let
+		    Source = (Parameter7 as binary) => let
+		    Source = Csv.Document(Parameter7,[Delimiter=",", Columns=10, Encoding=65001, QuoteStyle=QuoteStyle.None]),
+		    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true])
+		in
+		    #"Promoted Headers"
+		in
+		    Source
+	mAttributes: [ FunctionQueryBinding = "{""exemplarFormulaName"":""Transform Sample File (7)""}" ]
+	lineageTag: 0618d603-be33-4649-a3b8-c38de3b675fb
+	queryGroup: 'Transform File from Closed Batches BI\Helper Queries'
+
+	annotation PBI_ResultType = Function
+
+expression 'Transform Sample File' = ```
+		let
+		    Source = Excel.Workbook(Parameter1, null, true),
+		    Sheet1_Sheet = Source{[Item="Sheet1",Kind="Sheet"]}[Data],
+		    // Clean invisible characters from headers BEFORE promoting
+		    CleanHeaders = Table.TransformColumnNames(
+		        Sheet1_Sheet,
+		        each Text.Clean(Text.Trim(
+		            Text.Replace(
+		                Text.Replace(
+		                    Text.Replace(_, 
+		                        Character.FromNumber(8203), ""),  // Zero-width space
+		                    Character.FromNumber(160), " "),      // Non-breaking space
+		                Character.FromNumber(65279), "")          // BOM
+		        ))
+		    ),
+		    
+		    #"Promoted Headers" = Table.PromoteHeaders(CleanHeaders, [PromoteAllScalars=true]),
+		    
+		    // Additional cleanup AFTER promotion (double safety)
+		    FinalClean = Table.TransformColumnNames(#"Promoted Headers", 
+		        each Text.Clean(Text.Trim(
+		            Text.Replace(
+		                Text.Replace(
+		                    Text.Replace(_, 
+		                        Character.FromNumber(8203), ""),
+		                    Character.FromNumber(160), " "),
+		                Character.FromNumber(65279), "")
+		        ))
+		    )
+		in
+		    FinalClean
+		```
+	lineageTag: 87d0ef94-c9c3-4764-af40-1237b12c2608
+	queryGroup: 'Transform File from MedNext Cancelled'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression 'Sample File' =
+		let
+		    Source = SharePoint.Files("https://mednetuaefz.sharepoint.com/sites/PBIDashboardsData/", [ApiVersion = 15]),
+		    #"Filtered Rows" = Table.SelectRows(Source, each ([Folder Path] = "https://mednetuaefz.sharepoint.com/sites/PBIDashboardsData/Shared Documents/Cash Hub Non ML/MedNext Cancelled/")),
+		    Navigation1 = #"Filtered Rows"{0}[Content]
+		in
+		    Navigation1
+	lineageTag: a8167124-6bb7-40a3-bc7b-d8b524558dac
+	queryGroup: 'Transform File from MedNext Cancelled\Helper Queries'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Binary
+
+expression 'Transform File' = ```
+		let
+		    Source = (Parameter1 as binary) => let
+		    Source = Excel.Workbook(Parameter1, null, true),
+		    Sheet1_Sheet = Source{[Item="Sheet1",Kind="Sheet"]}[Data],
+		    // Clean invisible characters from headers BEFORE promoting
+		    CleanHeaders = Table.TransformColumnNames(
+		        Sheet1_Sheet,
+		        each Text.Clean(Text.Trim(
+		            Text.Replace(
+		                Text.Replace(
+		                    Text.Replace(_, 
+		                        Character.FromNumber(8203), ""),  // Zero-width space
+		                    Character.FromNumber(160), " "),      // Non-breaking space
+		                Character.FromNumber(65279), "")          // BOM
+		        ))
+		    ),
+		    
+		    #"Promoted Headers" = Table.PromoteHeaders(CleanHeaders, [PromoteAllScalars=true]),
+		    
+		    // Additional cleanup AFTER promotion (double safety)
+		    FinalClean = Table.TransformColumnNames(#"Promoted Headers", 
+		        each Text.Clean(Text.Trim(
+		            Text.Replace(
+		                Text.Replace(
+		                    Text.Replace(_, 
+		                        Character.FromNumber(8203), ""),
+		                    Character.FromNumber(160), " "),
+		                Character.FromNumber(65279), "")
+		        ))
+		    )
+		in
+		    FinalClean
+		in
+		    Source
+		```
+	mAttributes: [ FunctionQueryBinding = "{""exemplarFormulaName"":""Transform Sample File""}" ]
+	lineageTag: f1f13b5c-804b-4701-aaae-952c13bb355c
+	queryGroup: 'Transform File from MedNext Cancelled\Helper Queries'
+
+	annotation PBI_ResultType = Function
+
+expression 'Transform Sample File (9)' =
+		let
+		    Source = Excel.Workbook(Parameter9, null, true),
+		    Sheet1_Sheet = Source{[Kind="Sheet"]}[Data],
+		    #"Promoted Headers" = Table.PromoteHeaders(Sheet1_Sheet, [PromoteAllScalars=true])
+		in
+		    #"Promoted Headers"
+	lineageTag: c067b87f-3dc6-4460-b431-c72230e88004
+	queryGroup: 'Transform File from Archieved (2)'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression 'Sample File (9)' =
+		let
+		    Source = SharePoint.Files("https://mednetuaefz.sharepoint.com/sites/PBIDashboardsData/", [ApiVersion = 15]),
+		    #"Filtered Rows" = Table.SelectRows(Source, each ([Folder Path] = "https://mednetuaefz.sharepoint.com/sites/PBIDashboardsData/Shared Documents/Cash Hub Non ML/Archieved/")),
+		    Navigation1 = #"Filtered Rows"{0}[Content]
+		in
+		    Navigation1
+	lineageTag: cfdcc715-5070-415a-9214-eeaf26ab6d8c
+	queryGroup: 'Transform File from Archieved (2)\Helper Queries'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Binary
+
+expression 'Transform File (9)' =
+		let
+		    Source = (Parameter9 as binary) => let
+		    Source = Excel.Workbook(Parameter9, null, true),
+		    Sheet1_Sheet = Source{[Kind="Sheet"]}[Data],
+		    #"Promoted Headers" = Table.PromoteHeaders(Sheet1_Sheet, [PromoteAllScalars=true])
+		in
+		    #"Promoted Headers"
+		in
+		    Source
+	mAttributes: [ FunctionQueryBinding = "{""exemplarFormulaName"":""Transform Sample File (9)""}" ]
+	lineageTag: 38d248a5-9902-4eb6-aa74-14f39a0bd252
+	queryGroup: 'Transform File from Archieved (2)\Helper Queries'
+
+	annotation PBI_ResultType = Function
+
+expression Parameter10 = #"Sample File (10)" meta [IsParameterQuery=true, BinaryIdentifier=#"Sample File (10)", Type="Binary", IsParameterQueryRequired=true]
+	lineageTag: b25fb7f5-f9c5-483b-8826-cb03c92f6caa
+	queryGroup: 'Transform File from MedNext Reported (3)\Helper Queries'
+
+	annotation PBI_ResultType = Binary
+
+expression Parameter11 = #"Sample File (11)" meta [IsParameterQuery=true, BinaryIdentifier=#"Sample File (11)", Type="Binary", IsParameterQueryRequired=true]
+	lineageTag: 206af4f9-55f4-4c56-a66b-517d31e58a53
+	queryGroup: 'Transform File from New_Mems\Helper Queries'
+
+	annotation PBI_ResultType = Binary
+
+expression 'Transform Sample File (10)' = ```
+		let
+		    Source = Excel.Workbook(Parameter10, null, true),
+		    Sheet1_Sheet = Source{[Item="Sheet1",Kind="Sheet"]}[Data],
+		    // Clean invisible characters from headers BEFORE promoting
+		    CleanHeaders = Table.TransformColumnNames(
+		        Sheet1_Sheet,
+		        each Text.Clean(Text.Trim(
+		            Text.Replace(
+		                Text.Replace(
+		                    Text.Replace(_, 
+		                        Character.FromNumber(8203), ""),  // Zero-width space
+		                    Character.FromNumber(160), " "),      // Non-breaking space
+		                Character.FromNumber(65279), "")          // BOM
+		        ))
+		    ),
+		    
+		    #"Promoted Headers" = Table.PromoteHeaders(CleanHeaders, [PromoteAllScalars=true]),
+		    
+		    // Additional cleanup AFTER promotion (double safety)
+		    FinalClean = Table.TransformColumnNames(#"Promoted Headers", 
+		        each Text.Clean(Text.Trim(
+		            Text.Replace(
+		                Text.Replace(
+		                    Text.Replace(_, 
+		                        Character.FromNumber(8203), ""),
+		                    Character.FromNumber(160), " "),
+		                Character.FromNumber(65279), "")
+		        ))
+		    )
+		in
+		    FinalClean
+		```
+	lineageTag: ac35fe8b-2d45-4e39-a75b-b7d579325b9a
+	queryGroup: 'Transform File from MedNext Reported (3)'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression 'Sample File (10)' =
+		let
+		    Source = SharePoint.Files("https://mednetuaefz.sharepoint.com/sites/PBIDashboardsData/", [ApiVersion = 15]),
+		    #"Filtered Rows1" = Table.SelectRows(Source, each ([Folder Path] = "https://mednetuaefz.sharepoint.com/sites/PBIDashboardsData/Shared Documents/Cash Hub Non ML/MedNext Reported/")),
+		    Navigation1 = #"Filtered Rows1"{0}[Content]
+		in
+		    Navigation1
+	lineageTag: 4866c1d7-6321-4b42-b0d6-3a47b1b91cbc
+	queryGroup: 'Transform File from MedNext Reported (3)\Helper Queries'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Binary
+
+expression 'Transform File (10)' = ```
+		let
+		    Source = (Parameter10 as binary) => let
+		    Source = Excel.Workbook(Parameter10, null, true),
+		    Sheet1_Sheet = Source{[Item="Sheet1",Kind="Sheet"]}[Data],
+		    // Clean invisible characters from headers BEFORE promoting
+		    CleanHeaders = Table.TransformColumnNames(
+		        Sheet1_Sheet,
+		        each Text.Clean(Text.Trim(
+		            Text.Replace(
+		                Text.Replace(
+		                    Text.Replace(_, 
+		                        Character.FromNumber(8203), ""),  // Zero-width space
+		                    Character.FromNumber(160), " "),      // Non-breaking space
+		                Character.FromNumber(65279), "")          // BOM
+		        ))
+		    ),
+		    
+		    #"Promoted Headers" = Table.PromoteHeaders(CleanHeaders, [PromoteAllScalars=true]),
+		    
+		    // Additional cleanup AFTER promotion (double safety)
+		    FinalClean = Table.TransformColumnNames(#"Promoted Headers", 
+		        each Text.Clean(Text.Trim(
+		            Text.Replace(
+		                Text.Replace(
+		                    Text.Replace(_, 
+		                        Character.FromNumber(8203), ""),
+		                    Character.FromNumber(160), " "),
+		                Character.FromNumber(65279), "")
+		        ))
+		    )
+		in
+		    FinalClean
+		in
+		    Source
+		```
+	mAttributes: [ FunctionQueryBinding = "{""exemplarFormulaName"":""Transform Sample File (10)""}" ]
+	lineageTag: d87e69ae-2268-4832-8723-5d4de5d2a636
+	queryGroup: 'Transform File from MedNext Reported (3)\Helper Queries'
+
+	annotation PBI_ResultType = Function
+
+expression 'Transform Sample File (11)' =
+		let
+		    Source = Excel.Workbook(Parameter11, null, true),
+		    Worksheet_Sheet = Source{[Item="Worksheet",Kind="Sheet"]}[Data],
+		    #"Promoted Headers" = Table.PromoteHeaders(Worksheet_Sheet, [PromoteAllScalars=true])
+		in
+		    #"Promoted Headers"
+	lineageTag: f533fce0-89ba-405a-978d-bda530fbdc07
+	queryGroup: 'Transform File from New_Mems'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression 'Sample File (11)' =
+		let
+		    Source = SharePoint.Files("https://mednetuaefz.sharepoint.com/sites/PBIDashboardsData/", [ApiVersion = 15]),
+		    #"Filtered Rows" = Table.SelectRows(Source, each ([Folder Path] = "https://mednetuaefz.sharepoint.com/sites/PBIDashboardsData/Shared Documents/Cash Hub Non ML/New Mems/")),
+		    Navigation1 = #"Filtered Rows"{0}[Content]
+		in
+		    Navigation1
+	lineageTag: 71eae9c3-2556-48b3-8932-454cedc070d4
+	queryGroup: 'Transform File from New_Mems\Helper Queries'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Binary
+
+expression 'Transform File (11)' =
+		let
+		    Source = (Parameter11 as binary) => let
+		    Source = Excel.Workbook(Parameter11, null, true),
+		    Worksheet_Sheet = Source{[Item="Worksheet",Kind="Sheet"]}[Data],
+		    #"Promoted Headers" = Table.PromoteHeaders(Worksheet_Sheet, [PromoteAllScalars=true])
+		in
+		    #"Promoted Headers"
+		in
+		    Source
+	mAttributes: [ FunctionQueryBinding = "{""exemplarFormulaName"":""Transform Sample File (11)""}" ]
+	lineageTag: 93f33dab-da62-4796-9c77-a4dacb13b853
+	queryGroup: 'Transform File from New_Mems\Helper Queries'
+
+	annotation PBI_ResultType = Exception
+
+expression Admin_Users =
+		let
+		    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i45W8k0sysxLVHBLLErMSCxR0lEyNDAAko4puZl5cDpWB6gQpCw4MbcSrMYQU00sAA==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [#"User Name" = _t, #"User Key" = _t, Title = _t, Comment  = _t]),
+		    #"Changed Type" = Table.TransformColumnTypes(Source,{{"User Name", type text}, {"User Key", type text}, {"Title", type text}, {"Comment", type text}})
+		in
+		    #"Changed Type"
+	lineageTag: c6aafcb1-66f9-4995-a155-29cd72af0bb7
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression Archieved =
+		let
+		    Source = SharePoint.Files("https://mednetuaefz.sharepoint.com/sites/PBIDashboardsData/", [ApiVersion = 15]),
+		    #"Filtered Rows" = Table.SelectRows(Source, each ([Folder Path] = "https://mednetuaefz.sharepoint.com/sites/PBIDashboardsData/Shared Documents/Cash Hub Non ML/Archieved/")),
+		    #"Filtered Hidden Files1" = Table.SelectRows(#"Filtered Rows", each [Attributes]?[Hidden]? <> true),
+		    #"Invoke Custom Function1" = Table.AddColumn(#"Filtered Hidden Files1", "Transform File (9)", each #"Transform File (9)"([Content])),
+		    #"Renamed Columns1" = Table.RenameColumns(#"Invoke Custom Function1", {"Name", "Source.Name"}),
+		    #"Removed Other Columns1" = Table.SelectColumns(#"Renamed Columns1", {"Source.Name", "Transform File (9)"}),
+		    #"Expanded Table Column1" = Table.ExpandTableColumn(#"Removed Other Columns1", "Transform File (9)", Table.ColumnNames(#"Transform File (9)"(#"Sample File (9)"))),
+		    #"Changed Type" = Table.TransformColumnTypes(#"Expanded Table Column1",{{"Source.Name", type text}, {"Batch Number", Int64.Type}})
+		in
+		    #"Changed Type"
+	lineageTag: 0d6f0e75-e62d-43b3-add9-fd43accab0bc
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

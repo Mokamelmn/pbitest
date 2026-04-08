@@ -1,0 +1,7 @@
+createOrReplace
+
+	ref table _Measures
+
+		measure TATCalculationLabel = "❗ TAT Calculation excludes Cancelled claims and only accounts for closed"
+			lineageTag: c63c1401-234e-4758-9801-6ff304d21a7c
+

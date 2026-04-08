@@ -1,0 +1,5 @@
+EVALUATE
+FILTER(
+	MedNext,
+	YEAR(MedNext[Modification Date])=YEAR(TODAY())
+)

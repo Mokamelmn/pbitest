@@ -1,0 +1,14 @@
+EVALUATE
+{
+AVERAGEX(
+SUMMARIZE(
+	FILTER(
+		'Calendar',
+		'Calendar'[Year]=YEAR(TODAY())
+	),
+	'Calendar'[Date],
+	"Claims Processed",[Claims Processed]
+),
+[Claims Processed]
+)
+}

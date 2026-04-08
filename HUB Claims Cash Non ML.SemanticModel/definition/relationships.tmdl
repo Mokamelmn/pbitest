@@ -1,0 +1,131 @@
+relationship 9a1acf84-cc04-32eb-d219-73ca14650b08
+	fromColumn: MedNext.'Insurance Company Number'
+	toColumn: Dim_InsuranceCompany.'Insurance Company Number'
+
+relationship 6a917334-d50a-44d5-884c-bdebfaf7ac02
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'Esraa Batchlist'.Today
+	toColumn: LocalDateTable_55673a27-4f9d-4d1e-92eb-1e697f7d89c3.Date
+
+relationship ac47b790-193a-f0d8-67b1-33658af1b5a1
+	fromColumn: 'Open Mems'.'Received Date'
+	toColumn: Calendar.Date
+
+relationship 0dbd3968-e315-4355-9854-873a9a7e197e
+	joinOnDateBehavior: datePartOnly
+	fromColumn: LastRefresh.Date
+	toColumn: LocalDateTable_050c2f2a-3be6-4dbe-951f-5be6bf27f040.Date
+
+relationship 480cc49f-97da-7b1f-c328-48e0df606298
+	isActive: false
+	fromColumn: MedNext.'All Report Date'
+	toColumn: Calendar.Date
+
+relationship 2829cb8e-ea0a-42e9-b864-68d5cb943e8d
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Mems.'Created Date'
+	toColumn: LocalDateTable_f8c913df-e271-4e27-bff7-55816fd0622b.Date
+
+relationship def96ca9-d132-3817-48d9-01193e5de1d9
+	fromColumn: Mems.'Received Date'
+	toColumn: Calendar.Date
+
+relationship 1e6390fb-2047-f773-bf85-6380d5736d5c
+	fromColumn: 'Open Mems'.'PIC Code'
+	toColumn: Dim_InsuranceCompany.'Insurance Company Number'
+
+relationship e30299a6-568f-d8e6-8582-a5606ccbef28
+	fromColumn: Mems.'PIC Code'
+	toColumn: Dim_InsuranceCompany.'Insurance Company Number'
+
+relationship 4cfa1792-fc6d-3656-5444-2c5146c18925
+	fromColumn: MedNext.'All Report User Key'
+	toColumn: Dim_User.'User Key'
+
+relationship 774fe8f8-d115-56ec-df34-3c2c8f4770ce
+	fromColumn: MedNext.'All Report Date'
+	toColumn: 'Report Date Calendar'.Date
+
+relationship AutoDetected_8a5024bc-cb15-40a8-ba41-e45a89900351
+	fromColumn: Dim_User_Targets.'User Key'
+	toColumn: Dim_User.'User Key'
+
+relationship 8d6c358d-9f3b-92e6-5d0a-cad54d7dff33
+	fromColumn: Dim_User_Targets.'Excel_Dim_User.Month'
+	toColumn: 'Report Date Calendar'.Date
+
+relationship 271bf7c5-ce36-8549-2ef8-1369a469d110
+	fromColumn: Dim_User_Targets.'Excel_Dim_User.Month'
+	toColumn: Calendar.Date
+
+relationship 20a8c4d1-96d1-a7aa-2ff1-cd9c9e7ba0be
+	fromColumn: Mems.'Received Date'
+	toColumn: 'Report Date Calendar'.Date
+
+relationship db02eee0-448a-478f-9399-b788f723dd02
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Holidays.'UAE Holidays'
+	toColumn: LocalDateTable_8c8db7de-de15-4b80-9739-0cdba87aa737.Date
+
+relationship f7098716-ac2c-4a22-87fc-e67c8081af46
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'Closed Batches BI'.'Batch Received Date'
+	toColumn: LocalDateTable_76db34d7-7c46-4111-9f81-0d3ead1d5642.Date
+
+relationship 24c837a6-00ba-4dc2-8df4-aa63e37138b6
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'Closed Batches BI'.'Batch Creation Date'
+	toColumn: LocalDateTable_c076e952-dbcf-43aa-a2cf-42508aa6179f.Date
+
+relationship 13bf81d8-9bd6-4077-91bf-10523993cc9e
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'Closed Batches BI'.'Invoice Received Date'
+	toColumn: LocalDateTable_2e27183c-e058-48e6-bc6c-fd7b1e5da7d8.Date
+
+relationship AutoDetected_0eaaab91-3575-4921-9c35-8557a285d7da
+	fromColumn: 'Closed Batches BI'.'Insurance Company'
+	toColumn: Dim_InsuranceCompany.'Insurance Company Name'
+
+relationship fe9c2e0c-9319-fcf2-c5eb-e1e1dd7df7b9
+	fromColumn: 'Closed Batches BI'.'Computation User'
+	toColumn: Dim_User.'User Name'
+
+relationship 3af3b8ea-4abb-7e73-ce74-bbb7bcb6e72d
+	fromColumn: 'Closed Batches BI'.'Invoice Report Date'
+	toColumn: 'Report Date Calendar'.Date
+
+relationship 93d17dbf-e6a7-4788-8d22-44f322c46c73
+	joinOnDateBehavior: datePartOnly
+	fromColumn: New_Mems.'Received On'
+	toColumn: LocalDateTable_63295989-6626-4b12-8c55-4fee6b92d22f.Date
+
+relationship 640dcb3c-8933-4cc3-a731-e9c8c9d8e92a
+	joinOnDateBehavior: datePartOnly
+	fromColumn: New_Mems.'Reported On'
+	toColumn: LocalDateTable_d1d719f3-6efc-4594-963f-dbb042d74958.Date
+
+relationship 387dd4dd-b813-47dc-b24a-3183490e8999
+	joinOnDateBehavior: datePartOnly
+	fromColumn: New_Mems.'Received On Adjusted'
+	toColumn: LocalDateTable_cd1bd992-ccf1-47b9-a536-1e9b7f471cb6.Date
+
+relationship 58ccce35-a4f8-4ab8-a6c0-6b20f2365073
+	joinOnDateBehavior: datePartOnly
+	fromColumn: MedNext.'Received Date'
+	toColumn: LocalDateTable_bdf5ae1e-5906-4329-9e36-083e87ea7be6.Date
+
+relationship 1f7ba1e8-96e8-4da5-a344-bbb2601c690d
+	joinOnDateBehavior: datePartOnly
+	fromColumn: MedNext.'Report Date'
+	toColumn: LocalDateTable_7a2846fc-79a9-4fbf-b302-867543482c5e.Date
+
+relationship 100da0bc-5b19-40cc-a047-985816fa7888
+	joinOnDateBehavior: datePartOnly
+	fromColumn: MedNext.'Modification Date'
+	toColumn: LocalDateTable_b635515f-d937-45ce-a668-69142aa69086.Date
+
+relationship 915ca9f5-074f-41ac-ac00-7748afff9cbb
+	joinOnDateBehavior: datePartOnly
+	fromColumn: _RefreshDate.RefreshDate
+	toColumn: LocalDateTable_c8f7f19b-c73b-4646-8346-64323bd54de3.Date
+

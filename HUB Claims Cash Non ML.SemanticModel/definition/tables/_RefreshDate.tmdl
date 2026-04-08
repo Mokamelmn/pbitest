@@ -1,0 +1,25 @@
+table _RefreshDate
+	lineageTag: 8f0e622f-9056-41f6-8ebf-241ca71a85d2
+
+	column RefreshDate
+		formatString: General Date
+		lineageTag: 6b9d1f88-177d-4e0f-bea7-c987c49a673e
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [RefreshDate]
+
+		variation Variation
+			isDefault
+			relationship: 915ca9f5-074f-41ac-ac00-7748afff9cbb
+			defaultHierarchy: LocalDateTable_c8f7f19b-c73b-4646-8346-64323bd54de3.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	partition _RefreshDate = calculated
+		mode: import
+		source =
+				
+				ROW("RefreshDate", TODAY())
+
+	annotation PBI_Id = 8e3ecaa95ba34ebdba5e6d0ee5950564
+

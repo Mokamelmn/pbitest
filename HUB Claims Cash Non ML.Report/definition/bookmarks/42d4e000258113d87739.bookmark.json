@@ -1,0 +1,2614 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/bookmark/2.0.0/schema.json",
+  "displayName": "OpenAging",
+  "name": "42d4e000258113d87739",
+  "options": {
+    "applyOnlyToTargetVisuals": true,
+    "targetVisualNames": [
+      "04f325613ac991b12e16",
+      "0226ba02d451dbde876a",
+      "a4102c256c0267a1d051",
+      "39c3715efdf94bbc1b0c"
+    ]
+  },
+  "explorationState": {
+    "version": "1.3",
+    "activeSection": "ea3256856a634d71bc69",
+    "sections": {
+      "ea3256856a634d71bc69": {
+        "visualContainers": {
+          "2e35c0edc8e2bbcd938e": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "9fa902aef9ded057c43b",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "MedNext"
+                        }
+                      },
+                      "Property": "Batch Status"
+                    }
+                  },
+                  "howCreated": 1
+                },
+                {
+                  "name": "bcababeab71239a376d6",
+                  "type": "Categorical",
+                  "filter": {
+                    "Version": 2,
+                    "From": [
+                      {
+                        "Name": "o",
+                        "Entity": "Open Mems",
+                        "Type": 0
+                      }
+                    ],
+                    "Where": [
+                      {
+                        "Condition": {
+                          "In": {
+                            "Expressions": [
+                              {
+                                "Column": {
+                                  "Expression": {
+                                    "SourceRef": {
+                                      "Source": "o"
+                                    }
+                                  },
+                                  "Property": "Esraa Batchlist Label"
+                                }
+                              }
+                            ],
+                            "Values": [
+                              [
+                                {
+                                  "Literal": {
+                                    "Value": "'New'"
+                                  }
+                                }
+                              ],
+                              [
+                                {
+                                  "Literal": {
+                                    "Value": "'Pending'"
+                                  }
+                                }
+                              ]
+                            ]
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Open Mems"
+                        }
+                      },
+                      "Property": "Esraa Batchlist Label"
+                    }
+                  },
+                  "howCreated": 1
+                },
+                {
+                  "name": "8e23ca4d9eb0307a22e9",
+                  "type": "Advanced",
+                  "expression": {
+                    "Aggregation": {
+                      "Expression": {
+                        "Column": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "Open Mems"
+                            }
+                          },
+                          "Property": "Aging"
+                        }
+                      },
+                      "Function": 1
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "cardVisual",
+              "objects": {},
+              "orderBy": [
+                {
+                  "Direction": 2,
+                  "Expression": {
+                    "Aggregation": {
+                      "Expression": {
+                        "Column": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "Open Mems"
+                            }
+                          },
+                          "Property": "Aging"
+                        }
+                      },
+                      "Function": 1
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "3b9efcfa690b1b016fab": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "9fa902aef9ded057c43b",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "MedNext"
+                        }
+                      },
+                      "Property": "Batch Status"
+                    }
+                  },
+                  "howCreated": 1
+                },
+                {
+                  "name": "e7d8b3989b07bbc5150a",
+                  "type": "Categorical",
+                  "filter": {
+                    "Version": 2,
+                    "From": [
+                      {
+                        "Name": "m",
+                        "Entity": "Mems",
+                        "Type": 0
+                      }
+                    ],
+                    "Where": [
+                      {
+                        "Condition": {
+                          "In": {
+                            "Expressions": [
+                              {
+                                "Column": {
+                                  "Expression": {
+                                    "SourceRef": {
+                                      "Source": "m"
+                                    }
+                                  },
+                                  "Property": "Batch Status"
+                                }
+                              }
+                            ],
+                            "Values": [
+                              [
+                                {
+                                  "Literal": {
+                                    "Value": "'Open'"
+                                  }
+                                }
+                              ]
+                            ]
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Mems"
+                        }
+                      },
+                      "Property": "Batch Status"
+                    }
+                  },
+                  "howCreated": 1
+                },
+                {
+                  "name": "3c4c3fbed3ee8de75a00",
+                  "type": "Advanced",
+                  "expression": {
+                    "Aggregation": {
+                      "Expression": {
+                        "Column": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "Open Mems"
+                            }
+                          },
+                          "Property": "Aging"
+                        }
+                      },
+                      "Function": 4
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "cardVisual",
+              "objects": {},
+              "orderBy": [
+                {
+                  "Direction": 2,
+                  "Expression": {
+                    "Aggregation": {
+                      "Expression": {
+                        "Column": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "Open Mems"
+                            }
+                          },
+                          "Property": "Aging"
+                        }
+                      },
+                      "Function": 4
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "e25f19cf402f5813cadf": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "9fa902aef9ded057c43b",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "MedNext"
+                        }
+                      },
+                      "Property": "Batch Status"
+                    }
+                  },
+                  "howCreated": 1
+                },
+                {
+                  "name": "214f2c7b8c3c16cbc38a",
+                  "type": "Advanced",
+                  "filter": {
+                    "Version": 2,
+                    "From": [
+                      {
+                        "Name": "o",
+                        "Entity": "Open Mems",
+                        "Type": 0
+                      }
+                    ],
+                    "Where": [
+                      {
+                        "Condition": {
+                          "Comparison": {
+                            "ComparisonKind": 4,
+                            "Left": {
+                              "Column": {
+                                "Expression": {
+                                  "SourceRef": {
+                                    "Source": "o"
+                                  }
+                                },
+                                "Property": "Aging"
+                              }
+                            },
+                            "Right": {
+                              "Literal": {
+                                "Value": "5L"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Open Mems"
+                        }
+                      },
+                      "Property": "Aging"
+                    }
+                  },
+                  "howCreated": 1
+                },
+                {
+                  "name": "69d37e133eabcc9c12bb",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "_Measures"
+                        }
+                      },
+                      "Property": "Open Claims"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "cardVisual",
+              "objects": {},
+              "orderBy": [
+                {
+                  "Direction": 2,
+                  "Expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "_Measures"
+                        }
+                      },
+                      "Property": "Open Claims"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "60c2611d1e8e5fec87a6": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "9fa902aef9ded057c43b",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "MedNext"
+                        }
+                      },
+                      "Property": "Batch Status"
+                    }
+                  },
+                  "howCreated": 1
+                },
+                {
+                  "name": "cfd77e9b652e6650b0ba",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Mems"
+                        }
+                      },
+                      "Property": "TAT Distribution"
+                    }
+                  },
+                  "howCreated": 1
+                },
+                {
+                  "name": "8417527d4ab6ea23ab66",
+                  "type": "Advanced",
+                  "filter": {
+                    "Version": 2,
+                    "From": [
+                      {
+                        "Name": "o",
+                        "Entity": "Open Mems",
+                        "Type": 0
+                      }
+                    ],
+                    "Where": [
+                      {
+                        "Condition": {
+                          "Comparison": {
+                            "ComparisonKind": 1,
+                            "Left": {
+                              "Column": {
+                                "Expression": {
+                                  "SourceRef": {
+                                    "Source": "o"
+                                  }
+                                },
+                                "Property": "Aging"
+                              }
+                            },
+                            "Right": {
+                              "Literal": {
+                                "Value": "5L"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Open Mems"
+                        }
+                      },
+                      "Property": "Aging"
+                    }
+                  },
+                  "howCreated": 1
+                },
+                {
+                  "name": "7b45806e2e105e59c739",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "_Measures"
+                        }
+                      },
+                      "Property": "Open Claims"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "cardVisual",
+              "objects": {},
+              "orderBy": [
+                {
+                  "Direction": 2,
+                  "Expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "_Measures"
+                        }
+                      },
+                      "Property": "Open Claims"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "99764594c89b2c09e211": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "9fa902aef9ded057c43b",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "MedNext"
+                        }
+                      },
+                      "Property": "Batch Status"
+                    }
+                  },
+                  "howCreated": 1
+                },
+                {
+                  "name": "cfd77e9b652e6650b0ba",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Mems"
+                        }
+                      },
+                      "Property": "TAT Distribution"
+                    }
+                  },
+                  "howCreated": 1
+                },
+                {
+                  "name": "a92be4f94861fe661cec",
+                  "type": "Categorical",
+                  "filter": {
+                    "Version": 2,
+                    "From": [
+                      {
+                        "Name": "m",
+                        "Entity": "MedNext",
+                        "Type": 0
+                      }
+                    ],
+                    "Where": [
+                      {
+                        "Condition": {
+                          "In": {
+                            "Expressions": [
+                              {
+                                "Column": {
+                                  "Expression": {
+                                    "SourceRef": {
+                                      "Source": "m"
+                                    }
+                                  },
+                                  "Property": "Batch Status"
+                                }
+                              }
+                            ],
+                            "Values": [
+                              [
+                                {
+                                  "Literal": {
+                                    "Value": "'Closed'"
+                                  }
+                                }
+                              ]
+                            ]
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "MedNext"
+                        }
+                      },
+                      "Property": "Batch Status"
+                    }
+                  },
+                  "howCreated": 1
+                },
+                {
+                  "name": "c02e8f76ced1802315e9",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "_Measures"
+                        }
+                      },
+                      "Property": "Average TAT - Closed"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "cardVisual",
+              "objects": {},
+              "orderBy": [
+                {
+                  "Direction": 2,
+                  "Expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "_Measures"
+                        }
+                      },
+                      "Property": "Average TAT - Closed"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "b370f7b6739b39eb4fc0": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "9fa902aef9ded057c43b",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "MedNext"
+                        }
+                      },
+                      "Property": "Batch Status"
+                    }
+                  },
+                  "howCreated": 1
+                },
+                {
+                  "name": "cfd77e9b652e6650b0ba",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Mems"
+                        }
+                      },
+                      "Property": "TAT Distribution"
+                    }
+                  },
+                  "howCreated": 1
+                },
+                {
+                  "name": "a92be4f94861fe661cec",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "MedNext"
+                        }
+                      },
+                      "Property": "Batch Status"
+                    }
+                  },
+                  "howCreated": 1
+                },
+                {
+                  "name": "84528265908e0951655b",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "_Measures"
+                        }
+                      },
+                      "Property": "Average TAT - Cancelled"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "cardVisual",
+              "objects": {},
+              "orderBy": [
+                {
+                  "Direction": 2,
+                  "Expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "_Measures"
+                        }
+                      },
+                      "Property": "Average TAT - Cancelled"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "ac15f14b707973968742": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "9fa902aef9ded057c43b",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "MedNext"
+                        }
+                      },
+                      "Property": "Batch Status"
+                    }
+                  },
+                  "howCreated": 1
+                },
+                {
+                  "name": "cfd77e9b652e6650b0ba",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Mems"
+                        }
+                      },
+                      "Property": "TAT Distribution"
+                    }
+                  },
+                  "howCreated": 1
+                },
+                {
+                  "name": "a92be4f94861fe661cec",
+                  "type": "Categorical",
+                  "filter": {
+                    "Version": 2,
+                    "From": [
+                      {
+                        "Name": "m",
+                        "Entity": "MedNext",
+                        "Type": 0
+                      }
+                    ],
+                    "Where": [
+                      {
+                        "Condition": {
+                          "In": {
+                            "Expressions": [
+                              {
+                                "Column": {
+                                  "Expression": {
+                                    "SourceRef": {
+                                      "Source": "m"
+                                    }
+                                  },
+                                  "Property": "Batch Status"
+                                }
+                              }
+                            ],
+                            "Values": [
+                              [
+                                {
+                                  "Literal": {
+                                    "Value": "'Closed'"
+                                  }
+                                }
+                              ]
+                            ]
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "MedNext"
+                        }
+                      },
+                      "Property": "Batch Status"
+                    }
+                  },
+                  "howCreated": 1
+                },
+                {
+                  "name": "c7704e124aa47182b800",
+                  "type": "Advanced",
+                  "expression": {
+                    "Aggregation": {
+                      "Expression": {
+                        "Column": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "MedNext"
+                            }
+                          },
+                          "Property": "TAT_WorkingDays"
+                        }
+                      },
+                      "Function": 4
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "cardVisual",
+              "objects": {},
+              "orderBy": [
+                {
+                  "Direction": 2,
+                  "Expression": {
+                    "Aggregation": {
+                      "Expression": {
+                        "Column": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "MedNext"
+                            }
+                          },
+                          "Property": "TAT_WorkingDays"
+                        }
+                      },
+                      "Function": 4
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "55ee5dffcd489ee87ef5": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "9fa902aef9ded057c43b",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "MedNext"
+                        }
+                      },
+                      "Property": "Batch Status"
+                    }
+                  },
+                  "howCreated": 1
+                },
+                {
+                  "name": "cfd77e9b652e6650b0ba",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Mems"
+                        }
+                      },
+                      "Property": "TAT Distribution"
+                    }
+                  },
+                  "howCreated": 1
+                },
+                {
+                  "name": "a92be4f94861fe661cec",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "MedNext"
+                        }
+                      },
+                      "Property": "Batch Status"
+                    }
+                  },
+                  "howCreated": 1
+                },
+                {
+                  "name": "91f74ba26d2b4270a63c",
+                  "type": "Categorical",
+                  "filter": {
+                    "Version": 2,
+                    "From": [
+                      {
+                        "Name": "m",
+                        "Entity": "MedNext",
+                        "Type": 0
+                      }
+                    ],
+                    "Where": [
+                      {
+                        "Condition": {
+                          "In": {
+                            "Expressions": [
+                              {
+                                "Column": {
+                                  "Expression": {
+                                    "SourceRef": {
+                                      "Source": "m"
+                                    }
+                                  },
+                                  "Property": "Batch Status"
+                                }
+                              }
+                            ],
+                            "Values": [
+                              [
+                                {
+                                  "Literal": {
+                                    "Value": "'Cancelled'"
+                                  }
+                                }
+                              ]
+                            ]
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "MedNext"
+                        }
+                      },
+                      "Property": "Batch Status"
+                    }
+                  },
+                  "howCreated": 1
+                },
+                {
+                  "name": "ca422773a9025e92a8a9",
+                  "type": "Advanced",
+                  "expression": {
+                    "Aggregation": {
+                      "Expression": {
+                        "Column": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "MedNext"
+                            }
+                          },
+                          "Property": "TAT_WorkingDays"
+                        }
+                      },
+                      "Function": 4
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "cardVisual",
+              "objects": {},
+              "orderBy": [
+                {
+                  "Direction": 2,
+                  "Expression": {
+                    "Aggregation": {
+                      "Expression": {
+                        "Column": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "MedNext"
+                            }
+                          },
+                          "Property": "TAT_WorkingDays"
+                        }
+                      },
+                      "Function": 4
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "41e7f18c29a05ff84cda": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "d32d5abccba5ed08dc04",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Calendar"
+                        }
+                      },
+                      "Property": "Month Name"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "695c825b1438ae0b0d65",
+                  "type": "Advanced",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Calendar"
+                        }
+                      },
+                      "Property": "Year"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "6734e446e2a599131192",
+                  "type": "Advanced",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Calendar"
+                        }
+                      },
+                      "Property": "Week Number"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "a3a841f73966a24ce647",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Calendar"
+                        }
+                      },
+                      "Property": "Quarter"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "bc653295762c386d1ccd",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "_Measures"
+                        }
+                      },
+                      "Property": "Average TAT (Working Days)"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "7a60f5a12a01244d5187",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "_Measures"
+                        }
+                      },
+                      "Property": "% Within 5 Days"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "cf7d42af45e8e9dd5c1c",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "_Measures"
+                        }
+                      },
+                      "Property": "% Over 5 Days"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "3ce8b9ba01c248c62c1c",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "_Measures"
+                        }
+                      },
+                      "Property": "Avg TAT Date SVG"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ],
+              "byType": [
+                {
+                  "name": "08bd07982d3fd2306517",
+                  "type": "Exclude",
+                  "filter": {
+                    "Version": 2,
+                    "From": [
+                      {
+                        "Name": "c",
+                        "Entity": "Calendar",
+                        "Type": 0
+                      }
+                    ],
+                    "Where": [
+                      {
+                        "Condition": {
+                          "Not": {
+                            "Expression": {
+                              "Or": {
+                                "Left": {
+                                  "Or": {
+                                    "Left": {
+                                      "Or": {
+                                        "Left": {
+                                          "Or": {
+                                            "Left": {
+                                              "Or": {
+                                                "Left": {
+                                                  "Or": {
+                                                    "Left": {
+                                                      "In": {
+                                                        "Expressions": [
+                                                          {
+                                                            "Column": {
+                                                              "Expression": {
+                                                                "SourceRef": {
+                                                                  "Source": "c"
+                                                                }
+                                                              },
+                                                              "Property": "Year"
+                                                            }
+                                                          }
+                                                        ],
+                                                        "Values": [
+                                                          [
+                                                            {
+                                                              "Literal": {
+                                                                "Value": "2023L"
+                                                              }
+                                                            }
+                                                          ],
+                                                          [
+                                                            {
+                                                              "Literal": {
+                                                                "Value": "2024L"
+                                                              }
+                                                            }
+                                                          ]
+                                                        ]
+                                                      }
+                                                    },
+                                                    "Right": {
+                                                      "In": {
+                                                        "Expressions": [
+                                                          {
+                                                            "Column": {
+                                                              "Expression": {
+                                                                "SourceRef": {
+                                                                  "Source": "c"
+                                                                }
+                                                              },
+                                                              "Property": "Year"
+                                                            }
+                                                          },
+                                                          {
+                                                            "Column": {
+                                                              "Expression": {
+                                                                "SourceRef": {
+                                                                  "Source": "c"
+                                                                }
+                                                              },
+                                                              "Property": "Month Name"
+                                                            }
+                                                          }
+                                                        ],
+                                                        "Values": [
+                                                          [
+                                                            {
+                                                              "Literal": {
+                                                                "Value": "2025L"
+                                                              }
+                                                            },
+                                                            {
+                                                              "Literal": {
+                                                                "Value": "'January'"
+                                                              }
+                                                            }
+                                                          ]
+                                                        ]
+                                                      }
+                                                    }
+                                                  }
+                                                },
+                                                "Right": {
+                                                  "In": {
+                                                    "Expressions": [
+                                                      {
+                                                        "Column": {
+                                                          "Expression": {
+                                                            "SourceRef": {
+                                                              "Source": "c"
+                                                            }
+                                                          },
+                                                          "Property": "Year"
+                                                        }
+                                                      },
+                                                      {
+                                                        "Column": {
+                                                          "Expression": {
+                                                            "SourceRef": {
+                                                              "Source": "c"
+                                                            }
+                                                          },
+                                                          "Property": "Month Name"
+                                                        }
+                                                      }
+                                                    ],
+                                                    "Values": [
+                                                      [
+                                                        {
+                                                          "Literal": {
+                                                            "Value": "2025L"
+                                                          }
+                                                        },
+                                                        {
+                                                          "Literal": {
+                                                            "Value": "'July'"
+                                                          }
+                                                        }
+                                                      ]
+                                                    ]
+                                                  }
+                                                }
+                                              }
+                                            },
+                                            "Right": {
+                                              "In": {
+                                                "Expressions": [
+                                                  {
+                                                    "Column": {
+                                                      "Expression": {
+                                                        "SourceRef": {
+                                                          "Source": "c"
+                                                        }
+                                                      },
+                                                      "Property": "Year"
+                                                    }
+                                                  },
+                                                  {
+                                                    "Column": {
+                                                      "Expression": {
+                                                        "SourceRef": {
+                                                          "Source": "c"
+                                                        }
+                                                      },
+                                                      "Property": "Month Name"
+                                                    }
+                                                  }
+                                                ],
+                                                "Values": [
+                                                  [
+                                                    {
+                                                      "Literal": {
+                                                        "Value": "2025L"
+                                                      }
+                                                    },
+                                                    {
+                                                      "Literal": {
+                                                        "Value": "'August'"
+                                                      }
+                                                    }
+                                                  ]
+                                                ]
+                                              }
+                                            }
+                                          }
+                                        },
+                                        "Right": {
+                                          "In": {
+                                            "Expressions": [
+                                              {
+                                                "Column": {
+                                                  "Expression": {
+                                                    "SourceRef": {
+                                                      "Source": "c"
+                                                    }
+                                                  },
+                                                  "Property": "Year"
+                                                }
+                                              }
+                                            ],
+                                            "Values": [
+                                              [
+                                                {
+                                                  "Literal": {
+                                                    "Value": "null"
+                                                  }
+                                                }
+                                              ]
+                                            ]
+                                          }
+                                        }
+                                      }
+                                    },
+                                    "Right": {
+                                      "In": {
+                                        "Expressions": [
+                                          {
+                                            "Column": {
+                                              "Expression": {
+                                                "SourceRef": {
+                                                  "Source": "c"
+                                                }
+                                              },
+                                              "Property": "Year"
+                                            }
+                                          },
+                                          {
+                                            "Column": {
+                                              "Expression": {
+                                                "SourceRef": {
+                                                  "Source": "c"
+                                                }
+                                              },
+                                              "Property": "Quarter"
+                                            }
+                                          }
+                                        ],
+                                        "Values": [
+                                          [
+                                            {
+                                              "Literal": {
+                                                "Value": "2025L"
+                                              }
+                                            },
+                                            {
+                                              "Literal": {
+                                                "Value": "'Q1'"
+                                              }
+                                            }
+                                          ]
+                                        ]
+                                      }
+                                    }
+                                  }
+                                },
+                                "Right": {
+                                  "In": {
+                                    "Expressions": [
+                                      {
+                                        "Column": {
+                                          "Expression": {
+                                            "SourceRef": {
+                                              "Source": "c"
+                                            }
+                                          },
+                                          "Property": "Year"
+                                        }
+                                      },
+                                      {
+                                        "Column": {
+                                          "Expression": {
+                                            "SourceRef": {
+                                              "Source": "c"
+                                            }
+                                          },
+                                          "Property": "Quarter"
+                                        }
+                                      }
+                                    ],
+                                    "Values": [
+                                      [
+                                        {
+                                          "Literal": {
+                                            "Value": "2025L"
+                                          }
+                                        },
+                                        {
+                                          "Literal": {
+                                            "Value": "'Q2'"
+                                          }
+                                        }
+                                      ]
+                                    ]
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "howCreated": 4,
+                  "filterExpressionMetadata": {
+                    "expressions": [
+                      {
+                        "Column": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "Calendar"
+                            }
+                          },
+                          "Property": "Year"
+                        }
+                      },
+                      {
+                        "Column": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "Calendar"
+                            }
+                          },
+                          "Property": "Quarter"
+                        }
+                      },
+                      {
+                        "Column": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "Calendar"
+                            }
+                          },
+                          "Property": "Month Name"
+                        }
+                      }
+                    ],
+                    "cachedValueItems": [
+                      {
+                        "identities": [
+                          {
+                            "scopeId": {
+                              "Comparison": {
+                                "ComparisonKind": 0,
+                                "Left": {
+                                  "Column": {
+                                    "Expression": {
+                                      "SourceRef": {
+                                        "Entity": "Calendar"
+                                      }
+                                    },
+                                    "Property": "Year"
+                                  }
+                                },
+                                "Right": {
+                                  "Literal": {
+                                    "Value": "2025L"
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "scopeId": {
+                              "Comparison": {
+                                "ComparisonKind": 0,
+                                "Left": {
+                                  "Column": {
+                                    "Expression": {
+                                      "SourceRef": {
+                                        "Entity": "Calendar"
+                                      }
+                                    },
+                                    "Property": "Quarter"
+                                  }
+                                },
+                                "Right": {
+                                  "Literal": {
+                                    "Value": "'Q2'"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        ],
+                        "valueMap": {
+                          "0": "2025",
+                          "1": "Q2"
+                        }
+                      },
+                      {
+                        "identities": [
+                          {
+                            "scopeId": {
+                              "Comparison": {
+                                "ComparisonKind": 0,
+                                "Left": {
+                                  "Column": {
+                                    "Expression": {
+                                      "SourceRef": {
+                                        "Entity": "Calendar"
+                                      }
+                                    },
+                                    "Property": "Year"
+                                  }
+                                },
+                                "Right": {
+                                  "Literal": {
+                                    "Value": "2025L"
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "scopeId": {
+                              "Comparison": {
+                                "ComparisonKind": 0,
+                                "Left": {
+                                  "Column": {
+                                    "Expression": {
+                                      "SourceRef": {
+                                        "Entity": "Calendar"
+                                      }
+                                    },
+                                    "Property": "Quarter"
+                                  }
+                                },
+                                "Right": {
+                                  "Literal": {
+                                    "Value": "'Q1'"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        ],
+                        "valueMap": {
+                          "0": "2025",
+                          "1": "Q1"
+                        }
+                      },
+                      {
+                        "identities": [
+                          {
+                            "scopeId": {
+                              "Comparison": {
+                                "ComparisonKind": 0,
+                                "Left": {
+                                  "Column": {
+                                    "Expression": {
+                                      "SourceRef": {
+                                        "Entity": "Calendar"
+                                      }
+                                    },
+                                    "Property": "Year"
+                                  }
+                                },
+                                "Right": {
+                                  "Literal": {
+                                    "Value": "null"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        ],
+                        "valueMap": {
+                          "0": "(Blank)"
+                        }
+                      },
+                      {
+                        "identities": [
+                          {
+                            "scopeId": {
+                              "Comparison": {
+                                "ComparisonKind": 0,
+                                "Left": {
+                                  "Column": {
+                                    "Expression": {
+                                      "SourceRef": {
+                                        "Entity": "Calendar"
+                                      }
+                                    },
+                                    "Property": "Year"
+                                  }
+                                },
+                                "Right": {
+                                  "Literal": {
+                                    "Value": "2025L"
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "scopeId": {
+                              "Comparison": {
+                                "ComparisonKind": 0,
+                                "Left": {
+                                  "Column": {
+                                    "Expression": {
+                                      "SourceRef": {
+                                        "Entity": "Calendar"
+                                      }
+                                    },
+                                    "Property": "Month Name"
+                                  }
+                                },
+                                "Right": {
+                                  "Literal": {
+                                    "Value": "'August'"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        ],
+                        "valueMap": {
+                          "0": "2025",
+                          "2": "August"
+                        }
+                      },
+                      {
+                        "identities": [
+                          {
+                            "scopeId": {
+                              "Comparison": {
+                                "ComparisonKind": 0,
+                                "Left": {
+                                  "Column": {
+                                    "Expression": {
+                                      "SourceRef": {
+                                        "Entity": "Calendar"
+                                      }
+                                    },
+                                    "Property": "Year"
+                                  }
+                                },
+                                "Right": {
+                                  "Literal": {
+                                    "Value": "2025L"
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "scopeId": {
+                              "Comparison": {
+                                "ComparisonKind": 0,
+                                "Left": {
+                                  "Column": {
+                                    "Expression": {
+                                      "SourceRef": {
+                                        "Entity": "Calendar"
+                                      }
+                                    },
+                                    "Property": "Month Name"
+                                  }
+                                },
+                                "Right": {
+                                  "Literal": {
+                                    "Value": "'July'"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        ],
+                        "valueMap": {
+                          "0": "2025",
+                          "2": "July"
+                        }
+                      },
+                      {
+                        "identities": [
+                          {
+                            "scopeId": {
+                              "Comparison": {
+                                "ComparisonKind": 0,
+                                "Left": {
+                                  "Column": {
+                                    "Expression": {
+                                      "SourceRef": {
+                                        "Entity": "Calendar"
+                                      }
+                                    },
+                                    "Property": "Year"
+                                  }
+                                },
+                                "Right": {
+                                  "Literal": {
+                                    "Value": "2025L"
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "scopeId": {
+                              "Comparison": {
+                                "ComparisonKind": 0,
+                                "Left": {
+                                  "Column": {
+                                    "Expression": {
+                                      "SourceRef": {
+                                        "Entity": "Calendar"
+                                      }
+                                    },
+                                    "Property": "Month Name"
+                                  }
+                                },
+                                "Right": {
+                                  "Literal": {
+                                    "Value": "'January'"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        ],
+                        "valueMap": {
+                          "0": "2025",
+                          "2": "January"
+                        }
+                      },
+                      {
+                        "identities": [
+                          {
+                            "scopeId": {
+                              "Comparison": {
+                                "ComparisonKind": 0,
+                                "Left": {
+                                  "Column": {
+                                    "Expression": {
+                                      "SourceRef": {
+                                        "Entity": "Calendar"
+                                      }
+                                    },
+                                    "Property": "Year"
+                                  }
+                                },
+                                "Right": {
+                                  "Literal": {
+                                    "Value": "2024L"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        ],
+                        "valueMap": {
+                          "0": "2024"
+                        }
+                      },
+                      {
+                        "identities": [
+                          {
+                            "scopeId": {
+                              "Comparison": {
+                                "ComparisonKind": 0,
+                                "Left": {
+                                  "Column": {
+                                    "Expression": {
+                                      "SourceRef": {
+                                        "Entity": "Calendar"
+                                      }
+                                    },
+                                    "Property": "Year"
+                                  }
+                                },
+                                "Right": {
+                                  "Literal": {
+                                    "Value": "2023L"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        ],
+                        "valueMap": {
+                          "0": "2023"
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "pivotTable",
+              "objects": {},
+              "activeProjections": {
+                "Rows": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Calendar"
+                        }
+                      },
+                      "Property": "Year"
+                    }
+                  },
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Calendar"
+                        }
+                      },
+                      "Property": "Quarter"
+                    }
+                  },
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Calendar"
+                        }
+                      },
+                      "Property": "Month Name"
+                    }
+                  }
+                ]
+              },
+              "expansionStates": [
+                {
+                  "roles": [
+                    "Rows"
+                  ],
+                  "levels": [
+                    {
+                      "queryRefs": [
+                        "Calendar.Year"
+                      ],
+                      "isCollapsed": true,
+                      "identityKeys": [
+                        {
+                          "Column": {
+                            "Expression": {
+                              "SourceRef": {
+                                "Entity": "Calendar"
+                              }
+                            },
+                            "Property": "Year"
+                          }
+                        }
+                      ],
+                      "isPinned": true
+                    },
+                    {
+                      "queryRefs": [
+                        "Calendar.Quarter"
+                      ],
+                      "isCollapsed": true,
+                      "identityKeys": [
+                        {
+                          "Column": {
+                            "Expression": {
+                              "SourceRef": {
+                                "Entity": "Calendar"
+                              }
+                            },
+                            "Property": "Quarter"
+                          }
+                        }
+                      ],
+                      "isPinned": true
+                    },
+                    {
+                      "queryRefs": [
+                        "Calendar.Month Name"
+                      ],
+                      "isCollapsed": true,
+                      "identityKeys": [
+                        {
+                          "Column": {
+                            "Expression": {
+                              "SourceRef": {
+                                "Entity": "Calendar"
+                              }
+                            },
+                            "Property": "Month Name"
+                          }
+                        }
+                      ],
+                      "isPinned": true
+                    },
+                    {
+                      "queryRefs": [
+                        "Calendar.Week Number"
+                      ],
+                      "isCollapsed": true,
+                      "isPinned": true
+                    }
+                  ],
+                  "root": {
+                    "identityValues": null,
+                    "children": [
+                      {
+                        "identityValues": [
+                          {
+                            "Literal": {
+                              "Value": "2025L"
+                            }
+                          }
+                        ],
+                        "isToggled": true,
+                        "children": [
+                          {
+                            "identityValues": [
+                              {
+                                "Literal": {
+                                  "Value": "'Q4'"
+                                }
+                              }
+                            ],
+                            "isToggled": true
+                          },
+                          {
+                            "identityValues": [
+                              {
+                                "Literal": {
+                                  "Value": "'Q3'"
+                                }
+                              }
+                            ],
+                            "isToggled": true
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          "b64af051d95087f288bb": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "9fa902aef9ded057c43b",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "MedNext"
+                        }
+                      },
+                      "Property": "Batch Status"
+                    }
+                  },
+                  "howCreated": 1
+                },
+                {
+                  "name": "e7d8b3989b07bbc5150a",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Mems"
+                        }
+                      },
+                      "Property": "Batch Status"
+                    }
+                  },
+                  "howCreated": 1
+                },
+                {
+                  "name": "8c8dfd62c92e758d0447",
+                  "type": "Advanced",
+                  "filter": {
+                    "Version": 2,
+                    "From": [
+                      {
+                        "Name": "o",
+                        "Entity": "Open Mems",
+                        "Type": 0
+                      }
+                    ],
+                    "Where": [
+                      {
+                        "Condition": {
+                          "Comparison": {
+                            "ComparisonKind": 1,
+                            "Left": {
+                              "Column": {
+                                "Expression": {
+                                  "SourceRef": {
+                                    "Source": "o"
+                                  }
+                                },
+                                "Property": "Aging"
+                              }
+                            },
+                            "Right": {
+                              "Literal": {
+                                "Value": "5L"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Open Mems"
+                        }
+                      },
+                      "Property": "Aging"
+                    }
+                  },
+                  "howCreated": 1
+                },
+                {
+                  "name": "0911528051b037855b07",
+                  "type": "Advanced",
+                  "expression": {
+                    "Aggregation": {
+                      "Expression": {
+                        "Column": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "Open Mems"
+                            }
+                          },
+                          "Property": "Aging"
+                        }
+                      },
+                      "Function": 1
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "cardVisual",
+              "objects": {},
+              "orderBy": [
+                {
+                  "Direction": 2,
+                  "Expression": {
+                    "Aggregation": {
+                      "Expression": {
+                        "Column": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "Open Mems"
+                            }
+                          },
+                          "Property": "Aging"
+                        }
+                      },
+                      "Function": 1
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "51aea3af31f4d2fe3297": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "e76aec07051b271dc606",
+                  "type": "Advanced",
+                  "expression": {
+                    "Aggregation": {
+                      "Expression": {
+                        "Column": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "Mems"
+                            }
+                          },
+                          "Property": "Batch Number"
+                        }
+                      },
+                      "Function": 2
+                    }
+                  },
+                  "howCreated": 1
+                },
+                {
+                  "name": "250bba417b7fd9663835",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Mems"
+                        }
+                      },
+                      "Property": "Batch Status"
+                    }
+                  },
+                  "howCreated": 1
+                },
+                {
+                  "name": "0a5815f55d6a4102adcd",
+                  "type": "Categorical",
+                  "filter": {
+                    "Version": 2,
+                    "From": [
+                      {
+                        "Name": "o",
+                        "Entity": "Open Mems",
+                        "Type": 0
+                      }
+                    ],
+                    "Where": [
+                      {
+                        "Condition": {
+                          "Not": {
+                            "Expression": {
+                              "In": {
+                                "Expressions": [
+                                  {
+                                    "Column": {
+                                      "Expression": {
+                                        "SourceRef": {
+                                          "Source": "o"
+                                        }
+                                      },
+                                      "Property": "Prdefined Text Type"
+                                    }
+                                  }
+                                ],
+                                "Values": [
+                                  [
+                                    {
+                                      "Literal": {
+                                        "Value": "'Processed succesfully'"
+                                      }
+                                    }
+                                  ]
+                                ]
+                              }
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Open Mems"
+                        }
+                      },
+                      "Property": "Prdefined Text Type"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "e9d60254d2801a4a0872",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Open Mems"
+                        }
+                      },
+                      "Property": "Aging Distribution"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "6bd190409486d861c987",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "_Measures"
+                        }
+                      },
+                      "Property": "Open Claims"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "28f1178e9ec74de362b3",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Open Mems"
+                        }
+                      },
+                      "Property": "Created Date"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "bcf911fd08e7d769a116",
+                  "type": "Advanced",
+                  "expression": {
+                    "Aggregation": {
+                      "Expression": {
+                        "Column": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "Open Mems"
+                            }
+                          },
+                          "Property": "Aging"
+                        }
+                      },
+                      "Function": 1
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "pivotTable",
+              "objects": {},
+              "orderBy": [
+                {
+                  "Direction": 2,
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Open Mems"
+                        }
+                      },
+                      "Property": "Prdefined Text Type"
+                    }
+                  }
+                }
+              ],
+              "activeProjections": {
+                "Rows": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Open Mems"
+                        }
+                      },
+                      "Property": "Prdefined Text Type"
+                    }
+                  }
+                ],
+                "Columns": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Open Mems"
+                        }
+                      },
+                      "Property": "Aging Distribution"
+                    }
+                  }
+                ]
+              },
+              "expansionStates": [
+                {
+                  "roles": [
+                    "Rows"
+                  ],
+                  "levels": [
+                    {
+                      "queryRefs": [
+                        "Open Mems.Prdefined Text Type"
+                      ],
+                      "isCollapsed": true,
+                      "isPinned": true
+                    }
+                  ],
+                  "root": {
+                    "identityValues": null
+                  }
+                }
+              ]
+            }
+          },
+          "39c3715efdf94bbc1b0c": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "f202b90f4ca6ab092f25",
+                  "type": "Categorical",
+                  "filter": {
+                    "Version": 2,
+                    "From": [
+                      {
+                        "Name": "m",
+                        "Entity": "Mems",
+                        "Type": 0
+                      }
+                    ],
+                    "Where": [
+                      {
+                        "Condition": {
+                          "In": {
+                            "Expressions": [
+                              {
+                                "Column": {
+                                  "Expression": {
+                                    "SourceRef": {
+                                      "Source": "m"
+                                    }
+                                  },
+                                  "Property": "Batch Status"
+                                }
+                              }
+                            ],
+                            "Values": [
+                              [
+                                {
+                                  "Literal": {
+                                    "Value": "'Open'"
+                                  }
+                                }
+                              ]
+                            ]
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Mems"
+                        }
+                      },
+                      "Property": "Batch Status"
+                    }
+                  },
+                  "howCreated": 1
+                },
+                {
+                  "name": "3643483f78d02d6e4c79",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "_Measures"
+                        }
+                      },
+                      "Property": "Open Claims"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "4f587feae4c0ad374153",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Open Mems"
+                        }
+                      },
+                      "Property": "Aging Label"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "ebdbc37822816870c0e8",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Open Mems"
+                        }
+                      },
+                      "Property": "Esraa Batchlist Label"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "columnChart",
+              "objects": {},
+              "orderBy": [
+                {
+                  "Direction": 1,
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Open Mems"
+                        }
+                      },
+                      "Property": "Aging Label"
+                    }
+                  }
+                }
+              ],
+              "activeProjections": {
+                "Category": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Open Mems"
+                        }
+                      },
+                      "Property": "Aging Label"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "39f230212745b0b72935": {
+            "singleVisual": {
+              "visualType": "pageNavigator",
+              "objects": {}
+            }
+          },
+          "8bd00bf63683480bfa1d": {
+            "singleVisual": {
+              "visualType": "actionButton",
+              "objects": {}
+            }
+          },
+          "04f325613ac991b12e16": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "8d42fdb84803cbe4db26",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Open Mems"
+                        }
+                      },
+                      "Property": "Esraa Batchlist.Batch Status"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "cd836fb4598a857e21b4",
+                  "type": "Advanced",
+                  "expression": {
+                    "Aggregation": {
+                      "Expression": {
+                        "Column": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "Open Mems"
+                            }
+                          },
+                          "Property": "Batch Number"
+                        }
+                      },
+                      "Function": 2
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "ccdee451872ebc750228",
+                  "type": "Advanced",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Open Mems"
+                        }
+                      },
+                      "Property": "Aging"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "pivotTable",
+              "objects": {},
+              "orderBy": [
+                {
+                  "Direction": 2,
+                  "Expression": {
+                    "Aggregation": {
+                      "Expression": {
+                        "Column": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "Open Mems"
+                            }
+                          },
+                          "Property": "Batch Number"
+                        }
+                      },
+                      "Function": 2
+                    }
+                  }
+                }
+              ],
+              "activeProjections": {
+                "Rows": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Open Mems"
+                        }
+                      },
+                      "Property": "Esraa Batchlist.Batch Status"
+                    }
+                  }
+                ],
+                "Columns": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Open Mems"
+                        }
+                      },
+                      "Property": "Aging"
+                    }
+                  }
+                ]
+              },
+              "expansionStates": [
+                {
+                  "roles": [
+                    "Rows"
+                  ],
+                  "levels": [
+                    {
+                      "queryRefs": [
+                        "Open Mems.Esraa Batchlist.Batch Status"
+                      ],
+                      "isCollapsed": true,
+                      "isPinned": true
+                    }
+                  ],
+                  "root": {
+                    "identityValues": null
+                  }
+                }
+              ],
+              "display": {
+                "mode": "hidden"
+              }
+            }
+          },
+          "0226ba02d451dbde876a": {
+            "singleVisual": {
+              "visualType": "actionButton",
+              "objects": {},
+              "display": {
+                "mode": "hidden"
+              }
+            }
+          },
+          "a4102c256c0267a1d051": {
+            "singleVisual": {
+              "visualType": "actionButton",
+              "objects": {}
+            }
+          }
+        }
+      }
+    },
+    "objects": {
+      "merge": {
+        "outspacePane": [
+          {
+            "properties": {
+              "expanded": {
+                "expr": {
+                  "Literal": {
+                    "Value": "false"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}

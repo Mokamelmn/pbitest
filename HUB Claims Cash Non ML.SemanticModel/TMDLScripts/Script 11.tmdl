@@ -1,0 +1,15 @@
+createOrReplace
+
+	ref table _Measures
+
+		/// Number of claims with Closed status
+		measure 'Closed Claims' =
+				CALCULATE(
+				    COUNTROWS(VALUES('MedNext'[Batch Number])),
+				    'MedNext'[Batch Status] = "Closed",
+				    USERELATIONSHIP('Calendar'[Date],MedNext[All Report Date])
+				)
+			formatString: #,##0
+			displayFolder: 📊 Volume Metrics
+			lineageTag: 3f4ea4d6-0cea-45c7-b64e-e8fc54d45a65
+

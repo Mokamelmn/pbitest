@@ -1,0 +1,8 @@
+createOrReplace
+
+	ref table _Measures
+
+		measure Calculation
+			displayFolder: ⏱️ TAT Metrics
+			lineageTag: c3cee386-3df4-4c37-824f-6d61d86161c8
+

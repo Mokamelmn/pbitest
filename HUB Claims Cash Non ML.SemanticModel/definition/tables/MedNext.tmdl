@@ -1,0 +1,183 @@
+table MedNext
+	lineageTag: 90d53539-0c62-4709-a8d9-6f9444217807
+
+	column 'Source.Name'
+		dataType: string
+		lineageTag: adc19728-3984-4fdc-86d8-32ca58ce6d39
+		summarizeBy: none
+		sourceColumn: Source.Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Batch Number'
+		dataType: int64
+		formatString: 0
+		lineageTag: 8f92d24f-bd27-45c5-b804-118058104a92
+		summarizeBy: sum
+		sourceColumn: Batch Number
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Batch Status'
+		dataType: string
+		lineageTag: 3a91988e-9cb0-4a78-ae3d-5aeaa9a80b3b
+		summarizeBy: none
+		sourceColumn: Batch Status
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Insurance Company Number'
+		dataType: int64
+		formatString: 0
+		lineageTag: 58778f2d-d54c-49e8-9573-778328389347
+		summarizeBy: none
+		sourceColumn: Insurance Company Number
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Submitted By'
+		dataType: string
+		lineageTag: c0c96539-53ac-4faf-ae74-ad3c2ee42772
+		summarizeBy: none
+		sourceColumn: Submitted By
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Report User Key'
+		dataType: int64
+		formatString: 0
+		lineageTag: e43b1066-afa3-4d03-bacc-b442ad5d57d2
+		summarizeBy: count
+		sourceColumn: Report User Key
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Modification User Key'
+		dataType: int64
+		formatString: 0
+		lineageTag: af40208a-18f2-49a4-9be0-0f644fde3122
+		summarizeBy: count
+		sourceColumn: Modification User Key
+
+		annotation SummarizationSetBy = Automatic
+
+	column TAT_WorkingDays = ```
+			
+			 NETWORKDAYS(MedNext[Received Date],MedNext[All Report Date],1,
+			Holidays)
+			
+			```
+		formatString: 0
+		lineageTag: 2d571cb2-91a2-4992-ab3b-0e8032e2ada8
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'TAT Distribution' = ```
+			
+			SWITCH(
+			    TRUE(),
+			    MedNext[TAT_WorkingDays] = 0, "Same Day Closures",
+			    MedNext[TAT_WorkingDays] <= 1,"Within 1 Day",
+			    MedNext[TAT_WorkingDays] <= 3,"Within 3 Days",
+			    MedNext[TAT_WorkingDays] <= 5,"Within 5 Days",
+			    MedNext[TAT_WorkingDays] > 10,"Over 10 Day",
+			    MedNext[TAT_WorkingDays] > 5,"Over 5 Days"
+			    
+			)
+			```
+		lineageTag: b38a72d4-b271-44d9-b8bb-3dcd67a04eb3
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'All Report Date'
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: f1ca83f8-6078-4959-8514-3d2fede9cdfb
+		summarizeBy: none
+		sourceColumn: All Report Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'All Report User Key'
+		dataType: string
+		lineageTag: 0e8c0fb2-730d-4219-b1a5-412b4fcf39ed
+		summarizeBy: none
+		sourceColumn: All Report User Key
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Received Date'
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: a70186f4-b4e5-4492-9494-ff30ad145aee
+		summarizeBy: none
+		sourceColumn: Received Date
+
+		variation Variation
+			isDefault
+			relationship: 58ccce35-a4f8-4ab8-a6c0-6b20f2365073
+			defaultHierarchy: LocalDateTable_bdf5ae1e-5906-4329-9e36-083e87ea7be6.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Report Date'
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 23b88523-c2fb-432a-92af-d2568bff99b6
+		summarizeBy: none
+		sourceColumn: Report Date
+
+		variation Variation
+			isDefault
+			relationship: 1f7ba1e8-96e8-4da5-a344-bbb2601c690d
+			defaultHierarchy: LocalDateTable_7a2846fc-79a9-4fbf-b302-867543482c5e.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Modification Date'
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: c0750b2c-885a-4957-aacd-03e4aa8e6da1
+		summarizeBy: none
+		sourceColumn: Modification Date
+
+		variation Variation
+			isDefault
+			relationship: 100da0bc-5b19-40cc-a047-985816fa7888
+			defaultHierarchy: LocalDateTable_b635515f-d937-45ce-a668-69142aa69086.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	partition MedNext = m
+		mode: import
+		source =
+				let
+				    Source = Table.Combine({#"MedNext Reported", #"MedNext Cancelled"}),
+				    #"Merged Queries" = Table.NestedJoin(Source, {"Report User Name"}, Dim_User, {"User Name"}, "Dim_User", JoinKind.LeftOuter),
+				    #"Expanded Dim_User" = Table.ExpandTableColumn(#"Merged Queries", "Dim_User", {"User Key"}, {"User Key"}),
+				    #"Renamed Columns" = Table.RenameColumns(#"Expanded Dim_User",{{"User Key", "Report User Key"}}),
+				    #"Merged Queries1" = Table.NestedJoin(#"Renamed Columns", {"Modification User Name"}, Dim_User, {"User Name"}, "Dim_User", JoinKind.LeftOuter),
+				    #"Expanded Dim_User1" = Table.ExpandTableColumn(#"Merged Queries1", "Dim_User", {"User Key"}, {"User Key"}),
+				    #"Renamed Columns1" = Table.RenameColumns(#"Expanded Dim_User1",{{"User Key", "Modification User Key"}}),
+				    #"Removed Other Columns" = Table.SelectColumns(#"Renamed Columns1",{"Source.Name", "Batch Number", "Batch Status", "CAST (Received Date AS DATE )", "CAST (Report Date AS DATE )", "CAST (Modification Date AS DATE )", "Insurance Company Number", "Submitted By", "Report User Key", "Modification User Key"}),
+				    #"Renamed Columns2" = Table.RenameColumns(#"Removed Other Columns",{{"CAST (Received Date AS DATE )", "Received Date"}, {"CAST (Report Date AS DATE )", "Report Date"}, {"CAST (Modification Date AS DATE )", "Modification Date"}}),
+				    #"Added Conditional Column" = Table.AddColumn(#"Renamed Columns2", "All Report User Key", each if [Report User Key] = null then [Modification User Key] else [Report User Key]),
+				    #"Added Conditional Column1" = Table.AddColumn(#"Added Conditional Column", "All Report Date", each if [Report Date] = null then [Modification Date] else [Report Date]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Added Conditional Column1",{{"All Report Date", type date}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Exception
+

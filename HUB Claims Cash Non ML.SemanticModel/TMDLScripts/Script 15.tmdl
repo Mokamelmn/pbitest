@@ -1,0 +1,10 @@
+createOrReplace
+
+	ref table _Measures
+
+		measure 'Yesterday - Gap Label' =
+				VAR Gap = [Processed Yesterday] - [Processed 7-Day Average]
+				RETURN FORMAT(ABS(Gap), "#,0") & " batches " & IF(Gap > 0, "above", "below") & " 7-day average"
+			displayFolder: 🎨 SVG Card Style\2️⃣ Processed Yesterday\Reference Labels
+			lineageTag: bacf8698-cdf6-4f20-9837-29f9d83768a5
+

@@ -1,0 +1,12 @@
+createOrReplace
+
+	ref table _Measures
+
+		measure 'TAT - Target (5 Days)' =
+				// Target TAT line at 5 days
+				// Use as reference line in visual
+				5
+			formatString: #,##0.0
+			displayFolder: ⏱️ Monitoring - TAT
+			lineageTag: 51afc286-6437-4924-bd26-8ac19e23e050
+

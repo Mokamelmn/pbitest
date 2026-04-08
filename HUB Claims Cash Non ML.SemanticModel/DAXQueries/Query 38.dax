@@ -1,0 +1,11 @@
+EVALUATE
+{
+COUNTROWS(
+FILTER(
+SUMMARIZE(
+Dim_User_Targets,
+Dim_User_Targets[User Name],
+Dim_User_Targets[Excel_Dim_User.Overtime Hrs]
+),Dim_User_Targets[Excel_Dim_User.Overtime Hrs]>0)
+)
+}

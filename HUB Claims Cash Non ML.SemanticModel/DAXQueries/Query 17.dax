@@ -1,0 +1,8 @@
+EVALUATE
+SUMMARIZE(
+	FILTER(
+		'Calendar',
+		'Calendar'[Year]=YEAR(TODAY())&&'Calendar'[Date]<=TODAY()
+	),
+	"YTDSum",CALCULATE([Claims Processed],USERELATIONSHIP('Calendar'[Date],MedNext[Modification Date]))
+)

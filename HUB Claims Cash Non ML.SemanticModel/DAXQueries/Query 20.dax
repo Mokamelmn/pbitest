@@ -1,0 +1,6 @@
+EVALUATE
+{
+	CALCULATE(
+		COUNTROWS(VALUES('Esraa Batchlist'[Batch n.])),'Esraa Batchlist'[Batch Status]="New"
+	)
+}

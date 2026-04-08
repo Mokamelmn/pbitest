@@ -1,0 +1,5 @@
+EVALUATE
+ADDCOLUMNS(
+'Open Mems'[Received Date],
+	"RcVolOp",[Open Claims])
+order BY 'Open Mems'[Received Date] DESC

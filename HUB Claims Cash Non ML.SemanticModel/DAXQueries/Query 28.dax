@@ -1,0 +1,5 @@
+EVALUATE
+ADDCOLUMNS(
+SUMMARIZE(
+	FILTER('Open Mems','Open Mems'[Received Date]=TODAY()-1),'Open Mems'[Received Date]),
+	"RcVolOp",[Open Claims])

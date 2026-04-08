@@ -1,0 +1,12 @@
+createOrReplace
+
+	ref table _Measures
+
+		measure 'Today - Change Label' =
+				VAR Change = [Processed Today] - [Processed Last Same Weekday]
+				VAR ChangePct = DIVIDE(Change, [Processed Last Same Weekday])
+				VAR Symbol = IF(Change > 0, "▲", IF(Change < 0, "▼", "●"))
+				RETURN Symbol & " " & FORMAT(ABS(ChangePct), "0.0%") & " vs last week"
+			displayFolder: 🎨 SVG Card Style\1️⃣ Processed Today\Reference Labels
+			lineageTag: c0f1f4c7-a862-4a96-aec6-4b6f85de2cc5
+

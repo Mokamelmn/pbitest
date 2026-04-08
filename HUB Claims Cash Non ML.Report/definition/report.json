@@ -1,0 +1,304 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/report/3.2.0/schema.json",
+  "themeCollection": {
+    "baseTheme": {
+      "name": "CY25SU11",
+      "reportVersionAtImport": {
+        "visual": "2.4.0",
+        "report": "3.0.0",
+        "page": "2.3.0"
+      },
+      "type": "SharedResources"
+    },
+    "customTheme": {
+      "name": "Custom3745183152878855.json",
+      "reportVersionAtImport": {
+        "visual": "2.4.0",
+        "report": "3.0.0",
+        "page": "2.3.0"
+      },
+      "type": "RegisteredResources"
+    }
+  },
+  "objects": {
+    "section": [
+      {
+        "properties": {
+          "verticalAlignment": {
+            "expr": {
+              "Literal": {
+                "Value": "'Top'"
+              }
+            }
+          }
+        }
+      }
+    ],
+    "outspacePane": [
+      {
+        "properties": {
+          "expanded": {
+            "expr": {
+              "Literal": {
+                "Value": "false"
+              }
+            }
+          }
+        }
+      }
+    ]
+  },
+  "publicCustomVisuals": [
+    "CalendarVisualA45056645E4E428B9D26EF971839A6B5",
+    "WordCloud1447959067750",
+    "Gantt1448688115699"
+  ],
+  "resourcePackages": [
+    {
+      "name": "SharedResources",
+      "type": "SharedResources",
+      "items": [
+        {
+          "name": "CY25SU11",
+          "path": "BaseThemes/CY25SU11.json",
+          "type": "BaseTheme"
+        }
+      ]
+    },
+    {
+      "name": "RegisteredResources",
+      "type": "RegisteredResources",
+      "items": [
+        {
+          "name": "Custom3745183152878855.json",
+          "path": "Custom3745183152878855.json",
+          "type": "CustomTheme"
+        },
+        {
+          "name": "delete_(1)18392318381304062.png",
+          "path": "delete_(1)18392318381304062.png",
+          "type": "Image"
+        },
+        {
+          "name": "delete_(1)3305592007393977.png",
+          "path": "delete_(1)3305592007393977.png",
+          "type": "Image"
+        },
+        {
+          "name": "delete_(1)3556436339957576.png",
+          "path": "delete_(1)3556436339957576.png",
+          "type": "Image"
+        },
+        {
+          "name": "delete_(1)5179334608504211.png",
+          "path": "delete_(1)5179334608504211.png",
+          "type": "Image"
+        },
+        {
+          "name": "delete_(1)6572963938964739.png",
+          "path": "delete_(1)6572963938964739.png",
+          "type": "Image"
+        },
+        {
+          "name": "delete_(1)6928997418808146.png",
+          "path": "delete_(1)6928997418808146.png",
+          "type": "Image"
+        },
+        {
+          "name": "delete_(1)7479196276272575.png",
+          "path": "delete_(1)7479196276272575.png",
+          "type": "Image"
+        },
+        {
+          "name": "delete_(1)774701476016462.png",
+          "path": "delete_(1)774701476016462.png",
+          "type": "Image"
+        },
+        {
+          "name": "delete_(1)7775140402350348.png",
+          "path": "delete_(1)7775140402350348.png",
+          "type": "Image"
+        },
+        {
+          "name": "delete_(1)8676013315327594.png",
+          "path": "delete_(1)8676013315327594.png",
+          "type": "Image"
+        },
+        {
+          "name": "delete054143540371689.png",
+          "path": "delete054143540371689.png",
+          "type": "Image"
+        },
+        {
+          "name": "delete39298402786467346.png",
+          "path": "delete39298402786467346.png",
+          "type": "Image"
+        },
+        {
+          "name": "delete39690199889105493.png",
+          "path": "delete39690199889105493.png",
+          "type": "Image"
+        },
+        {
+          "name": "delete9338419624358174.png",
+          "path": "delete9338419624358174.png",
+          "type": "Image"
+        },
+        {
+          "name": "delete9797618036050562.png",
+          "path": "delete9797618036050562.png",
+          "type": "Image"
+        },
+        {
+          "name": "details_(5)2963777605465773.svg",
+          "path": "details_(5)2963777605465773.svg",
+          "type": "Image"
+        },
+        {
+          "name": "details_(5)35290914609431256.svg",
+          "path": "details_(5)35290914609431256.svg",
+          "type": "Image"
+        },
+        {
+          "name": "details_(5)6020179195946352.svg",
+          "path": "details_(5)6020179195946352.svg",
+          "type": "Image"
+        },
+        {
+          "name": "details_(5)6309861283672106.svg",
+          "path": "details_(5)6309861283672106.svg",
+          "type": "Image"
+        },
+        {
+          "name": "details_(7)059727818645190944.svg",
+          "path": "details_(7)059727818645190944.svg",
+          "type": "Image"
+        },
+        {
+          "name": "details_(7)14741999802410188.svg",
+          "path": "details_(7)14741999802410188.svg",
+          "type": "Image"
+        },
+        {
+          "name": "details_(7)24867224732621251.svg",
+          "path": "details_(7)24867224732621251.svg",
+          "type": "Image"
+        },
+        {
+          "name": "details_(7)35407183169069667.svg",
+          "path": "details_(7)35407183169069667.svg",
+          "type": "Image"
+        },
+        {
+          "name": "details_(7)37792689120114287.svg",
+          "path": "details_(7)37792689120114287.svg",
+          "type": "Image"
+        },
+        {
+          "name": "details_(7)5234500984150097.svg",
+          "path": "details_(7)5234500984150097.svg",
+          "type": "Image"
+        },
+        {
+          "name": "details_(7)5961518756172944.svg",
+          "path": "details_(7)5961518756172944.svg",
+          "type": "Image"
+        },
+        {
+          "name": "details_(7)5974472792649672.svg",
+          "path": "details_(7)5974472792649672.svg",
+          "type": "Image"
+        },
+        {
+          "name": "details_(7)6390537096054462.svg",
+          "path": "details_(7)6390537096054462.svg",
+          "type": "Image"
+        },
+        {
+          "name": "details_(7)7995912269241489.svg",
+          "path": "details_(7)7995912269241489.svg",
+          "type": "Image"
+        },
+        {
+          "name": "icons8-click-5014680253277575772.png",
+          "path": "icons8-click-5014680253277575772.png",
+          "type": "Image"
+        },
+        {
+          "name": "icons8-click-5034480940711824726.png",
+          "path": "icons8-click-5034480940711824726.png",
+          "type": "Image"
+        },
+        {
+          "name": "icons8-close-window-247994341064440771.png",
+          "path": "icons8-close-window-247994341064440771.png",
+          "type": "Image"
+        },
+        {
+          "name": "NonMLCashClaimsFrame449441720764868.png",
+          "path": "NonMLCashClaimsFrame449441720764868.png",
+          "type": "Image"
+        },
+        {
+          "name": "NonMLCashClaimsFrameDrill23431328568590637.png",
+          "path": "NonMLCashClaimsFrameDrill23431328568590637.png",
+          "type": "Image"
+        },
+        {
+          "name": "NonMLCashClaimsFrameDrill37295285360104113.png",
+          "path": "NonMLCashClaimsFrameDrill37295285360104113.png",
+          "type": "Image"
+        },
+        {
+          "name": "NonMLCashClaimsFrameDrill3764053720084558.png",
+          "path": "NonMLCashClaimsFrameDrill3764053720084558.png",
+          "type": "Image"
+        },
+        {
+          "name": "NonMLCashClaimsFrameDrill624237067744495.png",
+          "path": "NonMLCashClaimsFrameDrill624237067744495.png",
+          "type": "Image"
+        },
+        {
+          "name": "NonMLCashClaimsFrameDrill6959467494683939.png",
+          "path": "NonMLCashClaimsFrameDrill6959467494683939.png",
+          "type": "Image"
+        },
+        {
+          "name": "NonMLCashClaimsFrameOvertime6761011475378681.png",
+          "path": "NonMLCashClaimsFrameOvertime6761011475378681.png",
+          "type": "Image"
+        },
+        {
+          "name": "NonMLCashClaimsFrameProduc2660445851829485.png",
+          "path": "NonMLCashClaimsFrameProduc2660445851829485.png",
+          "type": "Image"
+        },
+        {
+          "name": "NonMLCashClaimsFrameTAT9633994414204855.png",
+          "path": "NonMLCashClaimsFrameTAT9633994414204855.png",
+          "type": "Image"
+        }
+      ]
+    },
+    {
+      "name": "PBINathanDateRangeSlicer2024A1B2C3D4E5F6",
+      "type": "CustomVisual",
+      "items": [
+        {
+          "name": "PBINathanDateRangeSlicer2024A1B2C3D4E5F6.pbiviz.json",
+          "path": "PBINathanDateRangeSlicer2024A1B2C3D4E5F6.pbiviz.json",
+          "type": "CustomVisualMetadata"
+        }
+      ]
+    }
+  ],
+  "settings": {
+    "useStylableVisualContainerHeader": true,
+    "exportDataMode": "AllowSummarized",
+    "defaultDrillFilterOtherVisuals": true,
+    "allowChangeFilterTypes": true,
+    "useEnhancedTooltips": true,
+    "useDefaultAggregateDisplayName": true
+  }
+}

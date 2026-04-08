@@ -1,0 +1,104 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-US
+	dataAccessOptions
+		fastCombine
+		legacyRedirects
+		returnErrorValuesAsNull
+
+queryGroup 'Transform File from Mems (2)'
+
+	annotation PBI_QueryGroupOrder = 3
+
+queryGroup 'Transform File from Mems (2)\Helper Queries'
+
+	annotation PBI_QueryGroupOrder = 0
+
+queryGroup 'Transform File from Open Mems'
+
+	annotation PBI_QueryGroupOrder = 4
+
+queryGroup 'Transform File from Open Mems\Helper Queries'
+
+	annotation PBI_QueryGroupOrder = 0
+
+queryGroup 'Transform File from Closed Batches BI'
+
+	annotation PBI_QueryGroupOrder = 5
+
+queryGroup 'Transform File from Closed Batches BI\Helper Queries'
+
+	annotation PBI_QueryGroupOrder = 0
+
+queryGroup 'Transform File from MedNext Cancelled'
+
+	annotation PBI_QueryGroupOrder = 6
+
+queryGroup 'Transform File from MedNext Cancelled\Helper Queries'
+
+	annotation PBI_QueryGroupOrder = 0
+
+queryGroup 'Transform File from Archieved (2)'
+
+	annotation PBI_QueryGroupOrder = 7
+
+queryGroup 'Transform File from Archieved (2)\Helper Queries'
+
+	annotation PBI_QueryGroupOrder = 0
+
+queryGroup 'Transform File from MedNext Reported (3)'
+
+	annotation PBI_QueryGroupOrder = 1
+
+queryGroup 'Transform File from MedNext Reported (3)\Helper Queries'
+
+	annotation PBI_QueryGroupOrder = 0
+
+queryGroup 'Transform File from New_Mems'
+
+	annotation PBI_QueryGroupOrder = 9
+
+queryGroup 'Transform File from New_Mems\Helper Queries'
+
+	annotation PBI_QueryGroupOrder = 0
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBI_QueryOrder = ["Dim_InsuranceCompany","Dim_User","Dim_User_Manual","Dim_User_Targets","Admin_Users","MedNext","MedNext Reported","MedNext Cancelled","Closed Batches BI","Mems","Open Mems","New_Mems","Archieved","Esraa Batchlist","Parameter5","Transform Sample File (5)","Sample File (5)","Transform File (5)","Parameter6","Transform Sample File (6)","Sample File (6)","Transform File (6)","Sample File (7)","Parameter7","Transform Sample File (7)","Transform File (7)","Parameter1","Transform Sample File","Sample File","Transform File","Parameter9","Transform Sample File (9)","Sample File (9)","Transform File (9)","LastRefresh","Parameter10","Transform Sample File (10)","Sample File (10)","Transform File (10)","Parameter11","Transform Sample File (11)","Sample File (11)","Transform File (11)"]
+
+annotation PBI_ProTooling = ["MCP-PBIModeling","TMDLView_Desktop","DaxQueryView_Desktop","DevMode"]
+
+ref table MedNext
+ref table Dim_InsuranceCompany
+ref table Calendar
+ref table _Measures
+ref table DateTableTemplate_e53d05b7-8be6-4b82-b556-c5c09f2b1a12
+ref table 'Esraa Batchlist'
+ref table LocalDateTable_55673a27-4f9d-4d1e-92eb-1e697f7d89c3
+ref table 'Open Mems'
+ref table LastRefresh
+ref table LocalDateTable_050c2f2a-3be6-4dbe-951f-5be6bf27f040
+ref table Holidays
+ref table Mems
+ref table LocalDateTable_f8c913df-e271-4e27-bff7-55816fd0622b
+ref table Dim_User
+ref table 'Report Date Calendar'
+ref table Dim_User_Targets
+ref table LocalDateTable_8c8db7de-de15-4b80-9739-0cdba87aa737
+ref table 'Closed Batches BI'
+ref table LocalDateTable_76db34d7-7c46-4111-9f81-0d3ead1d5642
+ref table LocalDateTable_c076e952-dbcf-43aa-a2cf-42508aa6179f
+ref table LocalDateTable_2e27183c-e058-48e6-bc6c-fd7b1e5da7d8
+ref table New_Mems
+ref table LocalDateTable_63295989-6626-4b12-8c55-4fee6b92d22f
+ref table LocalDateTable_d1d719f3-6efc-4594-963f-dbb042d74958
+ref table LocalDateTable_cd1bd992-ccf1-47b9-a536-1e9b7f471cb6
+ref table LocalDateTable_bdf5ae1e-5906-4329-9e36-083e87ea7be6
+ref table LocalDateTable_7a2846fc-79a9-4fbf-b302-867543482c5e
+ref table LocalDateTable_b635515f-d937-45ce-a668-69142aa69086
+ref table _RefreshDate
+ref table LocalDateTable_c8f7f19b-c73b-4646-8346-64323bd54de3
+
+ref cultureInfo en-US
+

@@ -1,0 +1,8 @@
+EVALUATE
+SUMMARIZE(
+	FILTER(
+		'Calendar',
+		'Calendar'[Year]=YEAR(TODAY())&&'Calendar'[Date]<=TODAY()
+	),
+	"YTDSum",[Claims Received]
+)

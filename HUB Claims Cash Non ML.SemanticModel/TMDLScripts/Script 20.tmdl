@@ -1,0 +1,11 @@
+createOrReplace
+
+	ref table _Measures
+
+		measure 'Top Performer Name' =
+				
+				VAR Top3 = TOPN(3, SUMMARIZE(MedNext, Dim_User[User Name], "@Batches", [Processed MTD]), [@Batches], DESC)
+				RETURN MINX(FILTER(ADDCOLUMNS(Top3, "@Rank", RANKX(Top3, [@Batches], , DESC)), [@Rank] = 1), Dim_User[User Name])
+			displayFolder: 🎨 SVG Card Style\8️⃣ Top Performer\Base Measures
+			lineageTag: a02f3547-22fc-4dd1-b97b-cf000d215acd
+

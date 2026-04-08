@@ -1,0 +1,17 @@
+EVALUATE
+SUMMARIZE(
+	MedNext,
+	Dim_User[User Name],
+	"working days", 
+	CALCULATE(
+		COUNTROWS(VALUES(MedNext[All Report Date]))
+	),
+	"weekend",
+	CALCULATE(
+		COUNTROWS(VALUES(MedNext[All Report Date])),
+		'Calendar'[Weekday Name] IN {"Friday","Saturday"},
+		USERELATIONSHIP('Calendar'[Date],MedNext[All Report Date]),
+		CROSSFILTER('Calendar'[Date],MedNext[All Report Date],Both)
+)
+)
+

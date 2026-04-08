@@ -1,0 +1,228 @@
+table New_Mems
+	lineageTag: 0a2c66de-efc8-498e-91ff-a2f3edcefc3d
+
+	column 'Source.Name'
+		dataType: string
+		lineageTag: 3a05213f-06cf-4acc-b8c3-c66bc990cdef
+		summarizeBy: none
+		sourceColumn: Source.Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column UCRN
+		dataType: string
+		lineageTag: aa59360a-f189-4b12-9899-1a119abf5551
+		summarizeBy: none
+		sourceColumn: UCRN
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Submission Mode'
+		dataType: string
+		lineageTag: 822d58db-e71b-49af-a833-3ac3ac798072
+		summarizeBy: none
+		sourceColumn: Submission Mode
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Batch Number'
+		dataType: int64
+		formatString: 0
+		lineageTag: d8c2a7a1-9671-4021-88e2-f4eb7df40ba4
+		summarizeBy: sum
+		sourceColumn: Batch Number
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Insurance Company'
+		dataType: string
+		lineageTag: 4d74b31d-33c3-43a5-b37a-a8c15d8ad262
+		summarizeBy: none
+		sourceColumn: Insurance Company
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Current Status'
+		dataType: string
+		lineageTag: f8e5d682-75d6-49c7-ba85-9060cc0ffda4
+		summarizeBy: none
+		sourceColumn: Current Status
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Received On'
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 941d2891-8ec3-4f5e-adc7-79e95eead2ce
+		summarizeBy: none
+		sourceColumn: Received On
+
+		variation Variation
+			isDefault
+			relationship: 93d17dbf-e6a7-4788-8d22-44f322c46c73
+			defaultHierarchy: LocalDateTable_63295989-6626-4b12-8c55-4fee6b92d22f.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'VIP Status'
+		dataType: string
+		lineageTag: 17611b50-6583-4228-988c-2f05898a7d0b
+		summarizeBy: none
+		sourceColumn: VIP Status
+
+		annotation SummarizationSetBy = Automatic
+
+	column Status
+		dataType: string
+		lineageTag: ce98d0b4-62ec-471a-8859-fb77b852eee6
+		summarizeBy: none
+		sourceColumn: Status
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Reported On'
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 6b340cec-44b6-4014-8717-6bdabb06029e
+		summarizeBy: none
+		sourceColumn: Reported On
+
+		variation Variation
+			isDefault
+			relationship: 640dcb3c-8933-4cc3-a731-e9c8c9d8e92a
+			defaultHierarchy: LocalDateTable_d1d719f3-6efc-4594-963f-dbb042d74958.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Received to Reported TAT'
+		dataType: string
+		lineageTag: 5c7d64d0-49d0-4cf2-9f7e-657a5d005051
+		summarizeBy: none
+		sourceColumn: Received to Reported TAT
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Aging Band R-R'
+		dataType: string
+		lineageTag: 0647e3a1-6599-41c8-bba1-d6b78672f2ec
+		summarizeBy: none
+		sourceColumn: Aging Band R-R
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Paid/Settlement Date'
+		dataType: string
+		lineageTag: dc3a6172-cf87-47ec-81f9-1d8900058451
+		summarizeBy: none
+		sourceColumn: Paid/Settlement Date
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Report to Settlement TAT'
+		dataType: string
+		lineageTag: 3959aa18-80bd-4372-bf23-e7d5558f2edb
+		summarizeBy: none
+		sourceColumn: Report to Settlement TAT
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Received to Settlement E2E TAT'
+		dataType: string
+		lineageTag: 0e479f1e-87ba-4c71-9615-9c881a737255
+		summarizeBy: none
+		sourceColumn: Received to Settlement E2E TAT
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Aging Received to Settlement'
+		dataType: string
+		lineageTag: 8fd999c3-b559-4403-b8ff-f4c1cb1ed2c6
+		summarizeBy: none
+		sourceColumn: Aging Received to Settlement
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Delay in Aging'
+		dataType: string
+		lineageTag: db75a69f-2137-4ccd-b2d7-b97402bb0220
+		summarizeBy: none
+		sourceColumn: Delay in Aging
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Batch Submission Methode'
+		dataType: string
+		lineageTag: 9efd28aa-ccdc-40ce-9c9c-29ae61fc802c
+		summarizeBy: none
+		sourceColumn: Batch Submission Methode
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Received Time'
+		dataType: dateTime
+		formatString: Long Time
+		lineageTag: 3189c3d9-32cb-49cb-931e-572d4cc28ca4
+		summarizeBy: none
+		sourceColumn: Received Time
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Time
+
+	column 'Received On Adjusted'
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: e6bdee60-6cb6-402f-b87d-fd85b21a1cf9
+		summarizeBy: none
+		sourceColumn: Received On Adjusted
+
+		variation Variation
+			isDefault
+			relationship: 387dd4dd-b813-47dc-b24a-3183490e8999
+			defaultHierarchy: LocalDateTable_cd1bd992-ccf1-47b9-a536-1e9b7f471cb6.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column User =
+			
+			LOOKUPVALUE(
+			    MedNext[Report User Key],
+			    MedNext[Batch Number],
+			    New_Mems[Batch Number]
+			)
+		formatString: 0
+		lineageTag: 796fc921-65b5-419a-ba98-9ee5f9e25308
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	partition New_Mems = m
+		mode: import
+		source = ```
+				let
+				    Source = SharePoint.Files("https://mednetuaefz.sharepoint.com/sites/PBIDashboardsData/", [ApiVersion = 15]),
+				    #"Filtered Rows" = Table.SelectRows(Source, each ([Folder Path] = "https://mednetuaefz.sharepoint.com/sites/PBIDashboardsData/Shared Documents/Cash Hub Non ML/New Mems/")),
+				    #"Filtered Hidden Files1" = Table.SelectRows(#"Filtered Rows", each [Attributes]?[Hidden]? <> true),
+				    #"Invoke Custom Function1" = Table.AddColumn(#"Filtered Hidden Files1", "Transform File (11)", each #"Transform File (11)"([Content])),
+				    #"Renamed Columns1" = Table.RenameColumns(#"Invoke Custom Function1", {"Name", "Source.Name"}),
+				    #"Removed Other Columns1" = Table.SelectColumns(#"Renamed Columns1", {"Source.Name", "Transform File (11)"}),
+				    #"Expanded Table Column1" = Table.ExpandTableColumn(#"Removed Other Columns1", "Transform File (11)", Table.ColumnNames(#"Transform File (11)"(#"Sample File (11)"))),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Expanded Table Column1",{{"Source.Name", type text}, {"UCRN", type text}, {"Submission Mode", type text}, {"Member Number", Int64.Type}, {"Batch Number", Int64.Type}, {"Insurance Company", type text}, {"Current Status", type text}, {"Received On", type datetime}, {"VIP Status", type text}, {"Escalated On", type any}, {"Status", type text}, {"Reported On", type datetime}, {"Received to Reported TAT", type any}, {"Aging Band R-R", type text}, {"Paid/Settlement Date", type text}, {"Report to Settlement TAT", type any}, {"Current Date", type date}, {"Received to Settlement E2E TAT", type any}, {"Aging Received to Settlement", type text}, {"Delay in Aging", type any}, {"PTD hold", type any}, {"PTD Released", type any}, {"Payment Revert At", type any}, {"Bank Details Updated At", type any}, {"Batch Submission Methode", type text}, {"Policy Holder", type text}, {"Column26", type any}, {"Column27", type any}, {"Column28", type any}, {"Column29", type any}, {"Column30", type any}, {"Column31", type any}, {"Column32", type any}, {"Column33", type any}, {"Column34", type any}, {"Column35", type any}, {"Column36", type any}}),
+				    #"Removed Other Columns" = Table.SelectColumns(#"Changed Type",{"Source.Name", "UCRN", "Submission Mode", "Batch Number", "Insurance Company", "Current Status", "Received On", "VIP Status", "Status", "Reported On", "Received to Reported TAT", "Aging Band R-R", "Paid/Settlement Date", "Report to Settlement TAT", "Received to Settlement E2E TAT", "Aging Received to Settlement", "Delay in Aging", "Batch Submission Methode"}),
+				    #"Inserted Time" = Table.AddColumn(#"Removed Other Columns", "Received Time", each DateTime.Time([Received On]), type time),
+				    #"Added Conditional Column" = Table.AddColumn(#"Inserted Time", "Received On Adjusted", each 
+				    if [Received Time] >= #time(16, 40, 0) 
+				    then [Received On] + #duration(1, 0, 0, 0) 
+				    else [Received On]
+				),
+				    #"Changed Type1" = Table.TransformColumnTypes(#"Added Conditional Column",{{"Received On Adjusted", type date}})
+				in
+				    #"Changed Type1"
+				```
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Exception
+

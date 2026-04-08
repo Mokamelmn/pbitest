@@ -1,0 +1,8 @@
+EVALUATE
+SUMMARIZE(
+        FILTER(
+            'Calendar',
+            'Calendar'[Date] >= TODAY() - 4
+            && 'Calendar'[Date] < TODAY() 
+        ),'Calendar'[Date]
+)

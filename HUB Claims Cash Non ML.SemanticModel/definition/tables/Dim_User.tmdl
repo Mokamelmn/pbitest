@@ -1,0 +1,70 @@
+table Dim_User
+	lineageTag: 491c24f3-04be-45c2-84c5-f67d12b08333
+
+	column 'User Key'
+		dataType: int64
+		formatString: 0
+		lineageTag: 487e6858-48a5-4efd-8498-7fedf756f079
+		summarizeBy: none
+		sourceColumn: User Key
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'User Name'
+		dataType: string
+		lineageTag: b018d357-d1b7-4970-ad75-eac680ae6562
+		summarizeBy: none
+		sourceColumn: User Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column Comment
+		dataType: string
+		lineageTag: 2725b471-da3f-4843-9f75-415aaf835fdf
+		summarizeBy: none
+		sourceColumn: Comment
+
+		annotation SummarizationSetBy = Automatic
+
+	column Title
+		dataType: string
+		lineageTag: 09703082-c211-4235-92cc-8f0561bcf5a0
+		summarizeBy: none
+		sourceColumn: Title
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Dim_User = m
+		mode: import
+		source = ```
+				let
+				    Source = Table.Combine({#"MedNext Reported", #"MedNext Cancelled"}),
+				    
+				    // Get users from first column
+				    ReportUsers = Table.SelectColumns(Source, {"Report User Name"}),
+				    RenamedReport = Table.RenameColumns(ReportUsers, {{"Report User Name", "User Name"}}),
+				    
+				    // Get users from second column (replace "Cancel User Name" with your actual column name)
+				    CancelUsers = Table.SelectColumns(Source, {"Modification User Name"}),
+				    RenamedCancel = Table.RenameColumns(CancelUsers, {{"Modification User Name", "User Name"}}),
+				    
+				    // Combine both user lists
+				    AllUsers = Table.Combine({RenamedReport, RenamedCancel}),
+				    
+				    // Now get distinct users from BOTH columns
+				    #"Removed Duplicates" = Table.Distinct(AllUsers, {"User Name"}),
+				    #"Filtered Rows" = Table.SelectRows(#"Removed Duplicates", each ([User Name] <> null)),
+				    
+				    #"Added Index" = Table.AddIndexColumn(#"Filtered Rows", "Index", 1, 1, Int64.Type),
+				    #"Renamed Columns1" = Table.RenameColumns(#"Added Index",{{"Index", "User Key"}}),
+				    #"Merged Queries" = Table.NestedJoin(#"Renamed Columns1", {"User Name"}, Dim_User_Manual, {"User Name"}, "Excel_Dim_User", JoinKind.LeftOuter),
+				    #"Expanded Excel_Dim_User" = Table.ExpandTableColumn(#"Merged Queries", "Excel_Dim_User", {"Comment", "Title"}, {"Comment", "Title"}),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Expanded Excel_Dim_User",{{"User Key", Int64.Type}})
+				in
+				    #"Changed Type"
+				```
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Exception
+

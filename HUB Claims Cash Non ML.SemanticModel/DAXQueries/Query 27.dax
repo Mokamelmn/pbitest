@@ -1,0 +1,13 @@
+DEFINE
+    MEASURE '_Measures'[Open Claims] = CALCULATE(
+  COUNTROWS(VALUES('Open Mems'[Batch Number])),
+  KEEPFILTERS('Open Mems'[Esraa Batchlist.Batch Status] <> "Reported/Closed"),
+  KEEPFILTERS('Open Mems'[Esraa Batchlist.Batch Status] <> "Cancelled"),
+  NOT('Open Mems'[MedNext.Batch Status] IN {"Closed","Cancelled"})
+)
+
+EVALUATE
+ADDCOLUMNS(
+GROUPBY((FILTER('Open Mems','Open Mems'[Received Date]=TODAY()-1)),'Open Mems'[Received Date])
+	,
+	"RcVolOp",[Open Claims])

@@ -1,0 +1,9 @@
+EVALUATE
+
+    FILTER(
+        ALL('Calendar'),
+        'Calendar'[Date] >= DATE(YEAR(TODAY()), 1, 1) &&
+        'Calendar'[Date] <= TODAY() &&
+		'Calendar'[Is Working Day] = TRUE()
+
+    )

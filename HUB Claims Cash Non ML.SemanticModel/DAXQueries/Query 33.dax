@@ -1,0 +1,18 @@
+EVALUATE
+{
+VAR YTDDays = 
+    FILTER(
+        ALL('Calendar'),
+        'Calendar'[Date] >= DATE(YEAR(TODAY()), 1, 1) &&
+        'Calendar'[Date] <= TODAY() &&
+        'Calendar'[Is Working Day] = TRUE()
+
+    )
+VAR DailyProcessed = 
+    ADDCOLUMNS(
+        YTDDays,
+        "DailyClaims", CALCULATE([Claims Processed],USERELATIONSHIP('Calendar'[Date],MedNext[All Report Date]))
+    )
+RETURN
+    AVERAGEX(DailyProcessed, [DailyClaims])
+}

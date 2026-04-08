@@ -1,0 +1,201 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.6.0/schema.json",
+  "name": "257d61caf06af8325eb4",
+  "position": {
+    "x": 245.61325277028382,
+    "y": 505.78136496399185,
+    "z": 0,
+    "height": 698.63325232436284,
+    "width": 1360.8793560901652,
+    "tabOrder": 0
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Dim_User"
+                    }
+                  },
+                  "Property": "User Name"
+                }
+              },
+              "queryRef": "Dim_User.User Name",
+              "nativeQueryRef": "User Name"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "MedNext"
+                    }
+                  },
+                  "Property": "Batch Number"
+                }
+              },
+              "queryRef": "Sum(MedNext.Batch Number)",
+              "nativeQueryRef": "Batch Number"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "MedNext"
+                    }
+                  },
+                  "Property": "Batch Status"
+                }
+              },
+              "queryRef": "MedNext.Batch Status",
+              "nativeQueryRef": "Batch Status"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "MedNext"
+                    }
+                  },
+                  "Property": "Received Date"
+                }
+              },
+              "queryRef": "MedNext.Received Date",
+              "nativeQueryRef": "Received Date",
+              "format": "MMMM d, yyyy"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "MedNext"
+                    }
+                  },
+                  "Property": "Modification Date"
+                }
+              },
+              "queryRef": "MedNext.Modification Date",
+              "nativeQueryRef": "Modification Date",
+              "format": "MMMM d, yyyy"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "MedNext"
+                    }
+                  },
+                  "Property": "Report Date"
+                }
+              },
+              "queryRef": "MedNext.Report Date",
+              "nativeQueryRef": "Report Date",
+              "format": "MMMM d, yyyy"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "MedNext"
+                    }
+                  },
+                  "Property": "All Report Date"
+                }
+              },
+              "queryRef": "MedNext.All Report Date",
+              "nativeQueryRef": "All Report Date"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "MedNext"
+                    }
+                  },
+                  "Property": "TAT_WorkingDays"
+                }
+              },
+              "queryRef": "Sum(MedNext.TAT_WorkingDays)",
+              "nativeQueryRef": "TAT_WorkingDays"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "MedNext"
+                    }
+                  },
+                  "Property": "TAT Distribution"
+                }
+              },
+              "queryRef": "MedNext.TAT Distribution",
+              "nativeQueryRef": "TAT Distribution"
+            }
+          ]
+        }
+      }
+    },
+    "objects": {
+      "columnWidth": [
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "153.23024628340664D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Dim_User.User Name"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "127.230662170281D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Sum(MedNext.Batch Number)"
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "stylePreset": [
+        {
+          "properties": {
+            "name": {
+              "expr": {
+                "Literal": {
+                  "Value": "'None'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "isHidden": true
+}

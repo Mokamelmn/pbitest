@@ -1,0 +1,4 @@
+EVALUATE
+ADDCOLUMNS(
+VALUES('Open Mems'[Received Date]),
+	"RcVolOp",CALCULATE([Open Claims],'Open Mems'[Received Date]=TODAY()))

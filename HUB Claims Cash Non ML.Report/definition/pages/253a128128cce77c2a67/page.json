@@ -1,0 +1,10 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.0.0/schema.json",
+  "name": "253a128128cce77c2a67",
+  "displayName": "MTDProductivity",
+  "displayOption": "ActualSize",
+  "height": 160,
+  "width": 1200,
+  "visibility": "HiddenInViewMode",
+  "type": "Tooltip"
+}

@@ -1,0 +1,13 @@
+createOrReplace
+
+	ref table _Measures
+
+		measure 'Working Days' =
+				
+				CALCULATE(
+				    COUNTROWS(VALUES(MedNext[Modification Date]))
+				    )
+			formatString: 0
+			displayFolder: 📈 Productivity Metrics
+			lineageTag: 48936114-d2d9-4792-8132-c6e611968246
+

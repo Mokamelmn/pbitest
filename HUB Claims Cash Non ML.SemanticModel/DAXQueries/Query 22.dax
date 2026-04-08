@@ -1,0 +1,12 @@
+EVALUATE
+ SUMMARIZE(
+        FILTER(
+            'Calendar',
+            'Calendar'[Date] >= TODAY() - 1
+            && 'Calendar'[Date] <= TODAY() 
+            && 'Calendar'[Is Weekend] = FALSE()
+            && 'Calendar'[Is UAE Holiday] = FALSE() 
+        ),
+        'Calendar'[Date],
+        "Open Volume", [Open Claims]
+ )

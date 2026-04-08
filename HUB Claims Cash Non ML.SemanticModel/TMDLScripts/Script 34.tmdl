@@ -1,0 +1,16 @@
+createOrReplace
+
+	ref table _Measures
+
+		measure CM =
+				
+				var currentmonth = MONTH(TODAY())
+				var currentyear = YEAR(TODAY())
+				RETURN CALCULATE(
+				    [Claims Processed (userelationship)],
+				    'Calendar'[Month Number]=currentmonth,
+				    'Calendar'[Year] = currentyear
+				)
+			formatString: 0
+			lineageTag: 8b5c4082-90b5-47c4-b5bb-4645511db5c0
+

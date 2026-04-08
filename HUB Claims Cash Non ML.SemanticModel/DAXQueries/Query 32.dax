@@ -1,0 +1,4 @@
+EVALUATE
+{
+EOMONTH(TODAY(), -1)
+}

@@ -1,0 +1,54 @@
+table LastRefresh
+	lineageTag: 851f7e04-783b-463c-a9b1-dfbc138f77f2
+
+	column 'Last Refresh DateTime'
+		dataType: string
+		lineageTag: 51a2895d-af17-4c3a-bb43-02739506fd09
+		summarizeBy: none
+		sourceColumn: Last Refresh DateTime
+
+		annotation SummarizationSetBy = Automatic
+
+	column Date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 0ed9aa7d-9dbc-4d5f-81d1-77367c4a31c1
+		summarizeBy: none
+		sourceColumn: Date
+
+		variation Variation
+			isDefault
+			relationship: 0dbd3968-e315-4355-9854-873a9a7e197e
+			defaultHierarchy: LocalDateTable_050c2f2a-3be6-4dbe-951f-5be6bf27f040.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Time
+		dataType: dateTime
+		formatString: Long Time
+		lineageTag: 18e4de40-92ed-44d4-a896-db12689d101b
+		summarizeBy: none
+		sourceColumn: Time
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Time
+
+	partition LastRefresh = m
+		mode: import
+		source =
+				let
+				    Source = DateTimeZone.SwitchZone(DateTimeZone.FixedUtcNow(), +2),
+				    #"Converted to Table" = #table(1, {{Source}}),
+				    #"Renamed Columns" = Table.RenameColumns(#"Converted to Table",{{"Column1", "Last Refresh DateTime"}}),
+				    #"Inserted Date" = Table.AddColumn(#"Renamed Columns", "Date", each DateTime.Date([Last Refresh DateTime]), type date),
+				    #"Inserted Time" = Table.AddColumn(#"Inserted Date", "Time", each DateTime.Time([Last Refresh DateTime]), type time)
+				in
+				    #"Inserted Time"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

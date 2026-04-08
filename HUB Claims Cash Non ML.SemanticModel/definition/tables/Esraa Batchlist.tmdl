@@ -1,0 +1,142 @@
+table 'Esraa Batchlist'
+	lineageTag: 9e21305d-6ada-42a3-bb58-fa7c6b74c097
+
+	column 'Pic code'
+		dataType: int64
+		formatString: 0
+		lineageTag: 0ef3f8f2-3030-4dbe-a13f-fec917d4a408
+		summarizeBy: sum
+		sourceColumn: Pic code
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Received Date'
+		dataType: string
+		lineageTag: ebe4fc51-6db7-4d2c-96e7-290a23102b0a
+		summarizeBy: none
+		sourceColumn: Received Date
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Batches External Reference'
+		dataType: string
+		lineageTag: e8fcba61-8467-49c9-b828-dbbc4110613d
+		summarizeBy: none
+		sourceColumn: Batches External Reference
+
+		annotation SummarizationSetBy = Automatic
+
+	column Notes
+		dataType: string
+		lineageTag: b57837f5-17ce-47a9-9164-a0de6c828dec
+		summarizeBy: none
+		sourceColumn: Notes
+
+		annotation SummarizationSetBy = Automatic
+
+	column Aging
+		dataType: int64
+		formatString: 0
+		lineageTag: 99010c64-5be3-442a-a47e-954aaa65876c
+		summarizeBy: sum
+		sourceColumn: Aging
+
+		annotation SummarizationSetBy = Automatic
+
+	column App
+		dataType: string
+		lineageTag: 44c7e7d9-f3d3-4051-85c3-df4ade222495
+		summarizeBy: none
+		sourceColumn: App
+
+		annotation SummarizationSetBy = Automatic
+
+	column With
+		dataType: string
+		lineageTag: 9d2dc987-ed48-4dc2-a10d-bc6a8c7535d6
+		summarizeBy: none
+		sourceColumn: With
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Batch Status'
+		dataType: string
+		lineageTag: 4a37f95a-d558-405b-9944-fa6731cc6e2b
+		summarizeBy: none
+		sourceColumn: Batch Status
+
+		annotation SummarizationSetBy = Automatic
+
+	column Users
+		dataType: string
+		lineageTag: 705b4c82-1370-4c90-b776-dc07583d350e
+		summarizeBy: none
+		sourceColumn: Users
+
+		annotation SummarizationSetBy = Automatic
+
+	column Comment
+		dataType: string
+		lineageTag: eceb12a2-56f5-4e5a-ad67-9b44e7c2d39b
+		summarizeBy: none
+		sourceColumn: Comment
+
+		annotation SummarizationSetBy = Automatic
+
+	column Today
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 4095f3f9-0664-42f2-a227-07c426e0ebb2
+		summarizeBy: none
+		sourceColumn: Today
+
+		variation Variation
+			isDefault
+			relationship: 6a917334-d50a-44d5-884c-bdebfaf7ac02
+			defaultHierarchy: LocalDateTable_55673a27-4f9d-4d1e-92eb-1e697f7d89c3.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Predefined Text Type'
+		dataType: string
+		lineageTag: 2a1872fe-88b5-45a3-995d-92351cab6cb9
+		summarizeBy: none
+		sourceColumn: Predefined Text Type
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Batch NO.'
+		dataType: int64
+		formatString: 0
+		lineageTag: 11e0c22d-49dd-441e-a92e-0cd1fc4199b0
+		summarizeBy: sum
+		sourceColumn: Batch NO.
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Esraa Batchlist' = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(Web.Contents("https://mednetuaefz-my.sharepoint.com/personal/mariam_essam_mednet_com/Documents/MN%20RI%20BL.xlsx"), null, true),
+				    Batchlist_Sheet = Source{[Item="Batchlist",Kind="Sheet"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(Batchlist_Sheet, [PromoteAllScalars=true]),
+				    //Custom1 = Table.TransformColumns(
+				    //#"Promoted Headers",
+				    //{ "Assigned Date", each try Date.From(_) otherwise null, type date }
+				//),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Batch NO.", Int64.Type}, {"Pic code", Int64.Type},  {"Received Date", type any}, {"Predefined Text Type", type text}, {"Batches External Reference", type text}, {"Notes", type text}, {"Aging", Int64.Type}, {"App", type text}, {"With", type text}, {"Batch Status", type text}, {"Users", type text}, {"Comment", type any}, {"Today", type date}}),
+				    #"Removed Other Columns" = Table.SelectColumns(#"Changed Type",{"Batch NO.", "Pic code",  "Received Date", "Predefined Text Type", "Batches External Reference", "Notes", "Aging", "App", "With", "Batch Status", "Users", "Comment", "Today"}),
+				    #"Replaced Errors1" = Table.ReplaceErrorValues(#"Removed Other Columns", {{"App", " "}}),
+				    #"Removed Errors" = Table.RemoveRowsWithErrors(#"Replaced Errors1", {"Batch NO."}),
+				    #"Filtered Rows" = Table.SelectRows(#"Removed Errors", each ([#"Batch NO."] <> null)),
+				    #"Replaced Errors" = Table.ReplaceErrorValues(#"Filtered Rows", {{"Notes", "NA"}})
+				in
+				    #"Replaced Errors"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

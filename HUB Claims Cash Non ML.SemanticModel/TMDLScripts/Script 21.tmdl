@@ -1,0 +1,10 @@
+createOrReplace
+
+	ref table _Measures
+
+		measure 'Top Performer - Gap Label' =
+				VAR Gap = [Top Performer Count] - [Second Place Count]
+				RETURN "+" & FORMAT(Gap, "#,0") & " batches ahead of 2nd place"
+			displayFolder: 🎨 SVG Card Style\8️⃣ Top Performer\Reference Labels
+			lineageTag: 12582e61-7945-414c-ab13-bf540159dd31
+

@@ -1,0 +1,17 @@
+EVALUATE
+{
+AVERAGEX(
+    SUMMARIZE(
+        FILTER(
+            'Calendar',
+            'Calendar'[Date] >= TODAY() - 21
+            && 'Calendar'[Date] <= TODAY() 
+            && 'Calendar'[Is Weekend] = FALSE()
+            && 'Calendar'[Is UAE Holiday] = FALSE() 
+        ),
+        'Calendar'[Date],
+        "Received Volume", [Claims Received]
+    ),
+    [Received Volume]
+)
+}

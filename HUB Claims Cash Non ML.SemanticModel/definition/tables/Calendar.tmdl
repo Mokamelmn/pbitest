@@ -1,0 +1,315 @@
+/// Calendar dimension table with date attributes
+table Calendar
+	lineageTag: 69aab7f8-813e-4922-8700-cc980e0d8b20
+	dataCategory: Time
+
+	column Date
+		isKey
+		formatString: Short Date
+		lineageTag: 8b4f741d-2dca-4042-9bb4-7cfb8d50276f
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Date]
+
+		annotation PowerBIMcp_MarkAsDateKey = 1
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Year
+		lineageTag: 9be1362e-6357-4eba-a3db-795be56f0265
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Year]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Year-Month
+		lineageTag: dcdf5be9-9c1f-4afe-abed-f5ef9ae47f98
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Year-Month]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Month Number'
+		lineageTag: 076b9f8e-7a59-4c31-9ae7-020d977cdf61
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Month Number]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Month Name'
+		lineageTag: ce2add85-b2f4-4290-adf0-2321be6107b2
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Month Name]
+		sortByColumn: 'Month Number'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Month Short'
+		lineageTag: c8136534-cc78-4920-a500-e228251eda11
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Month Short]
+		sortByColumn: 'Month Number'
+
+		annotation SummarizationSetBy = Automatic
+
+	column Quarter
+		lineageTag: 69c7b643-2cda-4bee-9ef8-d3e5152b635a
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Quarter]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Quarter Number'
+		lineageTag: 968a809f-89d7-48b2-af0e-35d68a193a94
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Quarter Number]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Week Number'
+		lineageTag: 1c5d321e-1116-465e-8d35-329c3e4df917
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Week Number]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Weekday Number'
+		lineageTag: f4269822-c884-45f2-b642-3fd5dc40815a
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Weekday Number]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Weekday Name'
+		lineageTag: 45afad9a-449d-4775-82b5-4d7826ba6845
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Weekday Name]
+		sortByColumn: 'Weekday Number'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Weekday Short'
+		lineageTag: 1b175d06-f927-41cf-9517-32781900b162
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Weekday Short]
+		sortByColumn: 'Weekday Number'
+
+		annotation SummarizationSetBy = Automatic
+
+	column Day
+		lineageTag: 2f52dd74-ced1-4674-b180-a7e817b47ccb
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Day]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Is Weekend'
+		lineageTag: 4bca72b2-5eae-414b-812d-96965960357c
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Is Weekend]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Fiscal Year'
+		lineageTag: 85d51e47-91b1-4105-8cfd-669a4247eb70
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Fiscal Year]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Fiscal Quarter'
+		lineageTag: 5633d707-d9d9-4f9b-b8df-4ddc1326c4f6
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Fiscal Quarter]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Is UAE Holiday' =
+			
+			NOT ISBLANK(
+			    LOOKUPVALUE(
+			        Holidays[UAE Holidays],
+			        Holidays[UAE Holidays], 'Calendar'[Date]
+			    )
+			)
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: d75b06b7-191a-49fa-a98d-297cd87682ac
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Is Working Day' = ```
+			
+			// Friday and Saturday are weekends (days 5 and 5)
+			VAR IsSaturdayOrSunday = 'Calendar'[Weekday Number] IN {6,7}
+			VAR IsHoliday = 'Calendar'[Is UAE Holiday]
+			RETURN
+			NOT(IsSaturdayOrSunday || IsHoliday)
+			
+			```
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 358d1afd-d2fd-40be-83cf-c0f83c11e101
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	/// TRUE if date equals the refresh date (non-volatile)
+	column IsToday =
+			
+			VAR RefreshDate = CALCULATE(MAX(_RefreshDate[RefreshDate]))
+			RETURN
+			'Calendar'[Date] = RefreshDate
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 59f5daf6-68a3-4440-8a04-152761b68d5d
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	/// TRUE if date is one day before refresh date (non-volatile)
+	column IsYesterday =
+			
+			VAR RefreshDate = CALCULATE(MAX(_RefreshDate[RefreshDate]))
+			RETURN
+			'Calendar'[Date] = RefreshDate - 1
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 312c033f-6fe6-4fd5-a3b6-b0e0cc4546ec
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	/// TRUE if date is within last 7 days from refresh date (non-volatile)
+	column IsLast7Days =
+			
+			VAR RefreshDate = CALCULATE(MAX(_RefreshDate[RefreshDate]))
+			VAR StartDate = RefreshDate - 7
+			RETURN
+			'Calendar'[Date] >= StartDate && 'Calendar'[Date] <= RefreshDate
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: c141cb46-427b-4cb6-9101-7e6242265b00
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	/// TRUE if date is within last 14 days from refresh date (non-volatile)
+	column IsLast14Days =
+			
+			VAR RefreshDate = CALCULATE(MAX(_RefreshDate[RefreshDate]))
+			VAR StartDate = RefreshDate - 14
+			RETURN
+			'Calendar'[Date] >= StartDate && 'Calendar'[Date] <= RefreshDate
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: e3383e5c-f50c-4370-ba1a-2700b2a859b0
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	/// TRUE if date is within last 30 days from refresh date (non-volatile)
+	column IsLast30Days =
+			VAR RefreshDate = CALCULATE(MAX(_RefreshDate[RefreshDate]))
+			VAR StartDate = RefreshDate - 30
+			RETURN
+			'Calendar'[Date] >= StartDate && 'Calendar'[Date] <= RefreshDate
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 67bfb33d-8d4c-43e6-bf91-bf0b75c9b927
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	/// TRUE if date is within month-to-date from refresh date (non-volatile)
+	column IsMTD =
+			
+			VAR RefreshDate = CALCULATE(MAX(_RefreshDate[RefreshDate]))
+			VAR _StartOfMonth = DATE(YEAR(RefreshDate), MONTH(RefreshDate), 1)
+			RETURN
+			'Calendar'[Date] >= _StartOfMonth && 'Calendar'[Date] <= RefreshDate
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 206da1b8-e961-454a-8200-b9159fc0cd33
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	/// TRUE if date is within the complete previous month (non-volatile)
+	column IsLastMonth =
+			
+			VAR RefreshDate = CALCULATE(MAX(_RefreshDate[RefreshDate]))
+			VAR StartOfLastMonth = DATE(YEAR(EOMONTH(RefreshDate, -1)), MONTH(EOMONTH(RefreshDate, -1)), 1)
+			VAR EndOfLastMonth = EOMONTH(RefreshDate, -1)
+			RETURN
+			'Calendar'[Date] >= StartOfLastMonth && 'Calendar'[Date] <= EndOfLastMonth
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 91943df7-9655-4a13-9768-c0ba034480ef
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column WeekInMonth = ```
+			
+			VAR _date = 'Calendar'[Date]
+			VAR _weekOfDate = WEEKNUM(_date, 2)  -- 2 = Monday-start
+			VAR _weekOfMonthStart = WEEKNUM(DATE(YEAR(_date), MONTH(_date), 1), 2)
+			RETURN
+			   "Week " & _weekOfDate - _weekOfMonthStart + 1
+			
+			```
+		lineageTag: 4df125f2-95cd-4194-847e-692156ad7a60
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsYTD =
+			
+			VAR RefreshDate = CALCULATE(MAX(_RefreshDate[RefreshDate]))
+			VAR _StartOfYear = DATE(YEAR(RefreshDate), 1, 1)
+			RETURN
+			'Calendar'[Date] >= _StartOfYear && 'Calendar'[Date] <= RefreshDate
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 3be144d8-5392-4bfe-a012-22c3b059ae0d
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Calendar = calculated
+		mode: import
+		source = ```
+				
+				VAR MinDate = DATE(2023, 1, 1)  // Start from beginning of 2023
+				VAR MaxDate = DATE(2026, 12, 31) // Extend to end of 2026
+				RETURN
+				ADDCOLUMNS(
+				    CALENDAR(MinDate, MaxDate),
+				    "Year", YEAR([Date]),
+				    "Year-Month", FORMAT([Date], "YYYY-MM"),
+				    "Month Number", MONTH([Date]),
+				    "Month Name", FORMAT([Date], "MMMM"),
+				    "Month Short", FORMAT([Date], "MMM"),
+				    "Quarter", "Q" & FORMAT([Date], "Q"),
+				    "Quarter Number", QUARTER([Date]),
+				    "Week Number", WEEKNUM([Date], 2),
+				    "Weekday Number", WEEKDAY([Date], 2),
+				    "Weekday Name", FORMAT([Date], "DDDD"),
+				    "Weekday Short", FORMAT([Date], "DDD"),
+				    "Day", DAY([Date]),
+				    "Is Weekend", WEEKDAY([Date], 2) >= 6,
+				    "Fiscal Year", IF(MONTH([Date]) >= 7, YEAR([Date]) + 1, YEAR([Date])),
+				    "Fiscal Quarter", "FQ" & IF(MONTH([Date]) >= 7, CEILING((MONTH([Date]) - 6) / 3, 1), CEILING((MONTH([Date]) + 6) / 3, 1))
+				)
+				
+				```
+

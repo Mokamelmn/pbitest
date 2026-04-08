@@ -1,0 +1,10 @@
+EVALUATE
+SUMMARIZE(
+        FILTER(
+            'Calendar',
+            'Calendar'[Date] >= TODAY() - 3
+            && 'Calendar'[Date] < TODAY() 
+        ),
+        'Calendar'[Date],
+        "Open Volume", [Open Claims])
+    

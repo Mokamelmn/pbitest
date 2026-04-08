@@ -1,0 +1,5 @@
+EVALUATE
+ADDCOLUMNS(
+    VALUES(Dim_User[User Name]),
+    "@Batches", [Claims Processed MTD]
+)

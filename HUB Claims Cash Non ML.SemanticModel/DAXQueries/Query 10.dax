@@ -1,0 +1,9 @@
+EVALUATE
+SUMMARIZE(
+FILTER(
+	'Calendar',
+	AND('Calendar'[Month Number]=MONTH(TODAY())-1,'Calendar'[Year]=YEAR(TODAY()))
+),
+'Calendar'[Date],
+"Claims Received", [Claims Processed]
+)

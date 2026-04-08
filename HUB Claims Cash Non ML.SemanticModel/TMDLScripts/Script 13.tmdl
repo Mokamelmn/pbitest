@@ -1,0 +1,13 @@
+createOrReplace
+
+	ref table _Measures
+
+		measure 'IT Issue Open Claims' =
+				
+				CALCULATE(
+				    [Open Claims],
+				    'Open Mems'[Esraa Batchlist.Batch Status] = "IT issue"
+				)
+			formatString: 0
+			lineageTag: 3a101fda-e376-4357-96a7-742005507c82
+

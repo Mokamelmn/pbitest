@@ -1,0 +1,247 @@
+createOrReplace
+
+	function 'PowerofBI.IBCS.BarChart.AbsoluteValues' =
+			(
+				// Main value (actual)
+				valueMain: SCALAR VAL, 
+				// Secondary value (forecast)
+				valueSecond: SCALAR VAL,
+				// Base value (previous year or budget)
+				valueBase: SCALAR VAL,
+				// Base value type: "grey" (solid fill) or "outlined" (white bar with black border)
+				baseType: STRING VAL,
+				// Data label displayed to the right of the bar(s)
+				dataLabel: STRING VAL,
+				// Indicates whether the row represents a total row (bold labels, chart suppression)
+				isTotalRow: BOOLEAN VAL,
+				// Controls whether the chart should appear in total rows
+				chartInTotalRow: BOOLEAN VAL,
+				// Maximum value across all rows (ALLSELECTED) — used for consistent bar scaling
+				valueMax: SCALAR VAL,
+				// Width of the generated SVG image (0 = use default width)
+				imageWidth: INT64 VAL,
+				// Additional right padding (0 = use default padding) — required for reserved space next to the chart
+				imageRightPad: INT64 VAL
+			) =>
+				//=================================================================================================
+				// Project: UDF for generating IBCS-styled charts (as SVG images)
+				//
+				// The visualization design adheres to IBCS recommendations:
+				//   https://www.ibcs.com/ibcs-standards-1-2/
+				//
+				// IMPORTANT:
+				//   This visual is NOT produced, certified, authorized, or endorsed by IBCS®
+				//   https://www.ibcs.com/
+				//
+				// The generated charts can be embedded inside Power BI visuals:
+				//   - Table
+				//   - Matrix
+				//   - New Card visuals
+				//
+				//=================================================================================================
+				// Author: Andrzej Leszkiewicz — IBCS® Certified Analyst
+				// More info: https://powerofbi.org/
+				// LinkedIn: https://www.linkedin.com/in/avatorl/
+				// Email:    andrzej@powerofbi.org
+				//=================================================================================================
+				// License: MIT License (free and permissive)
+				// https://en.wikipedia.org/wiki/MIT_License
+				//=================================================================================================
+				// Description:
+				//   This UDF generates an SVG image featuring a horizontal bar chart to represent absolute values.
+				//
+				//   Features include:
+				//     • Base bar: grey (Previous Year — PY) or outlined (Budget — BU)
+				//     • Stacked bars for main and secondary values:
+				//           - Main value (AC, actuals): solid black bar
+				//           - Secondary value (FC, forecast): hatched diagonal pattern
+				//     • Data labels placed to the right of the bar(s)
+				//     • Reference triangles for base values: outlined (BU) or grey (PY)
+				//
+				//=================================================================================================
+				// CONFIGURATION: chart formatting and internal constants
+				//=================================================================================================
+
+				VAR _DEBUG = 0 
+					// When = 1, draws a debug rectangle showing the SVG boundaries (useful during layout tuning)
+
+				VAR _SVG_Width_Default = 350
+					// Default width applied when no explicit imageWidth value is provided
+
+				VAR _SVG_LeftPadding = 0  
+					// Left padding before the bars (space before Y-axis)
+
+				VAR _SVG_TopPadding = 2  
+					// Vertical padding at the top of the SVG
+
+				VAR _FontSize = 14  
+					// Base font size in points (pt)
+
+				VAR _OutlineWidth = 0.5  
+					// Outline width applied to bar borders
+
+				VAR _LabelOffset = 5  
+					// Horizontal distance between the bars and the data label
+
+				VAR _ColorAxis = "#000000"  
+					// Axis line color
+
+				VAR _ColorMain = "#404040"  
+					// Fill color for main bar (actual)
+
+				VAR _ColorSecond = "#C6C6C6"  
+					// Fill color for base bar OR applied in other grey elements
+
+				VAR _ColorOutline = "#FFFFFF"  
+					// Outline color used on top bars when appropriate
+
+				VAR _SVG_Width =
+					IF ( imageWidth > 0, imageWidth, _SVG_Width_Default )
+					// Final SVG width — either user-defined or default
+
+				VAR _SVG_RightPadding =
+					IF ( imageRightPad > 0, imageRightPad, 190 )
+					// Space reserved on the right side for secondary visuals (e.g., variance charts)
+
+				VAR _Rank =
+					1000000000000 + ROUND ( valueMain, 0 )
+					// Enables stable sorting in Power BI by embedding a sortable rank inside the SVG
+
+				VAR _ColorBase =
+					SWITCH ( baseType, "grey", _ColorSecond, "outlined", "#FFFFFF" )
+					// Base bar fill: grey for PY, white for BU
+
+				VAR _ColorBaseOutline =
+					SWITCH ( baseType, "grey", "#c0c0c0", "outlined", _ColorMain )
+					// Base bar outline: subtle grey for PY, dark outline for BU
+
+				VAR _Em =
+					ROUND ( _FontSize * 4 / 3, 0 )
+					// Converts font size from points (pt) to pixels (px); SVG uses px internally
+
+				VAR _AxisLineWidth = _Em * 0.1  
+					// Scaled width for Y-axis line stroke
+
+				VAR _mainBarYPosition = _Em * 0.25 + _SVG_TopPadding  
+					// Vertical placement of the main and secondary bars
+
+				VAR _FontWeight =
+					IF ( isTotalRow, "bold", "normal" )
+					// Total rows are emphasized with bold text
+
+				//=================================================================================================
+				// SCALING: Convert data values into pixel lengths
+				//=================================================================================================
+
+				VAR _SVG_ColumnWidth =
+					_SVG_Width - _SVG_LeftPadding - _SVG_RightPadding
+					// Space available for the horizontal bar(s)
+
+				VAR _Scale =
+					DIVIDE ( _SVG_ColumnWidth, valueMax )
+					// Scaling factor: pixels per data unit, using max from ALLSELECTED scope
+
+				VAR _WidthMain =
+					ROUND ( valueMain * _Scale, 0 )
+					// Width of the main bar (Actuals)
+
+				VAR _WidthSecond =
+					ROUND ( valueSecond * _Scale, 0 )
+					// Width of the stacked secondary bar (Forecast)
+
+				VAR _WidthBase =
+					ROUND ( valueBase * _Scale, 0 )
+					// Width of the base comparison bar (Previous Year or Budget)
+
+				//=================================================================================================
+				// SVG GENERATION: Build all SVG components
+				//=================================================================================================
+
+				VAR _SVG_Header = "data:image/svg+xml;utf8,"
+				VAR _SVG_Open   = "<svg xmlns='http://www.w3.org/2000/svg' width='" & _SVG_Width & "' >"
+				VAR _SVG_Close  = "</svg>"
+
+				VAR _SVG_Style =
+					"<style>
+						text{
+							font-family: 'Segoe UI', sans-serif;
+							font-size: " & _Em & "px;
+							font-weight: " & _FontWeight & ";
+							dominant-baseline: central;
+						}
+					</style>"
+
+				VAR SVG_HatchedPattern =
+					"/*hatched pattern*/
+					<defs>
+						<pattern id='diagonal-stripe' patternUnits='userSpaceOnUse' width='8' height='8'>
+							<!-- white background -->
+							<rect x='0' y='0' width='8' height='8' fill='#FFFFFF' stroke-width='0' />
+							<!-- black diagonal stripes -->
+							<path d='
+								M-2,2 l4,-4
+								M0,8 l8,-8
+								M6,10 l4,-4' 
+							style='stroke:black; stroke-width:2' />
+						</pattern>
+					</defs>"
+
+				VAR _SVG_SortBy = "/*SortBy:" & _Rank & "*/"
+
+				VAR _SVG_DebugBox =
+					IF (
+						_DEBUG,
+						"<rect id='rect-debug-box' x='0%' y='0%' width='" 
+							& _SVG_ColumnWidth + _Em * 5 * 2/3 
+							& "' height='100%' fill='#FFFFAA' stroke-width='1' stroke='#FF0000' />",
+						""
+					)
+					// Debug overlay to visualize available drawing area
+
+				VAR _SVG_LineAxisY =
+					"<line id='line-axis-y' x1='" & _SVG_LeftPadding & "px' x2='" & _SVG_LeftPadding & 
+					"' y1='0%' y2='100%' stroke='" & _ColorAxis & "' stroke-width='" & _AxisLineWidth & "'></line>"
+
+				VAR _SVG_BarBase =
+					"<rect id='rect-base-value' x='" & _SVG_LeftPadding & "px' width='" & _WidthBase &
+					"' y='" & _SVG_TopPadding & "' height='" & _Em &
+					"' fill='" & _ColorBase & "' stroke='" & _ColorBaseOutline &
+					"' stroke-width='" & _OutlineWidth & "'></rect>"
+
+				VAR _SVG_BarMain =
+					"<rect id='rect-main-value' x='" & _SVG_LeftPadding & "px' width='" & _WidthMain &
+					"' y='" & _mainBarYPosition & "' height='" & _Em &
+					"' fill='" & _ColorMain & "' stroke='" & _ColorOutline &
+					"' stroke-width='" & _OutlineWidth & "'></rect>"
+
+				VAR _SVG_BarSecond =
+					"<rect id='rect-second-value' x='" & _SVG_LeftPadding + _WidthMain & "px' width='" &
+					_WidthSecond & "' y='" & _mainBarYPosition & "' height='" & _Em &
+					"' fill='url(#diagonal-stripe)' stroke='" & _ColorMain &
+					"' stroke-width='" & _OutlineWidth & "'></rect>"
+
+				VAR _SVG_TextACFCLabel =
+					"<text x='" & (_SVG_LeftPadding + _WidthMain + _WidthSecond) &
+					"' dx='" & _LabelOffset & "' y='" & (_mainBarYPosition + _Em * 0.5) &
+					"'>" & dataLabel & "</text>"
+
+				VAR _SVG_TextACFCLabelTotal =
+					"<text x='" & _SVG_LeftPadding & "' dx='0' y='50%'>" &
+					dataLabel & "</text>"
+
+				// Two different output modes:
+				//   • _SVG_Total → when row is total AND total-row charts disabled
+				//   • _SVG_Row   → normal row with full chart rendering
+				VAR _SVG_Total =
+					_SVG_Header & _SVG_Open & _SVG_DebugBox & _SVG_Style &
+					_SVG_TextACFCLabelTotal & _SVG_Close
+
+				VAR _SVG_Row =
+					_SVG_Header & _SVG_Open & _SVG_Style & _SVG_SortBy & _SVG_DebugBox &
+					SVG_HatchedPattern & _SVG_BarBase & _SVG_BarMain & _SVG_BarSecond &
+					_SVG_LineAxisY & _SVG_TextACFCLabel & _SVG_Close
+
+				VAR _Result =
+					IF ( isTotalRow && NOT chartInTotalRow, _SVG_Total, _SVG_Row )
+
+				RETURN _Result

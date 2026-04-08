@@ -1,0 +1,18 @@
+createOrReplace
+
+	ref table _Measures
+
+		/// Percentage variance in average TAT vs previous month
+		measure 'TAT vs Previous Month %' =
+				VAR CurrentTAT = [Average TAT MTD]
+				VAR PrevMonthTAT = [Average TAT - Previous Month]
+				RETURN
+				    IF(
+				        ISBLANK(PrevMonthTAT) || PrevMonthTAT = 0,
+				        BLANK(),
+				        DIVIDE(CurrentTAT - PrevMonthTAT, PrevMonthTAT)
+				    )
+			formatString: +0.0%;-0.0%;0.0%
+			displayFolder: ⏱️ TAT Metrics\Variance
+			lineageTag: 13cbc3e7-0349-4bf2-b978-e5c28983c18e
+

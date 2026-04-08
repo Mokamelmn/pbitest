@@ -1,0 +1,251 @@
+table 'Report Date Calendar'
+	lineageTag: 3fc83d33-e614-4a10-b142-5a421f6e5dd1
+	dataCategory: Time
+
+	column Date
+		isKey
+		formatString: General Date
+		lineageTag: 0b61edf9-986d-46d4-a9f2-7484d3be378d
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: Calendar[Date]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Year
+		formatString: 0
+		lineageTag: 3e230a3d-89dc-4411-a247-81c45d161b24
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: Calendar[Year]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Year-Month
+		lineageTag: aba32daa-5176-4e1f-a58d-f4da0fa73560
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: Calendar[Year-Month]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Month Number'
+		formatString: 0
+		lineageTag: 945a7959-8f0b-4fa5-8a6a-f07338b4eb22
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: Calendar[Month Number]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Month Name'
+		lineageTag: 07e3134b-90a7-4eef-af44-48cf6493bdf2
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: Calendar[Month Name]
+		sortByColumn: 'Month Number'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Month Short'
+		lineageTag: 94befa0a-756c-49ad-ab5c-6dbcb3c4f14b
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: Calendar[Month Short]
+		sortByColumn: 'Month Number'
+
+		annotation SummarizationSetBy = Automatic
+
+	column Quarter
+		lineageTag: cdb43981-9a9f-46df-a2e9-3e6c3a7e8a31
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: Calendar[Quarter]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Quarter Number'
+		formatString: 0
+		lineageTag: c72a3984-d5fe-4d9e-8f5b-e5dee36efb3e
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: Calendar[Quarter Number]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Week Number'
+		formatString: 0
+		lineageTag: 57c861bc-50e5-45f5-bb4b-f4cf66c5758f
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: Calendar[Week Number]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Weekday Number'
+		formatString: 0
+		lineageTag: 348e36a9-6bb1-464e-ae5f-63804a7522e5
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: Calendar[Weekday Number]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Weekday Name'
+		lineageTag: c8c8bef8-51cf-4cd0-803b-a678d43d6b57
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: Calendar[Weekday Name]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Weekday Short'
+		lineageTag: feb6fb59-0a71-4d29-96ae-2b20dbfde9a5
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: Calendar[Weekday Short]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Day
+		formatString: 0
+		lineageTag: 70963360-f172-4bcf-b117-fc10bee1c595
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: Calendar[Day]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Is Weekend'
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: d9b1b8c9-87e5-4438-9078-5a56d0aa74aa
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: Calendar[Is Weekend]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Fiscal Year'
+		formatString: 0
+		lineageTag: c8967e34-4403-4760-85ce-1d0ad1515ed2
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: Calendar[Fiscal Year]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Fiscal Quarter'
+		lineageTag: 174ed5f8-5fe4-4118-a7a6-442b02ff7d07
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: Calendar[Fiscal Quarter]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Is UAE Holiday'
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: ba34e31a-9f57-4832-9ea1-d0d185a315ec
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: Calendar[Is UAE Holiday]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Is Working Day'
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 99a7510e-7090-450f-bcb0-b393e13eaf00
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: Calendar[Is Working Day]
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsToday
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 178281fe-f0cb-4543-912a-8fa127d0c9aa
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: Calendar[IsToday]
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsYesterday
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 62db0c57-eb78-46a0-a2e8-a76908f5b9d8
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: Calendar[IsYesterday]
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsLast7Days
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 279a21cb-a476-49a5-af76-91ed96a3870a
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: Calendar[IsLast7Days]
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsLast14Days
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 89967d65-1b69-4edf-a8ba-50023911178b
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: Calendar[IsLast14Days]
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsLast30Days
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 067f3d27-e700-4ba4-ac82-7a328f126e04
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: Calendar[IsLast30Days]
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsMTD
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: f7c11394-7260-41dc-b78a-db2e1de97483
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: Calendar[IsMTD]
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsLastMonth
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: d9c9183d-f211-4b60-8358-b323c2f311da
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: Calendar[IsLastMonth]
+
+		annotation SummarizationSetBy = Automatic
+
+	column WeekInMonth
+		lineageTag: 358d2bae-e9d3-4daa-878e-84e6bba6a1c3
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: Calendar[WeekInMonth]
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsYTD
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 3305d299-ada7-4406-b5a6-d2329a08d82d
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: Calendar[IsYTD]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Report Date Calendar' = calculated
+		mode: import
+		source = ```
+				Calendar
+				
+				```
+
+	annotation PBI_Id = ce0a77c9f59b440aad1d3cfc0a943ff3
+

@@ -1,0 +1,9 @@
+createOrReplace
+
+	ref table _Measures
+
+		/// Shows when the dashboard was last viewed
+		measure 'Dashboard Last Viewed' = "Last Viewed: " & FORMAT(NOW(), "DD MMM YYYY, hh:mm AM/PM")
+			displayFolder: 📊 Dashboard Metadata
+			lineageTag: 416896c3-11d2-4ed4-b298-47f30e74f446
+

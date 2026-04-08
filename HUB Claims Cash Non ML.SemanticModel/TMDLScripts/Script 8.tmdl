@@ -1,0 +1,15 @@
+createOrReplace
+
+	ref table _Measures
+
+		measure 'Cancelled Batches' =
+				
+				CALCULATE(
+				    [Productivity Count],
+				    MedNext[Batch Status]= "Cancelled",
+				    USERELATIONSHIP('Calendar'[Date],MedNext[All Report Date])
+				)
+			formatString: #,0
+			displayFolder: 📈 Productivity Metrics
+			lineageTag: 07e12dbf-8434-486c-be46-a87cb53ca6cd
+

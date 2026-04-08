@@ -1,0 +1,102 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.7.0/schema.json",
+  "name": "63d1bb33c81aa89c2c3b",
+  "position": {
+    "x": 578.13541318044906,
+    "y": 405.29080511619105,
+    "z": 0,
+    "height": 287.27965892059427,
+    "width": 640.12106572763116,
+    "tabOrder": 0
+  },
+  "visual": {
+    "visualType": "pivotTable",
+    "query": {
+      "queryState": {
+        "Rows": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Dim_InsuranceCompany"
+                    }
+                  },
+                  "Property": "Insurance Company Name"
+                }
+              },
+              "queryRef": "Dim_InsuranceCompany.Insurance Company Name",
+              "nativeQueryRef": "Insurance Company Name",
+              "active": true
+            }
+          ]
+        },
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Mems"
+                        }
+                      },
+                      "Property": "Batch Number"
+                    }
+                  },
+                  "Function": 2
+                }
+              },
+              "queryRef": "Sum(Mems.Batch Number)",
+              "nativeQueryRef": "Count of Batch Number"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Aggregation": {
+                "Expression": {
+                  "Column": {
+                    "Expression": {
+                      "SourceRef": {
+                        "Entity": "Mems"
+                      }
+                    },
+                    "Property": "Batch Number"
+                  }
+                },
+                "Function": 2
+              }
+            },
+            "direction": "Descending"
+          }
+        ]
+      }
+    },
+    "objects": {
+      "columnWidth": [
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "396.8979833973706D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Dim_InsuranceCompany.Insurance Company Name"
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

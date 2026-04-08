@@ -1,0 +1,18 @@
+EVALUATE
+ADDCOLUMNS(
+    SUMMARIZE(
+    'Report Date Calendar',
+        'Report Date Calendar'[Date]
+    ),
+    "Column Name",
+    VAR LatestDateBatches = MAX('Closed Batches BI'[Invoice Report Date])
+VAR CurrentMonth = MONTH(LatestDateBatches)
+VAR CurrentYear = YEAR(LatestDateBatches)
+
+RETURN
+CALCULATE(
+    [Processed Batches BI],
+    'Closed Batches BI'[Invoice Report Date]>= DATE(CurrentYear, CurrentMonth, 1),
+    'Closed Batches BI'[Invoice Report Date] <= LatestDateBatches
+)
+)

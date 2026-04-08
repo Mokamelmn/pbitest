@@ -1,0 +1,1120 @@
+/// Central table for organizing all DAX measures
+table _Measures
+	lineageTag: 8ca3c5a5-ec21-4d1b-9923-4fd84e3a5e86
+
+	/// Number of claims currently in Open status
+	measure 'Open Claims' = ```
+			
+			CALCULATE(
+			  COUNTROWS(VALUES('Open Mems'[Batch Number])),
+			  KEEPFILTERS('Open Mems'[Esraa Batchlist.Batch Status] <> "Reported/Closed"),
+			  KEEPFILTERS('Open Mems'[Esraa Batchlist.Batch Status] <> "Cancelled"))
+			
+			```
+		formatString: #,##0
+		displayFolder: 📊 Volume Metrics;KPIs
+		lineageTag: 0f90ff03-3983-4bdf-a2da-4f2bd9b3e054
+
+	/// Number of claims received today
+	measure 'Claims Received Today' =
+			CALCULATE(
+			    [Claims Received Mems],
+			    Mems[Received Date] = TODAY()
+			)
+		formatString: #,##0
+		displayFolder: 📊 Volume Metrics\Daily;KPIs
+		lineageTag: 24f84481-901b-4ee3-9c65-8d64bbd725f7
+
+	/// Number of claims received yesterday
+	measure 'Claims Received Yesterday' =
+			CALCULATE(
+			    [Claims Received],
+			    'MedNext'[Received Date] = TODAY() - 10
+			)
+		formatString: #,##0
+		displayFolder: 📊 Volume Metrics\Daily
+		lineageTag: 89d6e9f5-44d1-4a97-b60f-62aa311fa91a
+
+	/// Number of claims closed today
+	measure 'Claims Closed Today' =
+			
+			CALCULATE(
+			    [Productivity Count],
+			    'MedNext'[Modification Date] = TODAY(),
+			    'MedNext'[Batch Status] = "Closed"
+			)
+		formatString: #,##0
+		displayFolder: 📊 Volume Metrics\Daily;KPIs
+		lineageTag: 55a18e23-bfa7-447c-9fc7-c94748cbb947
+
+	/// Number of claims received year-to-date
+	measure 'Claims Received YTD' =
+			CALCULATE(
+			    [Claims Received],
+			    DATESYTD('Calendar'[Date])
+			)
+		formatString: #,##0
+		displayFolder: 📊 Volume Metrics\Period;KPIs
+		lineageTag: 7aed663a-f7d9-4d38-a301-0871b8da8f34
+
+	/// Variance: Claims received today vs yesterday
+	measure 'Claims Received vs Yesterday' =
+			VAR Today = [Claims Received Today]
+			VAR Yesterday = [Claims Received Yesterday]
+			RETURN
+			    IF(
+			        ISBLANK(Yesterday) || Yesterday = 0,
+			        BLANK(),
+			        Today - Yesterday
+			    )
+		formatString: +#,##0;-#,##0;0
+		displayFolder: 📊 Volume Metrics\Variance;KPIs
+		lineageTag: ac8ea9ec-adca-4c95-8133-b8de5e1aef1e
+
+	/// Median turnaround time in working days (less affected by outliers)
+	measure 'Median TAT (Working Days)' = MEDIAN('MedNext'[TAT_WorkingDays])
+		formatString: #,##0.0
+		displayFolder: ⏱️ TAT Metrics
+		lineageTag: 5fb511f2-63de-4d0e-a6b5-917ffc060c19
+
+	/// Minimum turnaround time (fastest claim)
+	measure 'Min TAT (Working Days)' = MIN('MedNext'[TAT_WorkingDays])
+		formatString: #,##0
+		displayFolder: ⏱️ TAT Metrics
+		lineageTag: 7c63ad19-b838-4b0e-94cd-3796429611a0
+
+	/// Maximum turnaround time (slowest claim)
+	measure 'Max TAT (Working Days)' = MAX('MedNext'[TAT_WorkingDays])
+		formatString: #,##0
+		displayFolder: ⏱️ TAT Metrics
+		lineageTag: 4ad16ebe-072c-4409-9334-7865036e8c98
+
+	/// Average TAT for closed claims only
+	measure 'Average TAT - Closed' =
+			CALCULATE(
+			    AVERAGE('MedNext'[TAT_WorkingDays]),
+			    'MedNext'[Batch Status] = "Closed"
+			)
+		formatString: #,##0.0
+		displayFolder: ⏱️ TAT Metrics\By Status
+		lineageTag: 9bbd19b1-e381-4773-8390-6ec28709f17e
+
+	/// Average TAT for cancelled claims
+	measure 'Average TAT - Cancelled' =
+			CALCULATE(
+			    AVERAGE('MedNext'[TAT_WorkingDays]),
+			    'MedNext'[Batch Status] = "Cancelled"
+			)
+		formatString: #,##0.0
+		displayFolder: ⏱️ TAT Metrics\By Status
+		lineageTag: 5f1cca02-9001-4d32-aa95-46131fe87f8e
+
+	/// Average TAT for open claims (current aging)
+	measure 'Average TAT - Open' =
+			CALCULATE(
+			    AVERAGE('MedNext'[TAT_WorkingDays]),
+			    'MedNext'[Batch Status] = "Open"
+			)
+		formatString: #,##0.0
+		displayFolder: ⏱️ TAT Metrics\By Status
+		lineageTag: c5c32cd6-cbe5-469c-942c-c19c79ce2288
+
+	/// Number of claims completed within 1 working day
+	measure 'Claims Within 1 Day' = ```
+			
+			 CALCULATE(
+			    [Closed Batches],
+			    'MedNext'[TAT_WorkingDays] <= 1
+			)
+			```
+		formatString: #,##0
+		displayFolder: ⏱️ TAT Metrics\SLA Compliance
+		lineageTag: f4f25537-08f3-4583-987b-e90b54d6ab81
+
+	/// Percentage of claims completed within 1 working day
+	measure '% Within 1 Day' =
+			DIVIDE(
+			    [Claims Within 1 Day],
+			    [Closed Batches]
+			)
+		formatString: 0.0%
+		displayFolder: ⏱️ TAT Metrics\SLA Compliance
+		lineageTag: 33bff0d8-49f9-412d-92b3-9e0abb6bf2e6
+
+	/// Number of claims completed within 3 working days
+	measure 'Claims Within 3 Days' = ```
+			
+			 CALCULATE(
+			    [Closed Batches],
+			    'MedNext'[TAT_WorkingDays] <= 3
+			)
+			```
+		formatString: #,##0
+		displayFolder: ⏱️ TAT Metrics\SLA Compliance
+		lineageTag: e753ee54-46da-4790-93ae-ea809e608aa3
+
+	/// Percentage of claims completed within 3 working days
+	measure '% Within 3 Days' =
+			DIVIDE(
+			    [Claims Within 3 Days],
+			    [Closed Batches]
+			)
+		formatString: 0.0%
+		displayFolder: ⏱️ TAT Metrics\SLA Compliance
+		lineageTag: a536a96b-bca6-4ca0-b611-828c1f9034f6
+
+	/// Number of claims completed within 5 working days
+	measure 'Claims Within 5 Days' =
+			
+			CALCULATE(
+			    [Closed Batches],
+			    'MedNext'[TAT_WorkingDays] <= 5
+			)
+		formatString: #,##0
+		displayFolder: ⏱️ TAT Metrics\SLA Compliance
+		lineageTag: a78749ff-8bee-461e-8b44-df9c5d1de2d8
+
+	/// Percentage of claims completed within 5 working days
+	measure '% Within 5 Days' =
+			
+			DIVIDE(
+			    [Claims Within 5 Days],
+			    [Closed Batches]
+			)
+		formatString: 0.0%
+		displayFolder: ⏱️ TAT Metrics\SLA Compliance
+		lineageTag: ad659dd0-464e-46a2-83ea-0bce3e6c503f
+
+	/// Number of claims closed on the same day they were received
+	measure 'Same Day Closures' =
+			CALCULATE(
+			    COUNTROWS('MedNext'),
+			    'MedNext'[TAT_WorkingDays] = 0,
+			    MedNext[Batch Status] <> "Open",
+			    USERELATIONSHIP('Calendar'[Date],MedNext[All Report Date])
+			)
+		formatString: #,##0
+		displayFolder: ⏱️ TAT Metrics\SLA Compliance
+		lineageTag: d4437707-f71f-4512-bb40-63a1e9fdc92c
+
+	/// Percentage of claims closed on the same day
+	measure '% Same Day Closures' =
+			DIVIDE(
+			    [Same Day Closures],
+			    [Closed Batches]
+			)
+		formatString: 0.0%
+		displayFolder: ⏱️ TAT Metrics\SLA Compliance
+		lineageTag: 0485690f-70c0-40f4-a720-29be38ae5a13
+
+	/// Number of claims that took more than 5 working days
+	measure 'Claims Over 5 Days' =
+			CALCULATE(
+			[Closed Batches],
+			    'MedNext'[TAT_WorkingDays] > 5
+			)
+		formatString: #,##0
+		displayFolder: ⏱️ TAT Metrics\SLA Compliance
+		lineageTag: 084e0a7e-761a-4c94-8e72-359b40a7a12e
+
+	/// Percentage of claims that took more than 5 working days
+	measure '% Over 5 Days' =
+			DIVIDE(
+			    [Claims Over 5 Days],
+			   [Closed Batches]
+			)
+		formatString: 0.0%
+		displayFolder: ⏱️ TAT Metrics\SLA Compliance
+		lineageTag: b155d1bd-82b0-43f8-ab9f-17d189dfa1a5
+
+	/// Number of claims that took more than 10 working days
+	measure 'Claims Over 10 Days' =
+			CALCULATE(
+			    [Closed Batches],
+			    'MedNext'[TAT_WorkingDays] > 10
+			)
+		formatString: #,##0
+		displayFolder: ⏱️ TAT Metrics\SLA Compliance
+		lineageTag: d4458c5a-ef4e-4df3-9245-ffd33d9166dd
+
+	/// Percentage of claims that took more than 10 working days
+	measure '% Over 10 Days' =
+			DIVIDE(
+			    [Claims Over 10 Days],
+			    [Closed Batches]
+			)
+		formatString: 0.0%
+		displayFolder: ⏱️ TAT Metrics\SLA Compliance
+		lineageTag: c0620f1e-b67d-40c8-b336-40a6d5aab4c4
+
+	/// Age of the oldest open claim in working days
+	measure 'Oldest Open Claim Age' =
+			CALCULATE(
+			    MAX('MedNext'[TAT_WorkingDays]),
+			    'MedNext'[Batch Status] = "Open"
+			)
+		formatString: #,##0
+		displayFolder: ⏱️ TAT Metrics\Aging
+		lineageTag: 1cebe05b-f187-4516-ba11-de96f09902ae
+
+	/// Open claims aged 6-10 working days
+	measure 'Open Claims 6-10 Days' =
+			CALCULATE(
+			    COUNTROWS('MedNext'),
+			    'MedNext'[Batch Status] = "Open",
+			    'MedNext'[TAT_WorkingDays] >= 6,
+			    'MedNext'[TAT_WorkingDays] <= 10
+			)
+		formatString: #,##0
+		displayFolder: ⏱️ TAT Metrics\Aging
+		lineageTag: bbb751ca-0f26-4a80-b35d-227252d02c07
+
+	/// Open claims aged more than 10 working days
+	measure 'Open Claims 11+ Days' =
+			CALCULATE(
+			    COUNTROWS('MedNext'),
+			    'MedNext'[Batch Status] = "Open",
+			    'MedNext'[TAT_WorkingDays] > 10
+			)
+		formatString: #,##0
+		displayFolder: ⏱️ TAT Metrics\Aging
+		lineageTag: 3b1ace60-85b0-40a8-968d-17b77b8e7c26
+
+	/// Average TAT for claims month-to-date
+	measure 'Average TAT MTD' =
+			
+			// Average TAT for claims closed month-to-date
+			// Uses Modification Date (when claim was closed)
+			VAR CurrentMonth = MONTH(TODAY())
+			VAR CurrentYear = YEAR(TODAY())
+			
+			RETURN
+			CALCULATE(
+			    [Average TAT (Working Days)],
+			    MedNext[All Report Date] >= DATE(CurrentYear, CurrentMonth, 1),
+			    MedNext[All Report Date] <= TODAY(),
+			    MedNext[Batch Status] = "Closed"
+			)
+		formatString: #,##0.0
+		displayFolder: ⏱️ TAT Metrics\Trends;KPIs
+		lineageTag: fa0c7b33-e6de-4523-9029-87b31e44430d
+
+	/// Number of officers who processed claims in the selected period
+	measure 'Active Officers' =
+			CALCULATE(
+			    DISTINCTCOUNT('MedNext'[Modification User Key]),
+			    'MedNext'[Batch Status] IN {"Closed", "Cancelled"}
+			)
+		formatString: #,##0
+		displayFolder: 📈 Productivity Metrics;KPIs
+		lineageTag: b875e956-03fa-4b97-a85b-37c2d6d46792
+
+	/// Rank by claims processed (1 = highest)
+	measure 'Officer Rank' =
+			RANKX(
+			    ALLSELECTED(Dim_User[User Name]),
+			    [Processed Batches BI],,
+			    DESC,
+			    DENSE
+			)
+		formatString: #,##0
+		displayFolder: 📈 Productivity Metrics
+		lineageTag: c9f4c93c-dc8e-4d42-a3f5-7e8a5e62da1e
+
+	/// Base measure: Distinct count of batch numbers received
+	measure 'Claims Received' =
+			
+			COUNTROWS(VALUES('MedNext'[Batch Number]))
+		formatString: #,##0
+		displayFolder: 📊 Volume Metrics\Base Measures
+		lineageTag: 91252a74-eace-44de-8b8c-db956e1db92c
+
+	measure 'Closed Batches' =
+			
+			CALCULATE(
+			    [Productivity Count],
+			    MedNext[Batch Status]= "Closed",
+			    USERELATIONSHIP('Calendar'[Date],MedNext[All Report Date])
+			)
+		formatString: #,0
+		displayFolder: 📈 Productivity Metrics
+		lineageTag: 16e0dc12-432a-4ee8-bd45-2ae13a6572a5
+
+	measure 'Cancelled Batches' =
+			
+			CALCULATE(
+			    [Productivity Count],
+			    MedNext[Batch Status]= "Cancelled",
+			    USERELATIONSHIP('Calendar'[Date],MedNext[All Report Date])
+			)
+		formatString: #,0
+		displayFolder: 📈 Productivity Metrics
+		lineageTag: 07e12dbf-8434-486c-be46-a87cb53ca6cd
+
+	/// Base measure: Distinct count of processed claims (closed or cancelled)
+	measure 'Claims Processed' =
+			
+			CALCULATE(
+			    COUNTROWS(MedNext),
+			    'MedNext'[Batch Status] IN {"Closed", "Cancelled"}
+			)
+		formatString: #,##0
+		displayFolder: 📊 Volume Metrics\Base Measures
+		lineageTag: eea8cd95-af53-441c-861c-bae19fcfbe09
+
+	measure 'Max TAT - Last 7 Days' =
+			CALCULATE(
+			   [Max TAT (Working Days)],
+			    FILTER(
+			        ALL('MedNext'[Modification Date]),
+			        'MedNext'[Modification Date] > MAX('MedNext'[Modification Date]) - 7 &&
+			        'MedNext'[Modification Date] <= MAX('MedNext'[Modification Date])
+			    )
+			)
+		formatString: 0
+		displayFolder: ⏱️ TAT Metrics
+		lineageTag: 53883f63-966e-40a9-8e59-cb0f12061e62
+
+	measure 'Claims Cancelled Today' =
+			CALCULATE(
+			    [Productivity Count],
+			    'MedNext'[Modification Date] = TODAY(),
+			    'MedNext'[Batch Status] = "Cancelled"
+			)
+		formatString: 0
+		displayFolder: 📊 Volume Metrics\Daily;KPIs
+		lineageTag: f35f6a8a-12f3-4cce-8064-e159d1abbcb7
+
+	measure 'Processed Batches' =
+			
+			[Cancelled Batches]+ [Closed Batches]
+		formatString: #,0
+		displayFolder: 📈 Productivity Metrics
+		lineageTag: 3717c030-908b-4a44-bc72-7b643f14eedf
+
+	measure 'Working Days' =
+			
+			CALCULATE(
+			    COUNTROWS(VALUES(MedNext[Modification Date]))
+			    )
+		formatString: 0
+		displayFolder: 📈 Productivity Metrics
+		lineageTag: 48936114-d2d9-4792-8132-c6e611968246
+
+	measure '% Within 5 days MTD' =
+			
+			// Average TAT for claims closed month-to-date
+			// Uses Modification Date (when claim was closed)
+			VAR CurrentMonth = MONTH(TODAY())
+			VAR CurrentYear = YEAR(TODAY())
+			
+			RETURN
+			CALCULATE(
+			    [% Within 5 Days],
+			    MedNext[All Report Date] >= DATE(CurrentYear, CurrentMonth, 1),
+			    MedNext[All Report Date] <= TODAY()
+			)
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: ⏱️ TAT Metrics;KPIs
+		lineageTag: c0bd3cff-21ff-4841-8556-acbd7eab7db6
+
+	measure 'Open Claims Due Tommorrow' =
+			
+			CALCULATE(
+			    [Open Claims],
+			    'Open Mems'[Aging] = 4
+			)
+		formatString: 0
+		displayFolder: 📊 Volume Metrics
+		lineageTag: 18f38194-363a-4ea7-9355-46934b99d71f
+
+	measure 'Open Claims Due Today' =
+			
+			CALCULATE(
+			    [Open Claims],
+			    'Open Mems'[Aging] = 5
+			)
+		formatString: 0
+		displayFolder: 📊 Volume Metrics
+		lineageTag: 55b5a146-8f22-4980-9e65-65f9ecc10faf
+
+	measure 'Mems Claims Received' =
+			
+			COUNTROWS(VALUES(Mems[Batch Number]))
+		formatString: 0
+		displayFolder: 📊 Volume Metrics\Base Measures
+		lineageTag: abdb24be-a652-42b4-a336-0e57f32ce8ff
+
+	measure 'SVG AC, PY' =
+			
+			// AC, PY SVG chart
+			VAR _IsTotalRow = NOT ( ISINSCOPE ( Dim_User[User Name] ) )
+			VAR _ScaleMax = MAXX ( ALLSELECTED ( Dim_User[User Name] ), MAX ( [CM], [PM] ) )
+			VAR _Result =
+			PowerofBI.IBCS.BarChart.AbsoluteValues (
+			    [CM],
+			    BLANK (),
+			    [PM],
+			    "grey",
+			    FORMAT ( [CM], "#,0" ),
+			    _IsTotalRow,
+			    FALSE (),
+			    _ScaleMax,
+			    0,
+			    0
+			)
+			RETURN _Result
+		displayFolder: SVGs
+		lineageTag: 8d98f1b0-25b4-4ffa-8036-3db79682d132
+		dataCategory: ImageUrl
+
+	measure CM =
+			
+			var currentmonth = MONTH(TODAY())
+			var currentyear = YEAR(TODAY())
+			RETURN CALCULATE(
+			    [Claims Processed (userelationship)],
+			    'Calendar'[Month Number]=currentmonth,
+			    'Calendar'[Year] = currentyear
+			)
+		formatString: 0
+		displayFolder: SVGs
+		lineageTag: 8b5c4082-90b5-47c4-b5bb-4645511db5c0
+
+	measure PM =
+			
+			var curryear = YEAR(TODAY())
+			var currmonth = MONTH(TODAY())
+			var prevmonth = MONTH(TODAY())-1
+			VAR stopday = DAY(TODAY())
+			var prevmonth2 = IF(currmonth=1,12,prevmonth)
+			var curryear2 = IF(currmonth=1,curryear-1,curryear)
+			RETURN CALCULATE(
+			    [Claims Processed (userelationship)],
+			    'Calendar'[Month Number]=prevmonth2 && 'Calendar'[Day]<=stopday &&'Calendar'[Year]=curryear2
+			)
+		formatString: 0
+		displayFolder: SVGs
+		lineageTag: de7ef7ea-5f3f-4b44-9b00-a5eafef18d8d
+
+	measure 'SVG ΔPY' =
+			
+			PowerofBI.IBCS.BarChart.AbsoluteVariance (
+			    [CM] - [PM],
+			    FORMAT ( [CM] - [PM], "+#,0;-#,0;=" ),
+			    NOT ( ISINSCOPE ( Dim_User[User Name] ) ),
+			    CALCULATE (
+			        MAXX ( ALLSELECTED ( Dim_User[User Name]  ), [CM] - [PM] ),
+			        ALLSELECTED ( Dim_User[User Name]  )
+			    ),
+			    0,
+			    MAXX ( ALLSELECTED ( Dim_User[User Name] ), MAX ( [CM], [PM] ) ),
+			    0,
+			    0
+			)
+		displayFolder: SVGs
+		lineageTag: 1706cf1e-7d48-4398-8c85-6fececa19e9d
+		dataCategory: ImageUrl
+
+	measure 'SVG ΔPM%' =
+			
+			PowerofBI.IBCS.BarChart.RelativeVariance (
+			    DIVIDE ( [CM] - [PM], [PM] ) * 100,
+			    FORMAT ( DIVIDE ( [CM] - [PM], [PM] ) * 100, "+#,0;-#,0;=" ),
+			    NOT ( ISINSCOPE ( Dim_User[User Name] ) ),
+			    0
+			)
+		displayFolder: SVGs
+		lineageTag: 5bc57ae5-cd17-481c-b04e-8c68aac06931
+		dataCategory: ImageUrl
+
+	measure 7dayslabel = "Last 7 Days"
+		displayFolder: Label
+		lineageTag: ffff444e-2cc9-48db-adde-c9f463be39a2
+
+	measure 14DaysLabel = "Last 14 Days"
+		displayFolder: Label
+		lineageTag: 8b52062a-a4eb-426c-b573-6afb73b5bc2e
+
+	measure MTDLabel = "MTD"
+		displayFolder: Label
+		lineageTag: 90983415-e698-496d-a50e-17cfca090d19
+
+	measure 30DaysLabel = "Last 30 Days"
+		displayFolder: Label
+		lineageTag: 6501f00d-e67b-4a8b-a740-945e79a98a08
+
+	measure LastMonthLabel = "Last Month"
+		displayFolder: Label
+		lineageTag: 64b1680c-49f7-4ace-9e9c-745d9f93726e
+
+	measure 'Processed Today' =
+			CALCULATE(
+			    COUNTROWS(MedNext),
+			    MedNext[Modification Date] = TODAY(),
+			    MedNext[Batch Status] IN {"Closed", "Cancelled"}
+			)
+		formatString: 0
+		displayFolder: KPIs
+		lineageTag: c4bb7eb1-ecfb-4ac3-a1c5-c83b220d440d
+
+	measure 'Processed Last Same Weekday' =
+			CALCULATE(
+			    COUNTROWS(MedNext),
+			    MedNext[Modification Date] = TODAY() - 7,
+			    MedNext[Batch Status] IN {"Closed", "Cancelled"}
+			)
+		displayFolder: KPIs
+		lineageTag: 43fe3439-143d-4f83-97f3-ddef9c6d60c7
+
+	measure 'Processed 4-Week Same Weekday Avg' =
+			VAR TodayDayOfWeek = WEEKDAY(TODAY(), 2)
+			RETURN AVERAGEX(
+			    FILTER(
+			        ALL(Calendar[Date]),
+			        Calendar[Date] >= TODAY() - 28 &&
+			        Calendar[Date] < TODAY() &&
+			        WEEKDAY(Calendar[Date], 2) = TodayDayOfWeek
+			    ),
+			    CALCULATE(
+			        COUNTROWS(MedNext),
+			        MedNext[Batch Status] IN {"Closed", "Cancelled"}
+			    )
+			)
+		displayFolder: KPIs
+		lineageTag: 26ff96d2-9fa8-40d3-aab2-6a0deadf6614
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Last Month Daily Average' =
+			
+			VAR LastMonthStart = DATE(YEAR(TODAY()), MONTH(TODAY()) - 1, 1)
+			VAR LastMonthEnd = EOMONTH(LastMonthStart, 0)
+			VAR DaysInLastMonth = DAY(LastMonthEnd)
+			VAR LastMonthTotal = CALCULATE(
+			    COUNTROWS(MedNext),
+			    Calendar[Date] >= LastMonthStart,
+			    Calendar[Date] <= LastMonthEnd,
+			    MedNext[Batch Status] IN {"Closed", "Cancelled"}
+			)
+			RETURN DIVIDE(LastMonthTotal, DaysInLastMonth)
+		formatString: #,0.0
+		displayFolder: KPIs
+		lineageTag: 7e9a4ac8-1fba-48db-a2e5-28113f3d9e4c
+
+	measure 'Active Officers Today' =
+			CALCULATE(
+			    COUNTROWS(VALUES(MedNext[Modification User Key])),
+			    MedNext[Modification Date] = TODAY(),
+			    MedNext[Batch Status] IN {"Closed", "Cancelled"},
+			    USERELATIONSHIP('Calendar'[Date],MedNext[All Report Date])
+			)
+		formatString: 0
+		displayFolder: KPIs
+		lineageTag: 5011e84e-0844-49de-92f7-5308717f6bf1
+
+	measure 'Card Style - 8 Top Performer' = ```
+			
+			VAR Top3 = TOPN(3, 
+			ADDCOLUMNS(
+			    VALUES(Dim_User[User Name]),
+			    "@Batches", [Processed Batches BI]
+			)
+			, [@Batches], DESC)
+			VAR First = MINX(FILTER(ADDCOLUMNS(Top3, "@Rank", RANKX(Top3, [@Batches], , DESC)), [@Rank] = 1), Dim_User[User Name])
+			VAR FirstCount = MINX(FILTER(ADDCOLUMNS(Top3, "@Rank", RANKX(Top3, [@Batches], , DESC)), [@Rank] = 1), [@Batches])
+			VAR Second = MINX(FILTER(ADDCOLUMNS(Top3, "@Rank", RANKX(Top3, [@Batches], , DESC)), [@Rank] = 2), Dim_User[User Name])
+			VAR SecondCount = MINX(FILTER(ADDCOLUMNS(Top3, "@Rank", RANKX(Top3, [@Batches], , DESC)), [@Rank] = 2), [@Batches])
+			VAR Third = MINX(FILTER(ADDCOLUMNS(Top3, "@Rank", RANKX(Top3, [@Batches], , DESC)), [@Rank] = 3), Dim_User[User Name])
+			VAR ThirdCount = MINX(FILTER(ADDCOLUMNS(Top3, "@Rank", RANKX(Top3, [@Batches], , DESC)), [@Rank] = 3), [@Batches])
+			VAR Gap = FirstCount - SecondCount
+			
+			VAR SVG = 
+			    "<svg width='280' height='90' xmlns='http://www.w3.org/2000/svg'>" &
+			    "<rect x='115' y='40' width='50' height='30' fill='#fbbf24' rx='4'/>" &
+			    "<text x='140' y='60' font-size='14' font-weight='700' fill='white' text-anchor='middle'>1st</text>" &
+			    "<text x='140' y='18' font-size='11' fill='#166534' font-weight='700' text-anchor='middle'>" & FORMAT(FirstCount, "#,0") & "</text>" &
+			    "<text x='140' y='32' font-size='8' fill='#6b7280' text-anchor='middle'>" & LEFT(First, 10) & "</text>" &
+			    "<rect x='50' y='50' width='45' height='20' fill='#d1d5db' rx='4'/>" &
+			    "<text x='72.5' y='65' font-size='12' font-weight='700' fill='white' text-anchor='middle'>2nd</text>" &
+			    "<text x='72.5' y='18' font-size='10' fill='#166534' font-weight='600' text-anchor='middle'>" & FORMAT(SecondCount, "#,0") & "</text>" &
+			    "<text x='72.5' y='32' font-size='7' fill='#6b7280' text-anchor='middle'>" & LEFT(Second, 9) & "</text>" &
+			    "<rect x='185' y='55' width='40' height='15' fill='#cd7f32' rx='4'/>" &
+			    "<text x='205' y='66' font-size='11' font-weight='700' fill='white' text-anchor='middle'>3rd</text>" &
+			    "<text x='205' y='18' font-size='10' fill='#166534' font-weight='600' text-anchor='middle'>" & FORMAT(ThirdCount, "#,0") & "</text>" &
+			    "<text x='205' y='32' font-size='7' fill='#6b7280' text-anchor='middle'>" & LEFT(Third, 8) & "</text>" &
+			    "<rect x='230' y='30' width='45' height='45' fill='#f0fdf4' rx='4'/>" &
+			    "<text x='252.5' y='45' font-size='10' fill='#166534' font-weight='600' text-anchor='middle'>+" & FORMAT(Gap, "#,0") & "</text>" &
+			    "<text x='252.5' y='55' font-size='7' fill='#6b7280' text-anchor='middle'>batches</text>" &
+			    "<text x='252.5' y='63' font-size='7' fill='#6b7280' text-anchor='middle'>ahead of</text>" &
+			    "<text x='252.5' y='71' font-size='7' fill='#6b7280' text-anchor='middle'>2nd place</text>" &
+			    "</svg>"
+			
+			RETURN "data:image/svg+xml;utf8," & SVG
+			```
+		displayFolder: SVGs
+		lineageTag: cd999722-b45e-451c-8804-a8e2cf65731b
+
+	measure 'All Working Days' =
+			
+			CALCULATE(
+			    COUNTROWS(VALUES(
+			        MedNext[Modification Date])),
+			        'Calendar'[Is Working Day] = TRUE()
+			)
+		formatString: 0
+		displayFolder: 📈 Productivity Metrics
+		lineageTag: 34fb2c11-7413-4fa8-b5fa-04cb8c3d7982
+
+	measure 'All Holiday & Weekend Days' = ```
+			
+			CALCULATE(
+			    COUNTROWS(VALUES(
+			        MedNext[Modification Date])),
+			        OR('Calendar'[Is Working Day] = FALSE(),'Calendar'[Is UAE Holiday] = TRUE())
+			        
+			)
+			```
+		formatString: 0
+		displayFolder: 📈 Productivity Metrics
+		lineageTag: 86e20861-1eed-4dc5-8ad6-38e5a1a8be9e
+
+	measure 'Avg Claims Received Last 4 Same Weekday' = ```
+			
+			var CalTabl = 
+			SUMMARIZE(
+			        FILTER(
+			            'Calendar',
+			            'Calendar'[Date] >= TODAY() - 30
+			            && 'Calendar'[Date] <= TODAY() 
+			            && 'Calendar'[Is Weekend] = FALSE()
+			            && 'Calendar'[Is UAE Holiday] = FALSE() 
+						&& 'Calendar'[Weekday Number] = WEEKDAY(TODAY())
+			        ),
+			        'Calendar'[Date],
+			        "Received Volume", [Claims Received]
+			    )
+			VAR CalAvg = AVERAGEX(CalTabl,[Received Volume])
+			RETURN "Avg/day Last 4 "&FORMAT(TODAY(),"dddd")&"s: "&FORMAT(CalAvg,"#,##")
+			```
+		displayFolder: 📊 Volume Metrics
+		lineageTag: deddbce5-e327-42c6-a437-ebe24f6acdda
+
+	measure 'Claims Open Last 3 Days' = ```
+			
+			SUMX(
+			    SUMMARIZE(
+			        FILTER(
+			            'Calendar',
+			            'Calendar'[Date] >= TODAY() - 3
+			            && 'Calendar'[Date] < TODAY() 
+			        ),
+			        'Calendar'[Date],
+			        "Open Volume", [Open Claims])
+			    ,
+			    [Open Volume]
+			)
+			```
+		formatString: 0
+		displayFolder: 📊 Volume Metrics
+		lineageTag: 76d57d23-07da-48c3-87b4-d5546e55c452
+
+	measure 'Claims Open Last 5 Days' = ```
+			
+			SUMX(
+			    SUMMARIZE(
+			        FILTER(
+			            'Calendar',
+			            'Calendar'[Date] >= TODAY() - 5
+			            && 'Calendar'[Date] < TODAY() 
+			        ),
+			        'Calendar'[Date],
+			        "Open Volume", [Open Claims]
+			    ),
+			    [Open Volume]
+			)
+			```
+		formatString: 0
+		displayFolder: 📊 Volume Metrics
+		lineageTag: 18ce902b-fd99-4d98-ad1a-eb2111bacf35
+
+	measure 'Avg Claims Processed/Day YTD' = ```
+			
+			VAR YTDDays = 
+			    FILTER(
+			        ALL('Calendar'),
+			        'Calendar'[Date] >= DATE(YEAR(TODAY()), 1, 1) &&
+			        'Calendar'[Date] <= TODAY() &&
+			        NOT('Calendar'[Is UAE Holiday])&&
+			        NOT('Calendar'[Is Weekend])
+			
+			    )
+			VAR DailyProcessed = 
+			    ADDCOLUMNS(
+			        YTDDays,
+			        "DailyClaims", CALCULATE([Claims Processed],USERELATIONSHIP('Calendar'[Date],MedNext[All Report Date]))
+			    )
+			RETURN
+			    AVERAGEX(DailyProcessed, [DailyClaims])
+			```
+		formatString: #,##0.0
+		displayFolder: 📊 Volume Metrics
+		lineageTag: 093c6cb9-211b-4b30-af90-5c70dbb822db
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Avg Claims Received/Day YTD' = ```
+			
+			VAR YTDDays = 
+			    FILTER(
+			        ALL('Calendar'[Date]),
+			        'Calendar'[Date] >= DATE(YEAR(TODAY()), 1, 1) &&
+			        'Calendar'[Date] <= TODAY()
+			    )
+			VAR DailyReceived = 
+			    ADDCOLUMNS(
+			        YTDDays,
+			        "DailyClaims", CALCULATE([Claims Received],USERELATIONSHIP('Calendar'[Date],MedNext[Received Date]))
+			    )
+			RETURN
+			    AVERAGEX(DailyReceived, [DailyClaims])
+			```
+		formatString: #,##0.0
+		displayFolder: 📊 Volume Metrics
+		lineageTag: 4ef707ee-b15f-4499-8222-3dc0557aa11b
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Avg Claims Received/Day LM' = ```
+			
+			VAR LastMonthStart = DATE(YEAR(EOMONTH(TODAY(), -1)), MONTH(EOMONTH(TODAY(), -1)), 1)
+			VAR LastMonthEnd = EOMONTH(TODAY(), -1)
+			VAR LMDays = 
+			    FILTER(
+			        ALL('Calendar'[Date]),
+			        'Calendar'[Date] >= LastMonthStart &&
+			        'Calendar'[Date] <= LastMonthEnd
+			    )
+			VAR DailyReceived = 
+			    ADDCOLUMNS(
+			        LMDays,
+			        "DailyClaims", CALCULATE([Claims Received])
+			    )
+			RETURN
+			    AVERAGEX(DailyReceived, [DailyClaims])
+			```
+		formatString: #,##0.0
+		displayFolder: 📊 Volume Metrics
+		lineageTag: aece2e06-f678-4de0-a336-edb2f801ec1d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Avg TAT YTD' =
+			
+			SUMMARIZE(
+				FILTER(
+					'Calendar',
+					'Calendar'[Year]=YEAR(TODAY())&&'Calendar'[Date]<=TODAY()
+				),
+				"TATcol",[Average TAT (Working Days)]
+			)
+		displayFolder: ⏱️ TAT Metrics
+		lineageTag: 65958938-b1e3-463e-8f09-38cdfe948320
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Avg TAT LM' =
+			
+			var _currmomnth = MONTH(TODAY())
+			var _curryear= SWITCH(TRUE(),_currmomnth=1,YEAR(TODAY())-1,YEAR(TODAY()))
+			var _lastmonth = SWITCH(TRUE(),_currmomnth=1,12,_currmomnth-1)
+			RETURN
+			SUMMARIZE(
+				FILTER(
+					'Calendar',
+					'Calendar'[Year]=_curryear&&'Calendar'[Month Number]=_lastmonth),
+				"TATcol",[Average TAT (Working Days)]
+			)
+		displayFolder: ⏱️ TAT Metrics
+		lineageTag: c6a2abb8-48d8-4abb-995f-2e736bf3df76
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Claims Carried Forward from Yesterday' =
+			
+			SUMMARIZE(
+				FILTER('Open Mems','Open Mems'[Received Date]=TODAY()-1),
+				"RcVolOp",[Open Claims])
+		formatString: 0
+		displayFolder: 📊 Volume Metrics;KPIs
+		lineageTag: aab3f6de-e7d5-4c3a-a763-dfb869b31ded
+
+	measure '% Within 5 days YTD' =
+			
+			// Average TAT for claims closed month-to-date
+			// Uses Modification Date (when claim was closed)
+			VAR today = TODAY()
+			VAR CurrentYear = YEAR(TODAY())
+			
+			RETURN
+			CALCULATE(
+			    [% Within 5 Days],
+			    MedNext[Modification Date] >= DATE(CurrentYear, 1, 1),
+			    MedNext[Modification Date] <= TODAY()
+			)
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: ⏱️ TAT Metrics
+		lineageTag: 031ce836-c609-439f-b545-d219c1c428b0
+
+	measure '% Within 5 days LM' =
+			
+			// Average TAT for claims closed month-to-date
+			// Uses Modification Date (when claim was closed)
+			var _currmomnth = MONTH(TODAY())
+			var _curryear= SWITCH(TRUE(),_currmomnth=1,YEAR(TODAY())-1,YEAR(TODAY()))
+			var _lastmonth = SWITCH(TRUE(),_currmomnth=1,12,_currmomnth-1)
+			
+			RETURN
+			CALCULATE(
+			    [% Within 5 Days],
+			    MONTH(MedNext[Modification Date]) = _lastmonth,
+			    YEAR(MedNext[Modification Date])= _curryear
+			
+			)
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: ⏱️ TAT Metrics
+		lineageTag: 051d6ac1-3d23-4181-8135-97a786b0fe28
+
+	measure 'Avg TAT Date SVG' =
+			
+			
+			VAR MAXPlan = 0
+			VAR MAXActual = [Average TAT (Working Days)]
+			VAR MAXTarget = 5
+			VAR AXISRANGE = MAXX(
+			    {
+			        MAXPlan,
+			        MAXActual,
+			        MAXTarget
+			    },
+			    [Value]
+			)
+			VAR TRACKWIDTH = MAXPlan/AXISRANGE*100
+			VAR PERCENTAGEFILL = MAXActual/AXISRANGE*100
+			VAR PERCENTAGETARGET = MAXTarget/AXISRANGE*100
+			RETURN
+			IF((HASONEVALUE('Report Date Calendar'[Year])&&HASONEVALUE('Report Date Calendar'[Quarter])&&HASONEVALUE('Report Date Calendar'[Month Name])&&HASONEVALUE('Report Date Calendar'[Month Number])),
+			"data:image/svg+xml;utf8," & "
+			    <svg width='100' height='20' viewBox='-2 -2 102 22' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' overflow='visible'>
+			        <rect id='track' x='0' y='2' width='"&TRACKWIDTH&"' height='18' fill='green'/>
+			        <rect id='fill' x='0' y='6' width="& "'"& PERCENTAGEFILL &"'"&" height='10' fill='green'></rect>
+			        <rect id='marker' x="&"'"&PERCENTAGETARGET&"'"&" y='1' width='2' height='20' fill='orange'></rect>
+			    </svg>
+			", BLANK())
+		displayFolder: ⏱️ TAT Metrics;SVGs
+		lineageTag: 42bb4559-6dc0-49ba-a3bc-4a2738c7ad21
+		dataCategory: ImageUrl
+
+	measure 'Claims Processed (userelationship)' =
+			
+			CALCULATE(
+			    [Productivity Count],
+			    'MedNext'[Batch Status] IN {"Closed", "Cancelled"},
+			    USERELATIONSHIP('Calendar'[Date],MedNext[All Report Date])
+			)
+		formatString: 0
+		displayFolder: 📊 Volume Metrics\Base Measures
+		lineageTag: c6bad720-bcd4-4c40-93d9-55c7b2da77e9
+
+	measure 'Claims Received Mems' = ```
+			
+			    COUNTROWS(VALUES(Mems[Batch Number]))
+			```
+		formatString: 0
+		displayFolder: 📊 Volume Metrics;KPIs
+		lineageTag: 322e4e9f-9fdc-454b-94ae-ac656b9455a1
+
+	/// Claims processed from start of current month to today
+	measure 'Claims Processed MTD' =
+			// Claims processed month-to-date
+			VAR CurrentMonth = MONTH(TODAY())
+			VAR CurrentYear = YEAR(TODAY())
+			
+			RETURN
+			CALCULATE(
+			    [Claims Processed (userelationship)],
+			    MedNext[All Report Date] >= DATE(CurrentYear, CurrentMonth, 1),
+			    MedNext[All Report Date] <= TODAY()
+			)
+		formatString: 0
+		displayFolder: KPIs
+		lineageTag: 2ef23485-580d-434e-98f1-c6f04261f273
+
+	/// Claims processed in the last 7 days
+	measure 'Claims Processed Last Week' =
+			// Claims processed in last 7 days (fixed)
+			CALCULATE(
+			    [Claims Processed],
+			    MedNext[Modification Date] >= TODAY() - 7,
+			    MedNext[Modification Date] < TODAY()
+			)
+		displayFolder: KPIs
+		lineageTag: 6b24070e-d08f-49b6-9024-4acb5230350e
+
+	measure 'Pending Open Claims' =
+			
+			CALCULATE(
+			    [Open Claims],
+			    NOT('Open Mems'[Esraa Batchlist.Batch Status] in { "New","IT issue"}),
+			    NOT(ISBLANK('Open Mems'[Esraa Batchlist.Batch Status])))
+		formatString: 0
+		displayFolder: KPIs
+		lineageTag: 51d084d3-29c1-4cda-bb50-22f5e79dfc9f
+
+	measure 'New Open Claims' = ```
+			
+			CALCULATE(
+			    COUNTROWS(VALUES('Open Mems'[Batch Number])),
+			  'Open Mems'[Esraa Batchlist.Batch Status] <> "Reported/Closed",
+			  'Open Mems'[Esraa Batchlist.Batch Status] <> "Cancelled",
+			    OR('Open Mems'[Esraa Batchlist.Batch Status] = "New",ISBLANK('Open Mems'[Esraa Batchlist.Batch Status]))
+			    
+			)
+			```
+		formatString: 0
+		displayFolder: KPIs
+		lineageTag: 0c38ffe2-8746-4905-be62-164a2179a1e2
+
+	measure 'Claims Processed Today' =
+			
+			CALCULATE(
+			    [Productivity Count],
+			    'MedNext'[All Report Date] = TODAY(),
+			    OR('MedNext'[Batch Status] = "Closed",MedNext[Batch Status]="Cancelled")
+			)
+		formatString: 0
+		displayFolder: KPIs
+		lineageTag: 34c46f22-962f-4dd1-9ae6-714dd4063bc4
+
+	measure 'IT Issue Open Claims' =
+			
+			CALCULATE(
+			    [Open Claims],
+			    'Open Mems'[Esraa Batchlist.Batch Status] = "IT issue"
+			)
+		formatString: 0
+		displayFolder: KPIs
+		lineageTag: 3a101fda-e376-4357-96a7-742005507c82
+
+	measure TATCalculationLabel = "❗ TAT Calculation excludes Cancelled claims and only accounts for closed"
+		displayFolder: Label
+		lineageTag: c63c1401-234e-4758-9801-6ff304d21a7c
+
+	measure 'Productivity Count' = ```
+			
+			    COUNTROWS(
+			     VALUES(
+			        MedNext[Batch Number]
+			     )
+			    )
+			```
+		formatString: #,0.000
+		displayFolder: KPIs
+		lineageTag: 323ecf67-e0ac-4964-b43c-fabbf8c0fe53
+
+	measure UserWithOvertime =
+			
+			COUNTROWS(
+			FILTER(
+			SUMMARIZE(
+			Dim_User_Targets,
+			Dim_User_Targets[User Name],
+			Dim_User_Targets[Excel_Dim_User.Overtime Hrs]
+			),Dim_User_Targets[Excel_Dim_User.Overtime Hrs]>0)
+			)
+		formatString: 0
+		displayFolder: 📈 Productivity Metrics
+		lineageTag: ead14669-02d7-42e3-8463-729238273595
+
+	measure 'Average TAT (Working Days)' =
+			
+			CALCULATE(
+			    AVERAGE(MedNext[TAT_WorkingDays]),
+			    OR(MedNext[Batch Status] = "Closed",MedNext[Batch Status] = "Cancelled")
+			)
+		displayFolder: ⏱️ TAT Metrics
+		lineageTag: 9a2712e2-419c-4ec3-ab99-1897748b439b
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Avg Claims Processed/Day LM' = ```
+			
+			VAR LastMonthStart = DATE(YEAR(EOMONTH(TODAY(), -1)), MONTH(EOMONTH(TODAY(), -1)), 1)
+			VAR LastMonthEnd = EOMONTH(TODAY(), -1)
+			VAR LMDays = 
+			    FILTER(
+			        ALL('Calendar'),
+			        'Calendar'[Date] >= LastMonthStart &&
+			        'Calendar'[Date] <= LastMonthEnd &&
+			        NOT('Calendar'[Is UAE Holiday])&&
+			        NOT('Calendar'[Is Weekend])
+			    )
+			VAR DailyProcessed = 
+			    ADDCOLUMNS(
+			        LMDays,
+			        "DailyClaims", CALCULATE([Claims Processed],USERELATIONSHIP('Calendar'[Date],MedNext[All Report Date]))
+			    )
+			RETURN
+			    AVERAGEX(DailyProcessed, [DailyClaims])
+			```
+		displayFolder: KPIs
+		lineageTag: 784f3957-ec76-42d5-95f9-375b3444ed87
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Closed Batched BI' =
+			
+			CALCULATE(
+			    COUNTROWS(
+			        VALUES(
+			            'Closed Batches BI'[Batch Nbr]
+			        )),
+			        'Closed Batches BI'[Batch Status] = "Closed"
+			)
+		formatString: 0
+		displayFolder: 📈 Productivity Metrics
+		lineageTag: 0311515b-33fd-4cba-8398-2479c60086e5
+
+	measure 'Processed Batches BI' =
+			
+			[Closed Batched BI] + [Cancelled Batches]
+		formatString: #,0
+		displayFolder: 📈 Productivity Metrics
+		lineageTag: a4d39843-04fd-4b71-941b-d8e9611165f1
+
+	measure 'Claims Processed MTD BI' =
+			// Claims processed month-to-date
+			VAR LatestDateBatches = MAX('Closed Batches BI'[Invoice Report Date])
+			VAR CurrentMonth = MONTH(LatestDateBatches)
+			VAR CurrentYear = YEAR(LatestDateBatches)
+			
+			RETURN
+			CALCULATE(
+			    [Processed Batches BI],
+			    'Closed Batches BI'[Invoice Report Date]>= DATE(CurrentYear, CurrentMonth, 1),
+			    'Closed Batches BI'[Invoice Report Date] <= LatestDateBatches
+			)
+		formatString: 0
+		displayFolder: KPIs
+		lineageTag: 20056f27-d56d-40b3-b572-8b5373fe478d
+
+	column 'Measure Table'
+		isHidden
+		lineageTag: eaf17bb7-111d-43ac-9c67-457e7cd62c0d
+		isNameInferred
+		sourceColumn: [Measure Table]
+
+	partition _Measures = calculated
+		mode: import
+		source = ROW("Measure Table", 1)
+

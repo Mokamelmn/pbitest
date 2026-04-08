@@ -1,0 +1,12 @@
+createOrReplace
+
+	ref table _Measures
+
+		measure Batches/Day =
+				
+				[Processed Batches]/[Working Days]
+			displayFolder: 📈 Productivity Metrics
+			lineageTag: 1153d23f-d649-479a-a07f-66a1816a4c80
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+

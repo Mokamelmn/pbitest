@@ -1,0 +1,53 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.6.0/schema.json",
+  "name": "359588be0d150503337d",
+  "position": {
+    "x": 15,
+    "y": 229,
+    "z": 2000,
+    "height": 159,
+    "width": 290,
+    "tabOrder": 2000
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "Pending Claims Logic:",
+                    "textStyle": {
+                      "fontWeight": "bold"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Pending logic is derived from Esraa Batchlist sheet. Distinct count of claims with the following status is counted as pending:"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "IT issue, Pending Network, PIC validation, For Audit, Pending Production, MNE validation, Case Of Doubt, For Bypass/Withdraw, Template creation-Done, On hold",
+                    "textStyle": {
+                      "textDecoration": "underline"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

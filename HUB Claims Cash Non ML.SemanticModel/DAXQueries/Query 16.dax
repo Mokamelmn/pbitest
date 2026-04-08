@@ -1,0 +1,9 @@
+EVALUATE
+SUMMARIZE(
+	MedNext,
+	Dim_User[User Name],
+	'Calendar'[Date],
+	'Calendar'[Is Weekend],
+	'Calendar'[Is Working Day],
+	"vol",[Claims Processed]
+)
