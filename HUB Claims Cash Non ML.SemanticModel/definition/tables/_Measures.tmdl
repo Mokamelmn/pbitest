@@ -1112,6 +1112,10 @@ table _Measures
 		formatString: 0
 		lineageTag: 64c7a515-ec66-44ad-9c48-1e8539ee8fca
 
+	measure NewBranchMeasure = 1
+		formatString: 0
+		lineageTag: 2519d574-8a14-46c9-a085-68e82637dce3
+
 	column 'Measure Table'
 		isHidden
 		lineageTag: eaf17bb7-111d-43ac-9c67-457e7cd62c0d
