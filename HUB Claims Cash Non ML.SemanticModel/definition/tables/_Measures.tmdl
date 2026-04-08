@@ -1108,6 +1108,10 @@ table _Measures
 		displayFolder: KPIs
 		lineageTag: 20056f27-d56d-40b3-b572-8b5373fe478d
 
+	measure NewMeasure = 0
+		formatString: 0
+		lineageTag: 64c7a515-ec66-44ad-9c48-1e8539ee8fca
+
 	column 'Measure Table'
 		isHidden
 		lineageTag: eaf17bb7-111d-43ac-9c67-457e7cd62c0d
